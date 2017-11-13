@@ -8,8 +8,8 @@ public class ElementAnnotation extends AnnotationChild {
   private String localName;
   private String prefix;
   private NamespaceContext context;
-  private final List<AttributeAnnotation> attributes = new Vector<AttributeAnnotation>();
-  private final List<AnnotationChild> children = new Vector<AnnotationChild>();
+  private final List<AttributeAnnotation> attributes = new Vector<>();
+  private final List<AnnotationChild> children = new Vector<>();
 
   public ElementAnnotation(String namespaceUri, String localName) {
     this.namespaceUri = namespaceUri;

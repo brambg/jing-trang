@@ -21,32 +21,47 @@ class DatatypeBuilderImpl implements DatatypeBuilder {
   public void addParameter(String name,
 			   String value,
 			   ValidationContext context) throws DatatypeException {
-    if (name.equals("pattern"))
-      addPatternParam(value);
-    else if (name.equals("minInclusive"))
-      addMinInclusiveParam(value, context);
-    else if (name.equals("maxInclusive"))
-      addMaxInclusiveParam(value, context);
-    else if (name.equals("minExclusive"))
-      addMinExclusiveParam(value, context);
-    else if (name.equals("maxExclusive"))
-      addMaxExclusiveParam(value, context);
-    else if (name.equals("length"))
-      addLengthParam(value);
-    else if (name.equals("minLength"))
-      addMinLengthParam(value);
-    else if (name.equals("maxLength"))
-      addMaxLengthParam(value);
-    else if (name.equals("fractionDigits"))
-      addScaleParam(value);
-    else if (name.equals("totalDigits"))
-      addPrecisionParam(value);
-    else if (name.equals("enumeration"))
-      error("enumeration_param");
-    else if (name.equals("whiteSpace"))
-      error("whiteSpace_param");
-    else
-      error("unrecognized_param", name);
+    switch (name) {
+      case "pattern":
+        addPatternParam(value);
+        break;
+      case "minInclusive":
+        addMinInclusiveParam(value, context);
+        break;
+      case "maxInclusive":
+        addMaxInclusiveParam(value, context);
+        break;
+      case "minExclusive":
+        addMinExclusiveParam(value, context);
+        break;
+      case "maxExclusive":
+        addMaxExclusiveParam(value, context);
+        break;
+      case "length":
+        addLengthParam(value);
+        break;
+      case "minLength":
+        addMinLengthParam(value);
+        break;
+      case "maxLength":
+        addMaxLengthParam(value);
+        break;
+      case "fractionDigits":
+        addScaleParam(value);
+        break;
+      case "totalDigits":
+        addPrecisionParam(value);
+        break;
+      case "enumeration":
+        error("enumeration_param");
+        break;
+      case "whiteSpace":
+        error("whiteSpace_param");
+        break;
+      default:
+        error("unrecognized_param", name);
+        break;
+    }
   }
 
   private void addPatternParam(String value) throws DatatypeException {

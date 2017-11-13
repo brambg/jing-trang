@@ -5,7 +5,7 @@ public class PropertyId<T> {
   private final Class<T> valueClass;
 
   public static <T> PropertyId<T> newInstance(String name, Class<T> valueClass) {
-    return new PropertyId<T>(name, valueClass);
+    return new PropertyId<>(name, valueClass);
   }
 
   protected PropertyId(String name, Class<T> valueClass) {

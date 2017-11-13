@@ -95,17 +95,15 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
                                                        new BuiltinDatatypeLibraryFactory(dlf),
                                                        pb);
     final ParsedPatternFuture<Pattern> pf = parser.installHandlers(xr, sb, new RootScope(sb));
-    return new PatternFuture() {
-      public Pattern getPattern(boolean isAttributesPattern) throws IllegalSchemaException, SAXException, IOException {
-        try {
-          Pattern pattern = pf.getParsedPattern();
-          if (isAttributesPattern)
-            pattern = sb.wrapAttributesPattern(pattern);
-          return sb.expandPattern(pattern);
-        }
-        catch (BuildException e) {
-          throw unwrapBuildException(e);
-        }
+    return isAttributesPattern -> {
+      try {
+        Pattern pattern = pf.getParsedPattern();
+        if (isAttributesPattern)
+          pattern = sb.wrapAttributesPattern(pattern);
+        return sb.expandPattern(pattern);
+      }
+      catch (BuildException e) {
+        throw unwrapBuildException(e);
       }
     };
   }
@@ -328,7 +326,7 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
   private class DataPatternBuilderImpl implements DataPatternBuilder<Pattern, Locator, VoidValue, CommentListImpl, AnnotationsImpl> {
     private final DatatypeBuilder dtb;
     private final Name dtName;
-    private final List<String> params = new ArrayList<String>();
+    private final List<String> params = new ArrayList<>();
     DataPatternBuilderImpl(DatatypeBuilder dtb, Name dtName) {
       this.dtb = dtb;
       this.dtName = dtName;
@@ -464,7 +462,7 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
     private GrammarImpl(SchemaBuilderImpl sb, Scope<Pattern, Locator, VoidValue, CommentListImpl, AnnotationsImpl> parent) {
       this.sb = sb;
       this.parent = parent;
-      this.defines = new HashMap<String, RefPattern>();
+      this.defines = new HashMap<>();
       this.startRef = new RefPattern(null);
     }
 
@@ -557,11 +555,7 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
     }
 
     private RefPattern lookup1(String name) {
-      RefPattern p = defines.get(name);
-      if (p == null) {
-        p = new RefPattern(name);
-        defines.put(name, p);
-      }
+      RefPattern p = defines.computeIfAbsent(name, RefPattern::new);
       return p;
     }
 

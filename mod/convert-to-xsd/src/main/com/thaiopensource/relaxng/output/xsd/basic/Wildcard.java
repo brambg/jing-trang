@@ -48,7 +48,7 @@ public class Wildcard {
 
   public static Wildcard union(Wildcard wc1, Wildcard wc2) {
     boolean positive;
-    Set<String> namespaces = new HashSet<String>();
+    Set<String> namespaces = new HashSet<>();
     if (wc1.isPositive() && wc2.isPositive()) {
       positive = true;
       namespaces.addAll(wc1.getNamespaces());
@@ -69,7 +69,7 @@ public class Wildcard {
         namespaces.removeAll(wc1.getNamespaces());
       }
     }
-    Set<Name> excludedNames = new HashSet<Name>();
+    Set<Name> excludedNames = new HashSet<>();
     addExcludedNames(excludedNames, wc1, wc2);
     addExcludedNames(excludedNames, wc2, wc1);
     return new Wildcard(positive, namespaces, excludedNames);

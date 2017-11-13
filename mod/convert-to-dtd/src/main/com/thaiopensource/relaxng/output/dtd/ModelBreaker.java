@@ -74,9 +74,7 @@ class ModelBreaker {
   }
 
   boolean hasNextLine() {
-    if (nested != null && nested.hasNextLine())
-      return true;
-    return !done;
+    return nested != null && nested.hasNextLine() || !done;
   }
 
   String nextLine() {
@@ -119,7 +117,7 @@ class ModelBreaker {
       nextModelPos = breakPos + 1;
     else
       nextModelPos = breakPos;
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     if (modelPos == 0)
       buf.append(prefix);
     else {

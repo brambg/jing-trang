@@ -406,49 +406,66 @@ class SchemaImpl extends AbstractSchema {
       if (ceh.getHadErrorOrFatalError())
         return;
       // dispatch based on the element name
-      if (localName.equals("rules"))
-        parseRules(attributes);
-      else if (localName.equals("mode")) {
-      	String parent = (String)nvdlStack.peek();
-        if ("rules".equals(parent))
-          parseMode(attributes);
-        else if ("mode".equals(parent))
-          // mode inside mode - included mode.
-          parseIncludedMode(attributes);
-        else
-          // nested mode
-          parseNestedMode(attributes);
+      switch (localName) {
+        case "rules":
+          parseRules(attributes);
+          break;
+        case "mode":
+          String parent = (String) nvdlStack.peek();
+          if ("rules".equals(parent))
+            parseMode(attributes);
+          else if ("mode".equals(parent))
+            // mode inside mode - included mode.
+            parseIncludedMode(attributes);
+          else
+            // nested mode
+            parseNestedMode(attributes);
+          break;
+        case "namespace":
+          parseNamespace(attributes);
+          break;
+        case "anyNamespace":
+          parseAnyNamespace(attributes);
+          break;
+        case "validate":
+          parseValidate(attributes);
+          break;
+        case "reject":
+          parseReject(attributes);
+          break;
+        case "attach":
+          parseAttach(attributes);
+          break;
+        case "unwrap":
+          parseUnwrap(attributes);
+          break;
+        case "attachPlaceholder":
+          parseAttachPlaceholder(attributes);
+          break;
+        case "allow":
+          parseAllow(attributes);
+          break;
+        case "context":
+          parseContext(attributes);
+          break;
+        case "option":
+          parseOption(attributes);
+          break;
+        case "trigger":
+          parseTrigger(attributes);
+          break;
+        case "schema":
+          error("embedded_schemas");
+          break;
+        case "cancelNestedActions":
+          parseCancelNestedActions(attributes);
+          break;
+        case "message":
+          ;  // noop
+          break;
+        default:
+          throw new RuntimeException("unexpected element \"" + localName + "\"");
       }
-      else if (localName.equals("namespace"))
-        parseNamespace(attributes);
-      else if (localName.equals("anyNamespace"))
-        parseAnyNamespace(attributes);
-      else if (localName.equals("validate"))
-        parseValidate(attributes);
-      else if (localName.equals("reject"))
-        parseReject(attributes);
-      else if (localName.equals("attach"))
-        parseAttach(attributes);
-      else if (localName.equals("unwrap"))
-        parseUnwrap(attributes);
-      else if (localName.equals("attachPlaceholder"))
-        parseAttachPlaceholder(attributes);
-      else if (localName.equals("allow"))
-        parseAllow(attributes);
-      else if (localName.equals("context"))
-        parseContext(attributes);
-      else if (localName.equals("option"))
-        parseOption(attributes);
-      else if (localName.equals("trigger"))
-        parseTrigger(attributes);
-      else if (localName.equals("schema"))
-        error("embedded_schemas");
-      else if (localName.equals("cancelNestedActions"))
-        parseCancelNestedActions(attributes);
-      else if (localName.equals("message"))
-    	;  // noop
-      else
-        throw new RuntimeException("unexpected element \"" + localName + "\"");
       // add the NVDL element on the stack
       nvdlStack.push(localName);
       
@@ -1034,9 +1051,9 @@ class SchemaImpl extends AbstractSchema {
       if (value == null)
         return defaultValue;
       ElementsOrAttributes eoa = ElementsOrAttributes.NEITHER;
-      if (value.indexOf("elements") >= 0)
+      if (value.contains("elements"))
         eoa = eoa.addElements();
-      if (value.indexOf("attributes") >= 0)
+      if (value.contains("attributes"))
         eoa = eoa.addAttributes();
       return eoa;
     }

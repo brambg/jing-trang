@@ -86,16 +86,13 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     try {
       schematronSchema = CompactSchemaReader.getInstance().createSchema(schemaSource, builder.toPropertyMap());
     }
-    catch (SAXException e) {
-      throw new IncorrectSchemaException();
-    }
-    catch (IOException e) {
+    catch (SAXException | IOException e) {
       throw new IncorrectSchemaException();
     }
   }
 
   static boolean isXsltc(Class<? extends SAXTransformerFactory> cls) {
-    return cls.getName().indexOf(".xsltc.") >= 0;
+    return cls.getName().contains(".xsltc.");
   }
 
   public Option getOption(String uri) {
@@ -390,10 +387,7 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     catch (TransformerConfigurationException e) {
       throw new SAXException(localizer.message("unexpected_schema_creation_error"));
     }
-    catch (InstantiationException e) {
-      throw new SAXException(e);
-    }
-    catch (IllegalAccessException e) {
+    catch (InstantiationException | IllegalAccessException e) {
       throw new SAXException(e);
     }
   }

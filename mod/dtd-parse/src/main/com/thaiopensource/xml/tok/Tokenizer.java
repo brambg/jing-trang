@@ -2159,7 +2159,7 @@ public class Tokenizer {
    */
   public static
   String getPublicId(char[] buf, int off, int end) throws InvalidTokenException {
-    StringBuffer sbuf = new StringBuffer();
+    StringBuilder sbuf = new StringBuilder();
     off += 1;
     end -= 1;
     for (; off != end; off += 1) {

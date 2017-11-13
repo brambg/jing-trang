@@ -16,8 +16,8 @@ import java.util.Vector;
  */
 public class AnnotationsImpl implements Annotations<SourceLocation, ElementAnnotationBuilderImpl, CommentListImpl> {
   private CommentListImpl comments;
-  private final List<AttributeAnnotation> attributes = new Vector<AttributeAnnotation>();
-  private final List<AnnotationChild> elements = new Vector<AnnotationChild>();
+  private final List<AttributeAnnotation> attributes = new Vector<>();
+  private final List<AnnotationChild> elements = new Vector<>();
   private final Context context;
 
   AnnotationsImpl(CommentListImpl comments, Context context) {

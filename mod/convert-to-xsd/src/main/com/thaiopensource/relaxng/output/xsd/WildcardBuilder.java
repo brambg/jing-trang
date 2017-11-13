@@ -42,16 +42,15 @@ class WildcardBuilder implements NameClassVisitor<VoidValue> {
 
   public VoidValue visitChoice(ChoiceNameClass nc) {
     List<NameClass> list = nc.getChildren();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (NameClass aList : list) aList.accept(this);
     return VoidValue.VOID;
   }
 
   public VoidValue visitAnyName(AnyNameNameClass nc) {
     if (!inExcept) {
       if (nc.getExcept() != null) {
-        namespaces = new HashSet<String>();
-        excludedNames = new HashSet<Name>();
+        namespaces = new HashSet<>();
+        excludedNames = new HashSet<>();
         inExcept = true;
         nc.getExcept().accept(this);
         inExcept = false;
@@ -70,7 +69,7 @@ class WildcardBuilder implements NameClassVisitor<VoidValue> {
     if (!inExcept) {
       if (nc.getExcept() != null) {
         namespaces = null;
-        excludedNames = new HashSet<Name>();
+        excludedNames = new HashSet<>();
         inNs = ns;
         inExcept = true;
         nc.getExcept().accept(this);
@@ -79,7 +78,7 @@ class WildcardBuilder implements NameClassVisitor<VoidValue> {
       }
       else
         excludedNames = Collections.emptySet();
-      namespaces = new HashSet<String>();
+      namespaces = new HashSet<>();
       namespaces.add(ns);
       combineWildcard(new Wildcard(true, namespaces, excludedNames));
     }

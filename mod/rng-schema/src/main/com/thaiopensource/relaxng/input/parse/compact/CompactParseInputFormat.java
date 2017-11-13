@@ -20,6 +20,6 @@ public class CompactParseInputFormat extends ParseInputFormat {
   }
 
   public Parseable<Pattern, NameClass, SourceLocation, ElementAnnotationBuilderImpl, CommentListImpl, AnnotationsImpl> makeParseable(InputSource inputSource, SAXResolver saxResolver, ErrorHandler eh) {
-    return new CompactParseable<Pattern, NameClass, SourceLocation, ElementAnnotationBuilderImpl, CommentListImpl, AnnotationsImpl>(SAX.createInput(inputSource), saxResolver.getResolver(), eh);
+    return new CompactParseable<>(SAX.createInput(inputSource), saxResolver.getResolver(), eh);
   }
 }

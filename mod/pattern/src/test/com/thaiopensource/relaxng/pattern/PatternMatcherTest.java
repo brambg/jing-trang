@@ -27,7 +27,7 @@ public class PatternMatcherTest extends SchemaPatternBuilder {
   Object[][] startTagPairs() {
     final Name foo = new Name("", "foo");
     final Name bar = new Name("", "bar");
-    Set<Name> nameSet = new HashSet<Name>();
+    Set<Name> nameSet = new HashSet<>();
     nameSet.add(foo);
     nameSet.add(bar);
     final NormalizedNameClass foobarNNC = new NormalizedNsNameClass(nameSet, EMPTY_MAP);
@@ -55,7 +55,7 @@ public class PatternMatcherTest extends SchemaPatternBuilder {
   Object[][] attributePairs() {
     final Name foo = new Name("", "foo");
     final Name bar = new Name("", "bar");
-    Set<Name> nameSet = new HashSet<Name>();
+    Set<Name> nameSet = new HashSet<>();
     nameSet.add(foo);
     nameSet.add(bar);
     final NormalizedNameClass foobarNNC = new NormalizedNsNameClass(nameSet, EMPTY_MAP);

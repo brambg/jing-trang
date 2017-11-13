@@ -12,8 +12,8 @@ import java.util.HashSet;
 public class ParamProcessor {
   private ErrorReporter er;
   private ParamFactory paramFactory;
-  private final Map<String, Param> paramMap = new HashMap<String, Param>();
-  private final Set<String> processedParamNames = new HashSet<String>();
+  private final Map<String, Param> paramMap = new HashMap<>();
+  private final Set<String> processedParamNames = new HashSet<>();
 
   private static class BadParamException extends Exception { }
 
@@ -36,8 +36,7 @@ public class ParamProcessor {
   public void process(String[] params, ErrorHandler eh) throws InvalidParamsException, SAXException {
     er = new ErrorReporter(eh, ParamProcessor.class);
     try {
-      for (int i = 0; i < params.length; i++)
-        processParam(params[i]);
+      for (String param : params) processParam(param);
       if (er.getHadError())
         throw new InvalidParamsException();
     }

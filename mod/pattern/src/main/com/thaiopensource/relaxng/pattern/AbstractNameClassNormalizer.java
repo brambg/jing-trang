@@ -19,8 +19,8 @@ public abstract class AbstractNameClassNormalizer {
   protected abstract void accept(NameClassVisitor visitor);
 
   public NormalizedNameClass normalize() {
-    final List<Name> mentionedNames = new ArrayList<Name>();
-    final List<String> mentionedNamespaces = new ArrayList<String>();
+    final List<Name> mentionedNames = new ArrayList<>();
+    final List<String> mentionedNamespaces = new ArrayList<>();
     accept(new NameClassVisitor() {
       public void visitChoice(NameClass nc1, NameClass nc2) {
         nc1.accept(this);
@@ -54,9 +54,9 @@ public abstract class AbstractNameClassNormalizer {
       }
     });
     if (contains(new Name(IMPOSSIBLE, IMPOSSIBLE))) {
-      Set<Name> includedNames = new HashSet<Name>();
-      Set<String> excludedNamespaces = new HashSet<String>();
-      Set<Name> excludedNames = new HashSet<Name>();
+      Set<Name> includedNames = new HashSet<>();
+      Set<String> excludedNamespaces = new HashSet<>();
+      Set<Name> excludedNames = new HashSet<>();
       for (String ns : mentionedNamespaces) {
         if (!contains(new Name(ns, IMPOSSIBLE)))
           excludedNamespaces.add(ns);
@@ -72,12 +72,12 @@ public abstract class AbstractNameClassNormalizer {
       }
       return new NormalizedAnyNameClass(includedNames, excludedNamespaces, excludedNames);
     }
-    Map<String, HashSet<String>> nsMap = new HashMap<String, HashSet<String>>();
+    Map<String, HashSet<String>> nsMap = new HashMap<>();
     for (String ns : mentionedNamespaces) {
       if (contains(new Name(ns, IMPOSSIBLE)) && nsMap.get(ns) == null)
-        nsMap.put(ns, new HashSet<String>());
+        nsMap.put(ns, new HashSet<>());
     }
-    Set<Name> includedNames = new HashSet<Name>();
+    Set<Name> includedNames = new HashSet<>();
     for (Name name : mentionedNames) {
       boolean in = contains(name);
       Set<String> excluded = nsMap.get(name.getNamespaceUri());

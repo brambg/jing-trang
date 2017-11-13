@@ -23,12 +23,12 @@ import java.util.Set;
 
 public class PrefixManager implements SourceUriGenerator {
 
-  private final Map<String, String> prefixMap = new HashMap<String, String>();
-  private final Set<String> usedPrefixes = new HashSet<String>();
+  private final Map<String, String> prefixMap = new HashMap<>();
+  private final Set<String> usedPrefixes = new HashSet<>();
   /**
    * Set of prefixes that cannot be used for schema namespace.
    */
-  private final Set<String> reservedPrefixes = new HashSet<String>();
+  private final Set<String> reservedPrefixes = new HashSet<>();
   private int nextGenIndex = 1;
   static private final String[] xsdPrefixes  = { "xs", "xsd" };
   static private final int MAX_PREFIX_LENGTH = 10;
@@ -40,7 +40,7 @@ public class PrefixManager implements SourceUriGenerator {
   class PrefixSelector extends AbstractVisitor {
     private final SchemaInfo si;
     private String inheritedNamespace;
-    private final Map<String, Map<String, PrefixUsage>> namespacePrefixUsageMap = new HashMap<String, Map<String, PrefixUsage>>();
+    private final Map<String, Map<String, PrefixUsage>> namespacePrefixUsageMap = new HashMap<>();
 
     PrefixSelector(SchemaInfo si) {
       this.si = si;
@@ -95,16 +95,8 @@ public class PrefixManager implements SourceUriGenerator {
     private void notePrefix(String prefix, String ns) {
       if (prefix == null || ns == null || ns.equals(""))
         return;
-      Map<String, PrefixUsage> prefixUsageMap = namespacePrefixUsageMap.get(ns);
-      if (prefixUsageMap == null) {
-        prefixUsageMap = new HashMap<String, PrefixUsage>();
-        namespacePrefixUsageMap.put(ns, prefixUsageMap);
-      }
-      PrefixUsage prefixUsage = prefixUsageMap.get(prefix);
-      if (prefixUsage == null) {
-        prefixUsage = new PrefixUsage();
-        prefixUsageMap.put(prefix, prefixUsage);
-      }
+      Map<String, PrefixUsage> prefixUsageMap = namespacePrefixUsageMap.computeIfAbsent(ns, k -> new HashMap<>());
+      PrefixUsage prefixUsage = prefixUsageMap.computeIfAbsent(prefix, k -> new PrefixUsage());
       prefixUsage.count++;
     }
 
@@ -164,9 +156,9 @@ public class PrefixManager implements SourceUriGenerator {
   String getPrefix(String namespace) {
     String prefix = prefixMap.get(namespace);
     if (prefix == null && namespace.equals(WellKnownNamespaces.XML_SCHEMA)) {
-      for (int i = 0; i < xsdPrefixes.length; i++)
-        if (tryUsePrefix(xsdPrefixes[i], namespace))
-          return xsdPrefixes[i];
+      for (String xsdPrefixe : xsdPrefixes)
+        if (tryUsePrefix(xsdPrefixe, namespace))
+          return xsdPrefixe;
     }
     if (prefix == null)
       prefix = tryUseUri(namespace);

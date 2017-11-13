@@ -17,7 +17,7 @@ import java.util.Map;
 public class IdSoundnessChecker {
   private final IdTypeMap idTypeMap;
   private final ErrorHandler eh;
-  private final Map<String, Entry> map = new HashMap<String, Entry>();
+  private final Map<String, Entry> map = new HashMap<>();
 
   private static class Entry {
     Locator idLoc;
@@ -68,8 +68,7 @@ public class IdSoundnessChecker {
         break;
       case Datatype.ID_TYPE_IDREFS:
         if (tokens.length > 0) {
-          for (int j = 0; j < tokens.length; j++)
-            idref(tokens[j], locator);
+          for (String token : tokens) idref(token, locator);
         }
         else
           error("idrefs_no_tokens", locator);
@@ -94,15 +93,11 @@ public class IdSoundnessChecker {
   }
 
   private void idref(String token, Locator locator) {
-    Entry entry = map.get(token);
-    if (entry == null) {
-      entry = new Entry();
-      map.put(token, entry);
-    }
+    Entry entry = map.computeIfAbsent(token, k -> new Entry());
     if (entry.hadId)
       return;
     if (entry.idrefLocs == null)
-      entry.idrefLocs = new ArrayList<LocatorImpl>();
+      entry.idrefLocs = new ArrayList<>();
     entry.idrefLocs.add(new LocatorImpl(locator));
   }
 

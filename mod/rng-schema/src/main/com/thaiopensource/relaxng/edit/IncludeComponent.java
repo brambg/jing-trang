@@ -11,7 +11,7 @@ public class IncludeComponent extends Component implements Container {
   private String href;
   // the base for resolving the baseUri
   private String baseUri;
-  private final List<Component> components = new Vector<Component>();
+  private final List<Component> components = new Vector<>();
 
   public IncludeComponent() {
   }

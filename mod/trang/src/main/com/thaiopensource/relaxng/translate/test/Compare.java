@@ -31,19 +31,14 @@ public class Compare {
     try {
       xr.setFeature("http://xml.org/sax/features/namespace-prefixes", true);
     }
-    catch (SAXNotRecognizedException e) {
-      throw new SAXException("support for namespaces-prefixes feature required");
-    }
-    catch (SAXNotSupportedException e) {
+    catch (SAXNotRecognizedException | SAXNotSupportedException e) {
       throw new SAXException("support for namespaces-prefixes feature required");
     }
     xr.setContentHandler(saver);
     try {
       xr.setProperty("http://xml.org/sax/properties/lexical-handler", new CommentSaver(saver));
     }
-    catch (SAXNotRecognizedException e) {
-    }
-    catch (SAXNotSupportedException e) {
+    catch (SAXNotRecognizedException | SAXNotSupportedException e) {
     }
     xr.parse(in);
     return saver.getEventList();
@@ -142,7 +137,7 @@ public class Compare {
     }
 
     boolean merge(char[] chars, int start, int count) {
-      StringBuffer buf = new StringBuffer(value);
+      StringBuilder buf = new StringBuilder(value);
       buf.append(chars, start, count);
       value = buf.toString();
       return true;
@@ -150,8 +145,8 @@ public class Compare {
   }
 
   static class Saver extends DefaultHandler {
-    private final List<Event> eventList = new Vector<Event>();
-    private final List<Attribute> attributeList = new Vector<Attribute>();
+    private final List<Event> eventList = new Vector<>();
+    private final List<Attribute> attributeList = new Vector<>();
 
     List<Event> getEventList() {
       return eventList;
@@ -173,11 +168,7 @@ public class Compare {
       eventList.add(new StartElement(qName));
       for (int i = 0, len = attributes.getLength(); i < len; i++)
         attributeList.add(new Attribute(attributes.getQName(i), attributes.getValue(i)));
-      Collections.sort(attributeList, new Comparator<Attribute>() {
-        public int compare(Attribute a1, Attribute a2) {
-          return a1.getQName().compareTo(a2.getQName());
-        }
-      });
+      attributeList.sort((a1, a2) -> a1.getQName().compareTo(a2.getQName()));
       eventList.addAll(attributeList);
       attributeList.clear();
     }

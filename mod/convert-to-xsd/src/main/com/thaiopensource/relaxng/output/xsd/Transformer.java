@@ -43,7 +43,7 @@ import java.util.Vector;
 
 class Transformer extends SchemaTransformer {
   private final AttributeMapper attributeMapper = new AttributeMapper();
-  private final Set<String> transformedAttributeGroups = new HashSet<String>();
+  private final Set<String> transformedAttributeGroups = new HashSet<>();
   private final ErrorReporter er;
   private boolean preserveAllGroup = false;
 
@@ -67,7 +67,7 @@ class Transformer extends SchemaTransformer {
     if (!(first instanceof SimpleTypeRestriction))
       return null;
     String builtinTypeName = ((SimpleTypeRestriction)first).getName();
-    List<Facet> facets = new Vector<Facet>();
+    List<Facet> facets = new Vector<>();
     for (SimpleType child : transformedChildren) {
       if (!(child instanceof SimpleTypeRestriction))
         return null;
@@ -196,7 +196,7 @@ class Transformer extends SchemaTransformer {
         return a;
       return new AttributeGroup(a.getLocation(), a.getAnnotation(), children);
     }
-    List<AttributeUse> newChildren = new Vector<AttributeUse>();
+    List<AttributeUse> newChildren = new Vector<>();
     for (int i = 0; i < removeWildcard.length; i++) {
       AttributeUse att = children.get(i);
       if (removeWildcard[i])
@@ -233,14 +233,14 @@ class Transformer extends SchemaTransformer {
         }
       }
     }
-    Set<Name> required = new HashSet<Name>();
-    Set<Name> union = new HashSet<Name>(maps[0].keySet());
+    Set<Name> required = new HashSet<>();
+    Set<Name> union = new HashSet<>(maps[0].keySet());
     for (int i = 1; i < maps.length; i++)
       union.addAll(maps[i].keySet());
     Set<Name>[] retainAttributeNames = (Set<Name>[])new Set[children.size()];
     for (int i = 0; i < retainAttributeNames.length; i++)
-      retainAttributeNames[i] = new HashSet<Name>();
-    List<AttributeUse> newChildren = new Vector<AttributeUse>();
+      retainAttributeNames[i] = new HashSet<>();
+    List<AttributeUse> newChildren = new Vector<>();
     for (Name name : union) {
       if (wildcard == null || !wildcard.contains(name)) {
         SingleAttributeUse[] uses = new SingleAttributeUse[maps.length];
@@ -266,10 +266,10 @@ class Transformer extends SchemaTransformer {
         if (useIndex >= 0)
           retainAttributeNames[useIndex].add(name);
         else {
-          List<SimpleType> choices = new Vector<SimpleType>();
-          for (int i = 0; i < uses.length; i++)
-            if (uses[i] != null && uses[i].getType() != null)
-              choices.add(uses[i].getType());
+          List<SimpleType> choices = new Vector<>();
+          for (SingleAttributeUse use : uses)
+            if (use != null && use.getType() != null)
+              choices.add(use.getType());
           Attribute tem = new Attribute(a.getLocation(),
                                         null,
                                         name,
@@ -322,7 +322,7 @@ class Transformer extends SchemaTransformer {
   }
 
   class AttributeMapper extends AbstractAttributeUseVisitor<AttributeInfo> {
-    private final Map<AttributeUse, AttributeInfo> cache = new HashMap<AttributeUse, AttributeInfo>();
+    private final Map<AttributeUse, AttributeInfo> cache = new HashMap<>();
 
     Map<Name, SingleAttributeUse> getAttributeMap(AttributeUse a) {
       return getAttributeInfo(a).map;
@@ -333,22 +333,18 @@ class Transformer extends SchemaTransformer {
     }
 
     private AttributeInfo getAttributeInfo(AttributeUse a) {
-      AttributeInfo info = cache.get(a);
-      if (info == null) {
-        info = a.accept(this);
-        cache.put(a, info);
-      }
+      AttributeInfo info = cache.computeIfAbsent(a, a1 -> a1.accept(this));
       return info;
     }
 
     public AttributeInfo visitAttribute(Attribute a) {
-      Map<Name, SingleAttributeUse> map = new HashMap<Name, SingleAttributeUse>();
+      Map<Name, SingleAttributeUse> map = new HashMap<>();
       map.put(a.getName(), a);
       return new AttributeInfo(map, null);
     }
 
     public AttributeInfo visitAttributeGroup(AttributeGroup a) {
-      Map<Name, SingleAttributeUse> map = new HashMap<Name, SingleAttributeUse>();
+      Map<Name, SingleAttributeUse> map = new HashMap<>();
       Wildcard wildcard = null;
       for (AttributeUse child : a.getChildren()) {
         AttributeInfo info = getAttributeInfo(child);
@@ -360,7 +356,7 @@ class Transformer extends SchemaTransformer {
     }
 
     public AttributeInfo visitOptionalAttribute(OptionalAttribute a) {
-      Map<Name, SingleAttributeUse> map = new HashMap<Name, SingleAttributeUse>();
+      Map<Name, SingleAttributeUse> map = new HashMap<>();
       map.put(a.getAttribute().getName(), a);
       return new AttributeInfo(map, null);
     }
@@ -435,7 +431,7 @@ class Transformer extends SchemaTransformer {
             transformedChildren.add(child);
         }
         else if (child != children.get(i)) {
-          transformedChildren = new Vector<AttributeUse>();
+          transformedChildren = new Vector<>();
           for (int j = 0; j < i; j++)
             transformedChildren.add(children.get(j));
           if (!child.equals(AttributeGroup.EMPTY))

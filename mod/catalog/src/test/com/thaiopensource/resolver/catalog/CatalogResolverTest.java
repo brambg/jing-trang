@@ -18,7 +18,7 @@ import java.util.List;
 public class CatalogResolverTest {
   @Test
   public void testResolve() throws IOException, ResolverException {
-    List<String> catalogs = new ArrayList<String>();
+    List<String> catalogs = new ArrayList<>();
     catalogs.add(resourceUri("catalog.xml"));
     Resolver resolver = new CatalogResolver(catalogs, new SAXResolver(null));
     ExternalIdentifier xid = new ExternalIdentifier("foo.xml", "http://www.example.com/index.html", "The Great Foo");

@@ -37,9 +37,9 @@ public class MatchablePatternLoader {
     SchemaPatternBuilder spb = new SchemaPatternBuilder();
     Parseable<Pattern, com.thaiopensource.relaxng.pattern.NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl> parseable;
     if ((flags & COMPACT_SYNTAX_FLAG) != 0)
-      parseable = new CompactParseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl>(input, saxResolver.getResolver(), eh);
+      parseable = new CompactParseable<>(input, saxResolver.getResolver(), eh);
     else
-      parseable = new SAXParseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl>(saxResolver.createSAXSource(input), saxResolver, eh);
+      parseable = new SAXParseable<>(saxResolver.createSAXSource(input), saxResolver, eh);
     if (dlf == null)
       dlf = new DatatypeLibraryLoader();
     try {

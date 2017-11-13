@@ -51,11 +51,11 @@ import java.util.Vector;
 
 class Inferrer {
   private final Schema schema;
-  private final Set<Name> multiplyReferencedElementNames = new HashSet<Name>();
+  private final Set<Name> multiplyReferencedElementNames = new HashSet<>();
   private final GrammarPattern grammar;
   private final ParticleConverter particleConverter = new ParticleConverter();
-  private final List<Name> outputQueue = new Vector<Name>();
-  private final Set<Name> queued = new HashSet<Name>();
+  private final List<Name> outputQueue = new Vector<>();
+  private final Set<Name> queued = new HashSet<>();
   private String prefixSeparator;
 
   private static final String SEPARATORS = ".-_";
@@ -112,7 +112,7 @@ class Inferrer {
       List<Pattern> children = cp.getChildren();
       addChoices(children, p.getChild1());
       addChoices(children, p.getChild2());
-      Collections.sort(children, this);
+      children.sort(this);
       for (Iterator<Pattern> iter = children.iterator(); iter.hasNext();)
         if (iter.next() instanceof EmptyPattern) {
           iter.remove();
@@ -178,7 +178,7 @@ class Inferrer {
   }
 
   private class ReferenceFinder implements ParticleVisitor {
-    private final Set<Name> referencedElementNames = new HashSet<Name>();
+    private final Set<Name> referencedElementNames = new HashSet<>();
 
     public Object visitElement(ElementParticle p) {
       Name name = p.getName();
@@ -219,8 +219,8 @@ class Inferrer {
     XMLReader xr = new SAXResolver(options.resolver).createXMLReader();
     xr.setErrorHandler(eh);
     xr.setContentHandler(handler);
-    for (int i = 0; i < args.length; i++) {
-      InputSource in = new InputSource(args[i]);
+    for (String arg : args) {
+      InputSource in = new InputSource(arg);
       if (options.encoding != null)
         in.setEncoding(options.encoding);
       xr.parse(in);
@@ -241,10 +241,9 @@ class Inferrer {
                                                     particleConverter.convert(schema.getStart())));
     // Names can get added to outputQueue during this loop,
     // so don't change this to a for each.
-    for (int i = 0; i < outputQueue.size(); i++) {
-      Name elementName = outputQueue.get(i);
+    for (Name elementName : outputQueue) {
       grammar.getComponents().add(new DefineComponent(getDefineName(elementName),
-                                                      createElementPattern(elementName)));
+          createElementPattern(elementName)));
     }
   }
 
@@ -261,7 +260,7 @@ class Inferrer {
 
   private void choosePrefixSeparator() {
     Map<String, String> prefixMap = schema.getPrefixMap();
-    Set<String> namespacesInDefines = new HashSet<String>();
+    Set<String> namespacesInDefines = new HashSet<>();
     for (Name name : multiplyReferencedElementNames)
       namespacesInDefines.add(name.getNamespaceUri());
     if (namespacesInDefines.size() <= 1)
@@ -282,7 +281,7 @@ class Inferrer {
       }
     }
     // choose a prefixSeparator that avoids all collisions
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (int len = 1;; len++)
       for (int i = 0; i < SEPARATORS.length(); i++) {
         char c = SEPARATORS.charAt(i);
@@ -296,7 +295,7 @@ class Inferrer {
   }
 
   private boolean prefixSeparatorOk() {
-    Set<String> names = new HashSet<String>();
+    Set<String> names = new HashSet<>();
     for (Name elementName : multiplyReferencedElementNames) {
       String name = getDefineName(elementName);
       if (names.contains(name))
@@ -317,13 +316,9 @@ class Inferrer {
     Map<Name, AttributeDecl> attributeDecls = elementDecl.getAttributeDecls();
     if (attributeDecls.size() > 0) {
       GroupPattern group = new GroupPattern();
-      List<Name> attributeNames = new Vector<Name>();
+      List<Name> attributeNames = new Vector<>();
       attributeNames.addAll(attributeDecls.keySet());
-      Collections.sort(attributeNames, new Comparator<Name>() {
-        public int compare(Name n1, Name n2) {
-          return Name.compare(n1, n2);
-        }
-      });
+      attributeNames.sort(Name::compare);
       for (Name attName : attributeNames) {
         AttributeDecl att = attributeDecls.get(attName);
         Pattern tem;

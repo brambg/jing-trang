@@ -151,7 +151,7 @@ public class BasicOutput {
 
     public VoidValue visitUnion(SimpleTypeUnion t) {
       xw.startElement(xs("union"));
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       for (SimpleType child : t.getChildren()) {
         String typeName = child.accept(simpleTypeNamer);
         if (typeName != null) {
@@ -770,8 +770,8 @@ public class BasicOutput {
     NamespaceManager nsm = new NamespaceManager(schema, guide, pm);
     ComplexTypeSelector cts = new ComplexTypeSelector(schema);
     AbstractElementTypeSelector aets = new AbstractElementTypeSelector(schema, nsm, cts);
-    Set<Name> globalElementsDefined = new HashSet<Name>();
-    Set<Name> globalAttributesDefined = new HashSet<Name>();
+    Set<Name> globalElementsDefined = new HashSet<>();
+    Set<Name> globalAttributesDefined = new HashSet<>();
     try {
       for (Schema sch : schema.getSubSchemas())
         new BasicOutput(sch, er, od, options, nsm, pm, cts, aets,
@@ -831,7 +831,7 @@ public class BasicOutput {
     }
     for (String uri : nsm.effectiveIncludes(schema.getUri()))
       outputInclude(uri);
-    List<String> targetNamespaces = new Vector<String>();
+    List<String> targetNamespaces = new Vector<>();
     targetNamespaces.addAll(nsm.getTargetNamespaces());
     Collections.sort(targetNamespaces);
     for (String ns : targetNamespaces) {
@@ -864,8 +864,8 @@ public class BasicOutput {
 
   private void namespaceAttribute(Wildcard wc) {
     if (wc.isPositive()) {
-      StringBuffer buf = new StringBuffer();
-      List<String> namespaces = new Vector<String>(wc.getNamespaces());
+      StringBuilder buf = new StringBuilder();
+      List<String> namespaces = new Vector<>(wc.getNamespaces());
       Collections.sort(namespaces);
       for (String ns : namespaces) {
         if (buf.length() > 0)

@@ -54,13 +54,11 @@ abstract class PathPattern extends Pattern {
   }
 
   private static boolean matchName(String str, String pattern) {
-    if (pattern == ElementPathPattern.ANY)
-      return true;
-    return str.equals(pattern);
+    return pattern == ElementPathPattern.ANY || str.equals(pattern);
   }
 
   public String toString() {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (int i = 0, j = 0; i < names.length; i += 2, j++) {
       if (j != 0)
         buf.append(descendantsOrSelf[j] ? "//" : "/");

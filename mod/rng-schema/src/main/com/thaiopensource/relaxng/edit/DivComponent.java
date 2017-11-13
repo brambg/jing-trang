@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class DivComponent extends Component implements Container {
-  private final List<Component> components = new Vector<Component>();
+  private final List<Component> components = new Vector<>();
 
   public List<Component> getComponents() {
     return components;

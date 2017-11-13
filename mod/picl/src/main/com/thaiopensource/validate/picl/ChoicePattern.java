@@ -8,14 +8,14 @@ class ChoicePattern extends Pattern {
   }
 
   boolean matches(Path path, int rootDepth) {
-    for (int i = 0; i < choices.length; i++)
-      if (choices[i].matches(path, rootDepth))
+    for (Pattern choice : choices)
+      if (choice.matches(path, rootDepth))
         return true;
     return false;
   }
 
   public String toString() {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (int i = 0; i < choices.length; i++) {
       if (i != 0)
         buf.append('|');

@@ -14,7 +14,6 @@ public class EnumGroup {
   }
   
   public void accept(EnumGroupVisitor visitor) throws Exception {
-    for (int i = 0; i < members.length; i++)
-      members[i].accept(visitor);
+    for (EnumGroupMember member : members) member.accept(visitor);
   }
 }

@@ -59,12 +59,12 @@ class DtdOutput {
   private final int lineLength;
   private final String lineSep;
   private final StringBuffer buf = new StringBuffer();
-  private final List<ElementPattern> elementQueue = new Vector<ElementPattern>();
-  private final List<String> requiredParamEntities = new Vector<String>();
-  private final List<String> externallyRequiredParamEntities = new Vector<String>();
-  private final Set<String> doneParamEntities = new HashSet<String>();
-  private final Set<String> doneIncludes = new HashSet<String>();
-  private final Set<String> pendingIncludes = new HashSet<String>();
+  private final List<ElementPattern> elementQueue = new Vector<>();
+  private final List<String> requiredParamEntities = new Vector<>();
+  private final List<String> externallyRequiredParamEntities = new Vector<>();
+  private final Set<String> doneParamEntities = new HashSet<>();
+  private final Set<String> doneIncludes = new HashSet<>();
+  private final Set<String> pendingIncludes = new HashSet<>();
   private final Analysis analysis;
   private final GrammarPart part;
   private final OutputDirectory od;
@@ -174,12 +174,12 @@ class DtdOutput {
     public VoidValue visitChoice(ChoiceNameClass nc) {
       List<NameClass> list = nc.getChildren();
       boolean needSep = false;
-      for (int i = 0, len = list.size(); i < len; i++) {
+      for (NameClass aList : list) {
         if (needSep)
           buf.append('|');
         else
           needSep = true;
-        list.get(i).accept(this);
+        aList.accept(this);
       }
       return VoidValue.VOID;
     }
@@ -235,8 +235,7 @@ class DtdOutput {
       List<Pattern> list = p.getChildren();
       boolean needSep = false;
       final int len = list.size();
-      for (int i = 0; i < len; i++) {
-        Pattern member = list.get(i);
+      for (Pattern member : list) {
         ContentType t = getContentType(member);
         if (!t.isA(ContentType.EMPTY)) {
           if (needSep)
@@ -259,8 +258,7 @@ class DtdOutput {
       }
       else {
         final List<Pattern> list = p.getChildren();
-        for (int i = 0, len = list.size(); i < len; i++) {
-          Pattern member = list.get(i);
+        for (Pattern member : list) {
           ContentType t = getContentType(member);
           if (!t.isA(ContentType.EMPTY))
             member.accept(this);
@@ -274,8 +272,7 @@ class DtdOutput {
       boolean needSep = false;
       final int len = list.size();
       if (getContentType(p).isA(ContentType.MIXED_ELEMENT_CLASS)) {
-        for (int i = 0; i < len; i++) {
-          Pattern member = list.get(i);
+        for (Pattern member : list) {
           if (getContentType(member).isA(ContentType.MIXED_ELEMENT_CLASS)) {
             member.accept(nestedContentModelOutput);
             needSep = true;
@@ -283,8 +280,7 @@ class DtdOutput {
           }
         }
       }
-      for (int i = 0; i < len; i++) {
-        Pattern member = list.get(i);
+      for (Pattern member : list) {
         ContentType t = getContentType(member);
         if (t != ContentType.NOT_ALLOWED && t != ContentType.EMPTY && !t.isA(ContentType.MIXED_ELEMENT_CLASS)) {
           if (needSep)
@@ -294,8 +290,7 @@ class DtdOutput {
           member.accept(!t.isA(ContentType.ELEMENT_CLASS) ? choiceContentModelOutput : nestedContentModelOutput);
         }
       }
-      for (int i = 0; i < len; i++) {
-        Pattern member = list.get(i);
+      for (Pattern member : list) {
         ContentType t = getContentType(member);
         if (t == ContentType.NOT_ALLOWED) {
           if (needSep)
@@ -391,8 +386,7 @@ class DtdOutput {
     public VoidValue visitGroup(GroupPattern p) {
       List<Pattern> list = p.getChildren();
       Pattern main = null;
-      for (int i = 0, len = list.size(); i < len; i++) {
-        Pattern member = list.get(i);
+      for (Pattern member : list) {
         if (!getContentType(member).isA(ContentType.EMPTY)) {
           if (main == null)
             main = member;
@@ -509,8 +503,7 @@ class DtdOutput {
 
     public VoidValue visitComposite(CompositePattern p) {
       List<Pattern> list = p.getChildren();
-      for (int i = 0, len = list.size(); i < len; i++)
-        output(list.get(i));
+      for (Pattern aList : list) output(aList);
       return VoidValue.VOID;
     }
 
@@ -552,10 +545,10 @@ class DtdOutput {
       int len = names.size();
       if (len > 1)
         er.warning("attribute_occur_approx", p.getSourceLocation());
-      for (int i = 0; i < len; i++) {
+      for (NameNameClass name : names) {
         int start = buf.length();
         newlineIndent();
-        NameNameClass nnc = names.get(i);
+        NameNameClass nnc = name;
         String ns = nnc.getNamespaceUri();
 
         if (!ns.equals("") && ns != NameClass.INHERIT_NS) {
@@ -590,9 +583,9 @@ class DtdOutput {
           int lineStart = start + lineSep.length();
           if (buf.length() - lineStart > lineLength && ct.isA(ContentType.ENUM)) {
             ModelBreaker breaker = new ModelBreaker(buf.substring(lineStart, typeStart),
-                                                    buf.substring(typeStart, typeEnd),
-                                                    buf.substring(typeEnd),
-                                                    lineLength);
+                buf.substring(typeStart, typeEnd),
+                buf.substring(typeEnd),
+                lineLength);
             buf.setLength(start);
             while (breaker.hasNextLine()) {
               buf.append(lineSep);
@@ -671,8 +664,7 @@ class DtdOutput {
       List<Pattern> list = p.getChildren();
       boolean needSep = false;
       final int len = list.size();
-      for (int i = 0; i < len; i++) {
-        Pattern member = list.get(i);
+      for (Pattern member : list) {
         ContentType t = getContentType(member);
         if (t != ContentType.NOT_ALLOWED) {
           if (needSep)
@@ -682,8 +674,7 @@ class DtdOutput {
           member.accept(this);
         }
       }
-      for (int i = 0; i < len; i++) {
-        Pattern member = list.get(i);
+      for (Pattern member : list) {
         ContentType t = getContentType(member);
         if (t == ContentType.NOT_ALLOWED) {
           if (needSep)
@@ -776,8 +767,7 @@ class DtdOutput {
   class GrammarOutput implements ComponentVisitor<VoidValue> {
     public void visitContainer(Container c) {
       final List<Component> list = c.getComponents();
-      for (int i = 0, len = list.size(); i < len; i++)
-        (list.get(i)).accept(this);
+      for (Component aList : list) aList.accept(this);
     }
 
     public VoidValue visitDiv(DivComponent c) {
@@ -814,14 +804,13 @@ class DtdOutput {
   }
 
   void outputQueuedElements() {
-    for (int i = 0; i < elementQueue.size(); i++)
-      outputElement(elementQueue.get(i), null);
+    for (ElementPattern anElementQueue : elementQueue) outputElement(anElementQueue, null);
     elementQueue.clear();
   }
 
   static void output(boolean warnDatatypes, Analysis analysis, OutputDirectory od, ErrorReporter er) throws IOException {
     try {
-      new DtdOutput(warnDatatypes, analysis.getMainUri(), analysis, new HashSet<String>(), od, er).topLevelOutput();
+      new DtdOutput(warnDatatypes, analysis.getMainUri(), analysis, new HashSet<>(), od, er).topLevelOutput();
     }
     catch (WrappedIOException e) {
       throw e.cause;
@@ -918,19 +907,17 @@ class DtdOutput {
   }
 
   void outputRequiredComponents() {
-    for (int i=0; i < requiredParamEntities.size(); i++) {
-      String name = requiredParamEntities.get(i); 
+    for (String name : requiredParamEntities) {
       Component c = part.getWhereProvided(name);
       if (c == null)
         externallyRequiredParamEntities.add(name);
       else if (c instanceof DefineComponent) {
         if (!doneParamEntities.contains(name)) {
           doneParamEntities.add(name);
-          outputParamEntity((DefineComponent)c);
+          outputParamEntity((DefineComponent) c);
         }
-      }
-      else
-        outputInclude((IncludeComponent)c);
+      } else
+        outputInclude((IncludeComponent) c);
     }
     requiredParamEntities.clear();
   }
@@ -1113,10 +1100,8 @@ class DtdOutput {
       boolean needXmlns;
       if (ns == NameClass.INHERIT_NS)
         needXmlns = false;
-      else if (prefix == null)
-        needXmlns = true;
       else
-        needXmlns = !analysis.getAttributeNamespaces(content).contains(ns);
+        needXmlns = prefix == null || !analysis.getAttributeNamespaces(content).contains(ns);
       if (atts.length() != 0 || needXmlns) {
         write("<!ATTLIST ");
         write(qName);
@@ -1259,8 +1244,7 @@ class DtdOutput {
 
   private static String getAttributeAnnotation(Annotated p, String ns, String localName) {
     List<AttributeAnnotation> list = p.getAttributeAnnotations();
-    for (int i = 0, len = list.size(); i < len; i++) {
-      AttributeAnnotation att = list.get(i);
+    for (AttributeAnnotation att : list) {
       if (att.getLocalName().equals(localName)
           && att.getNamespaceUri().equals(ns))
         return att.getValue();

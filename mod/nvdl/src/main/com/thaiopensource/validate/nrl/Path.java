@@ -22,7 +22,7 @@ class Path {
   }
 
   public String toString() {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     if (root)
       buf.append('/');
     for (int i = 0, len = names.size(); i < len; i++) {

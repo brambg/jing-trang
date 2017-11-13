@@ -24,11 +24,7 @@ public class RegexEngineImpl implements RegexEngine {
   public Regex compile(String expr) throws RegexSyntaxException {
     try {
       final RegularExpression re = new RegularExpression(expr, "X");
-      return new Regex() {
-	  public boolean matches(String str) {
-	    return re.matches(str);
-	  }
-	};
+      return re::matches;
     }
     catch (ParseException e) {
       throw new RegexSyntaxException(e.getMessage(), e.getLocation());

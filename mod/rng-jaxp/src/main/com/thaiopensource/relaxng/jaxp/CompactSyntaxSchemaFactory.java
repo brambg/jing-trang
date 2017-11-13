@@ -34,6 +34,6 @@ public class CompactSyntaxSchemaFactory extends SchemaFactoryImpl {
   }
 
   protected Parseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl> createParseable(SAXSource source, SAXResolver saxResolver, ErrorHandler eh) {
-    return new CompactParseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl>(SAX.createInput(source.getInputSource()), saxResolver.getResolver(), eh);
+    return new CompactParseable<>(SAX.createInput(source.getInputSource()), saxResolver.getResolver(), eh);
   }
 }

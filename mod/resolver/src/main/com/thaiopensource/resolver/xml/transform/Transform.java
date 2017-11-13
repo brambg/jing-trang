@@ -31,17 +31,15 @@ public class Transform {
    */
   public static URIResolver createSAXURIResolver(Resolver resolver) {
     final SAXResolver saxResolver = new SAXResolver(resolver);
-    return new URIResolver() {
-      public Source resolve(String href, String base) throws TransformerException {
-        try {
-          return saxResolver.resolve(href, base);
-        }
-        catch (SAXException e) {
-          throw toTransformerException(e);
-        }
-        catch (IOException e) {
-          throw new TransformerException(e);
-        }
+    return (href, base) -> {
+      try {
+        return saxResolver.resolve(href, base);
+      }
+      catch (SAXException e) {
+        throw toTransformerException(e);
+      }
+      catch (IOException e) {
+        throw new TransformerException(e);
       }
     };
   }

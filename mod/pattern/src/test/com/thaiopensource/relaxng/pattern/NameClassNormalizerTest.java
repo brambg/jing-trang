@@ -20,8 +20,8 @@ public class NameClassNormalizerTest {
     final Name foo = new Name("", "foo");
     final String ns1 = "http://www.example.com/1";
     final Name ns1foo = new Name(ns1, "foo");
-    Map<String, HashSet<String>> ns1Map = new HashMap<String, HashSet<String>>();
-    ns1Map.put(ns1, new HashSet<String>());
+    Map<String, HashSet<String>> ns1Map = new HashMap<>();
+    ns1Map.put(ns1, new HashSet<>());
     final NormalizedNameClass ns1NNC = new NormalizedNsNameClass(emptyNameSet(), ns1Map);
     final NormalizedNameClass anyNNC = new NormalizedAnyNameClass(emptyNameSet(),
                                                                   emptyStringSet(),

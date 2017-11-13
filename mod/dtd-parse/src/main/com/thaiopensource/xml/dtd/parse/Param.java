@@ -49,9 +49,7 @@ class Param {
       return false;
     if (this.value != null && !this.value.equals(other.value))
       return false;
-    if (this.group != null && !this.group.equals(other.group))
-      return false;
-    return true;
+    return this.group == null || this.group.equals(other.group);
   }
 
   static AttributeGroup paramsToAttributeGroup(Vector v) {

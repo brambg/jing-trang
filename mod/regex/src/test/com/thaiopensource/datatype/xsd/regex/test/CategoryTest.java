@@ -75,7 +75,7 @@ public class CategoryTest {
   void test(int ch, String category) {
     if (!isXmlChar(ch))
       return;
-    if (subCategories.indexOf(category) < 0) {
+    if (!subCategories.contains(category)) {
       System.err.println("Missing category: " + category);
       System.exit(2);
     }
@@ -97,7 +97,7 @@ public class CategoryTest {
       str = new String(new char[]{ (char)ch });
     if (pos.matches(str) != inPos )
       fail(ch, cat);
-    if (neg.matches(str) != !inPos)
+    if (neg.matches(str) == inPos)
       fail(ch, "-" + cat);
   }
 
@@ -117,9 +117,7 @@ public class CategoryTest {
     default:
       if (code < 0x20)
         return false;
-      if (code >= 0xD800 && code < 0xE000)
-        return false;
-      return true;
+      return code < 0xD800 || code >= 0xE000;
     }
   }
 }

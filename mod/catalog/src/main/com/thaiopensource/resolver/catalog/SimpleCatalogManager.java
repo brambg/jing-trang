@@ -12,7 +12,7 @@ class SimpleCatalogManager extends CatalogManager {
   private final Vector<String> catalogUris;
 
   SimpleCatalogManager(List<String> catalogUris) {
-    this.catalogUris = new Vector<String>();
+    this.catalogUris = new Vector<>();
     this.catalogUris.addAll(catalogUris);
     // disable printing to System.out
     setVerbosity(0);

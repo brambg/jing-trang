@@ -8,7 +8,6 @@ class MultiConstraint implements Constraint {
   }
 
   public void activate(PatternManager pm) {
-    for (int i = 0; i < constraints.length; i++)
-      constraints[i].activate(pm);
+    for (Constraint constraint : constraints) constraint.activate(pm);
   }
 }

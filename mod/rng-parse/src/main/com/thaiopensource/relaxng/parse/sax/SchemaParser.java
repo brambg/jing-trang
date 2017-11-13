@@ -94,7 +94,7 @@ class SchemaParser<Pattern, NameClass, Location, ElementAnnotation,
     }
 
     public Set<String> prefixes() {
-      Set<String> set = new HashSet<String>();
+      Set<String> set = new HashSet<>();
       for (PrefixMapping p = prefixMapping; p != null; p = p.next)
         set.add(p.prefix);
       return set;
@@ -346,7 +346,7 @@ class SchemaParser<Pattern, NameClass, Location, ElementAnnotation,
   class ForeignElementHandler extends Handler {
     final State nextState;
     ElementAnnotationBuilder<Location, ElementAnnotation, CommentListImpl> builder;
-    final Stack<ElementAnnotationBuilder<Location, ElementAnnotation, CommentListImpl>> builderStack = new Stack<ElementAnnotationBuilder<Location, ElementAnnotation, CommentListImpl>>();
+    final Stack<ElementAnnotationBuilder<Location, ElementAnnotation, CommentListImpl>> builderStack = new Stack<>();
     StringBuffer textBuf;
     Location textLoc;
 
@@ -460,7 +460,7 @@ class SchemaParser<Pattern, NameClass, Location, ElementAnnotation,
   }
 
   abstract class PatternContainerState extends State {
-    List<Pattern> childPatterns = new ArrayList<Pattern>();
+    List<Pattern> childPatterns = new ArrayList<>();
 
     State createChildState(String localName) throws SAXException {
       State state = patternMap.get(localName);
@@ -1346,7 +1346,7 @@ class SchemaParser<Pattern, NameClass, Location, ElementAnnotation,
   }
 
   class NameClassChoiceState extends NameClassContainerState {
-    private List<NameClass> nameClasses = new ArrayList<NameClass>();
+    private List<NameClass> nameClasses = new ArrayList<>();
     private int context;
 
     NameClassChoiceState() {
@@ -1420,7 +1420,7 @@ class SchemaParser<Pattern, NameClass, Location, ElementAnnotation,
   }
 
   private void initPatternTable() {
-    patternMap = new HashMap<String, State>();
+    patternMap = new HashMap<>();
     patternMap.put("zeroOrMore", new ZeroOrMoreState());
     patternMap.put("oneOrMore", new OneOrMoreState());
     patternMap.put("optional", new OptionalState());
@@ -1443,7 +1443,7 @@ class SchemaParser<Pattern, NameClass, Location, ElementAnnotation,
   }
 
   private void initNameClassTable() {
-    nameClassMap = new HashMap<String, State>();
+    nameClassMap = new HashMap<>();
     nameClassMap.put("name", new NameState());
     nameClassMap.put("anyName", new AnyNameState());
     nameClassMap.put("nsName", new NsNameState());
@@ -1532,10 +1532,7 @@ class SchemaParser<Pattern, NameClass, Location, ElementAnnotation,
       try {
         xr.setProperty("http://xml.org/sax/properties/lexical-handler", new LexicalHandlerImpl());
       }
-      catch (SAXNotRecognizedException e) {
-        warning("no_comment_support", xr.getClass().getName());
-      }
-      catch (SAXNotSupportedException e) {
+      catch (SAXNotRecognizedException | SAXNotSupportedException e) {
         warning("no_comment_support", xr.getClass().getName());
       }
     }

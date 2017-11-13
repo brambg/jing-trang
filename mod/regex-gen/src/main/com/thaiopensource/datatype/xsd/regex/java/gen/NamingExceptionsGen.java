@@ -58,13 +58,13 @@ public class NamingExceptionsGen {
       String s = new String(buf);
       boolean isName = isStart ? Naming.isName(s) : Naming.isNmtoken(s);
       if (isName && excluding) {
-        excludeRangeList.add(new Character(excludeMin));
-        excludeRangeList.add(new Character(excludeMax));
+        excludeRangeList.add(excludeMin);
+        excludeRangeList.add(excludeMax);
         excluding = false;
       }
       if (isName != isApproxName(ch, isStart)) {
         if (isName)
-          includeList.add(new Character(ch));
+          includeList.add(ch);
         else {
           if (!excluding) {
             excluding = true;
@@ -75,8 +75,8 @@ public class NamingExceptionsGen {
       }
     }
     if (excluding) {
-      excludeRangeList.add(new Character(excludeMin));
-      excludeRangeList.add(new Character(excludeMax));
+      excludeRangeList.add(excludeMin);
+      excludeRangeList.add(excludeMax);
     }
     String prefix = isStart ? "NMSTRT" : "NMCHAR";
     genList(prefix + "_INCLUDES", includeList, w, lineSep);
@@ -104,7 +104,7 @@ public class NamingExceptionsGen {
     w.write('"');
     for (int i = 0, len = includeList.size(); i < len; i++) {
       w.write("\\u");
-      w.write(hex(((Character)includeList.get(i)).charValue()));
+      w.write(hex((Character) includeList.get(i)));
       if (i % CHARS_PER_LINE == CHARS_PER_LINE - 1 && i + 1 != len) {
         w.write("\" +");
         w.write(lineSep);

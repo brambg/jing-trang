@@ -49,7 +49,7 @@ class ValidatorImpl extends ParserConfigurationSettings implements Validator, Co
   private final SymbolTable symbolTable;
   private final XMLComponent[] components;
   private Locator locator;
-  private final Set<String> entities = new HashSet<String>();
+  private final Set<String> entities = new HashSet<>();
   private boolean pushedContext = false;
 
   // XXX deal with baseURI
@@ -75,9 +75,9 @@ class ValidatorImpl extends ParserConfigurationSettings implements Validator, Co
     this.symbolTable = symbolTable;
     XMLErrorHandler errorHandlerWrapper = new ErrorHandlerWrapper(properties.get(ValidateProperty.ERROR_HANDLER));
     components = new XMLComponent[] { errorReporter, schemaValidator, entityManager };
-    for (int i = 0; i < components.length; i++) {
-      addRecognizedFeatures(components[i].getRecognizedFeatures());
-      addRecognizedProperties(components[i].getRecognizedProperties());
+    for (XMLComponent component : components) {
+      addRecognizedFeatures(component.getRecognizedFeatures());
+      addRecognizedProperties(component.getRecognizedProperties());
     }
     addRecognizedFeatures(recognizedFeatures);
     addRecognizedProperties(recognizedProperties);
@@ -101,8 +101,7 @@ class ValidatorImpl extends ParserConfigurationSettings implements Validator, Co
   public void reset() {
     validationManager.reset();
     namespaceContext.reset();
-    for (int i = 0; i < components.length; i++)
-      components[i].reset(this);
+    for (XMLComponent component : components) component.reset(this);
     validationManager.setEntityState(this);
   }
 

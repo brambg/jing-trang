@@ -94,9 +94,7 @@ public abstract class Pattern {
   static boolean contentTypeGroupable(int ct1, int ct2) {
     if (ct1 == EMPTY_CONTENT_TYPE || ct2 == EMPTY_CONTENT_TYPE)
       return true;
-    if (ct1 == DATA_CONTENT_TYPE || ct2 == DATA_CONTENT_TYPE)
-      return false;
-    return true;
+    return ct1 != DATA_CONTENT_TYPE && ct2 != DATA_CONTENT_TYPE;
   }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class CommentListImpl implements CommentList<SourceLocation> {
-  final List<Comment> list = new Vector<Comment>();
+  final List<Comment> list = new Vector<>();
   public void addComment(String value, SourceLocation loc) throws BuildException {
     Comment comment = new Comment(value);
     comment.setSourceLocation(loc);

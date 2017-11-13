@@ -98,11 +98,7 @@ class Simplifier extends AbstractPatternVisitor<Pattern> implements ComponentVis
     List<Pattern> list = p.getChildren();
     for (int i = 0, len = list.size(); i < len; i++)
       list.set(i, list.get(i).accept(this));
-    for (Iterator<Pattern> iter = list.iterator(); iter.hasNext();) {
-      Pattern child = iter.next();
-      if (child instanceof EmptyPattern)
-        iter.remove();
-    }
+    list.removeIf(child -> child instanceof EmptyPattern);
     if (list.size() == 0)
       return copy(new EmptyPattern(), p);
     if (list.size() == 1)

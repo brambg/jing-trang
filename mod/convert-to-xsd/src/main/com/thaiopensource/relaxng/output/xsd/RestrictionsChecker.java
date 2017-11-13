@@ -34,7 +34,7 @@ import java.util.Set;
 public class RestrictionsChecker {
   private final SchemaInfo si;
   private final ErrorReporter er;
-  private final Set<Pattern> checkedPatterns = new HashSet<Pattern>();
+  private final Set<Pattern> checkedPatterns = new HashSet<>();
 
   private static final int DISALLOW_ELEMENT = 0x1;
   private static final int DISALLOW_ATTRIBUTE = 0x2;

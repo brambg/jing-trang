@@ -6,7 +6,7 @@ import java.util.Set;
 public class FeasibleTransform {
   private static class FeasiblePatternFunction extends AbstractPatternFunction<Pattern> {
     private final SchemaPatternBuilder spb;
-    private final Set<ElementPattern> elementDone = new HashSet<ElementPattern>();
+    private final Set<ElementPattern> elementDone = new HashSet<>();
 
     FeasiblePatternFunction(SchemaPatternBuilder spb) {
       this.spb = spb;

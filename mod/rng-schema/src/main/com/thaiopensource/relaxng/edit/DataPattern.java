@@ -6,7 +6,7 @@ import java.util.List;
 public class DataPattern extends Pattern {
   private String datatypeLibrary;
   private String type;
-  private final List<Param> params = new Vector<Param>();
+  private final List<Param> params = new Vector<>();
   private Pattern except;
 
   public DataPattern(String datatypeLibrary, String type) {

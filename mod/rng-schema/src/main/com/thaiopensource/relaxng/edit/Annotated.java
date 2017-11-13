@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Vector;
 
 public abstract class Annotated extends SourceObject {
-  private final List<Comment> leadingComments = new Vector<Comment>();
-  private final List<AttributeAnnotation> attributeAnnotations = new Vector<AttributeAnnotation>();
-  private final List<AnnotationChild> childElementAnnotations = new Vector<AnnotationChild>();
-  private final List<AnnotationChild> followingElementAnnotations = new Vector<AnnotationChild>();
+  private final List<Comment> leadingComments = new Vector<>();
+  private final List<AttributeAnnotation> attributeAnnotations = new Vector<>();
+  private final List<AnnotationChild> childElementAnnotations = new Vector<>();
+  private final List<AnnotationChild> followingElementAnnotations = new Vector<>();
   private NamespaceContext context;
 
   public List<Comment> getLeadingComments() {

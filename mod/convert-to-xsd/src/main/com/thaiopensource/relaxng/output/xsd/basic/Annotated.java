@@ -18,9 +18,7 @@ public class Annotated extends Located {
   public boolean equals(Object obj) {
     if (obj == null)
       return false;
-    if (this.getClass() != obj.getClass())
-      return false;
-    return Equal.equal(annotation, ((Annotated)obj).annotation);
+    return this.getClass() == obj.getClass() && Equal.equal(annotation, ((Annotated) obj).annotation);
   }
 
   public int hashCode() {

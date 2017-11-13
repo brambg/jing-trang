@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class SchemaCollection {
-  private final Map<String, SchemaDocument> schemaDocumentMap = new HashMap<String, SchemaDocument>();
+  private final Map<String, SchemaDocument> schemaDocumentMap = new HashMap<>();
   private String mainUri;
 
   public SchemaCollection() {

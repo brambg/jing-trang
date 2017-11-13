@@ -23,9 +23,7 @@ public class Occurs {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof Occurs))
-      return false;
-    return this.min == ((Occurs)obj).min && max == ((Occurs)obj).max;
+    return obj instanceof Occurs && this.min == ((Occurs) obj).min && max == ((Occurs) obj).max;
   }
 
   public int hashCode() {

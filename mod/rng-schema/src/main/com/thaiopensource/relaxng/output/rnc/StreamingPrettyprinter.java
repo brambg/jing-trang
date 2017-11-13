@@ -184,9 +184,7 @@ public class StreamingPrettyprinter implements Prettyprinter {
       return false;
     if (totalWidth > availWidth)
       return false;
-    if (lastPossibleBreak.group.broken)
-      return false;
-    return true;
+    return !lastPossibleBreak.group.broken;
   }
 
   private void tryFlush(boolean hard) {

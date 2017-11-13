@@ -17,7 +17,7 @@ public final class Service<T> {
   private final Class<T> serviceClass;
   private final Enumeration<URL> configFiles;
   private Iterator<String> classNames = null;
-  private final List<T> providers = new ArrayList<T>();
+  private final List<T> providers = new ArrayList<>();
   private Loader loader;
 
   private class ProviderIterator implements Iterator<T> {
@@ -69,7 +69,7 @@ public final class Service<T> {
 	url = ClassLoader.getSystemResource(resName);
       else
 	url = cl.getResource(resName);
-      return new Singleton<URL>(url);
+      return new Singleton<>(url);
     }
 
     Class<?> loadClass(String name) throws ClassNotFoundException {
@@ -102,10 +102,10 @@ public final class Service<T> {
 	  return resources;
         // Some application servers apparently do not implement findResources
         // in their class loaders, so fall back to getResource.
-        return new Singleton<URL>(cl.getResource(resName));
+        return new Singleton<>(cl.getResource(resName));
       }
       catch (IOException e) {
-	return new Singleton<URL>(null);
+	return new Singleton<>(null);
       }
     }
 
@@ -115,7 +115,7 @@ public final class Service<T> {
   }
 
   static public <T> Service<T> newInstance(Class<T> cls) {
-    return new Service<T>(cls);
+    return new Service<>(cls);
   }
 
   private Service(Class<T> cls) {
@@ -151,10 +151,7 @@ public final class Service<T> {
 	    return true;
 	  }
 	}
-	catch (ClassNotFoundException e) { }
-	catch (InstantiationException e) { }
-	catch (IllegalAccessException e) { }
-	catch (LinkageError e) { }
+	catch (ClassNotFoundException | LinkageError | IllegalAccessException | InstantiationException e) { }
       }
       classNames = null;
     }
@@ -175,7 +172,7 @@ public final class Service<T> {
 	r = new InputStreamReader(in, "UTF8");
       }
       r = new BufferedReader(r);
-      List<String> tokens = new ArrayList<String>();
+      List<String> tokens = new ArrayList<>();
       StringBuilder tokenBuf = new StringBuilder();
       int state = START;
       for (;;) {

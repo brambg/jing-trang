@@ -13,7 +13,7 @@ public class XmlWriter {
   private final String indentString;
   private final Writer w;
   private final CharRepertoire cr;
-  private final Stack<String> tagStack = new Stack<String>();
+  private final Stack<String> tagStack = new Stack<>();
   private boolean inStartTag = false;
   private boolean inText = false;
   private int level = 0;

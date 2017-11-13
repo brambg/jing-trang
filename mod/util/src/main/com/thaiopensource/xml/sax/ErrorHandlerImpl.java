@@ -84,9 +84,9 @@ public class ErrorHandlerImpl implements ErrorHandler {
   private String formatLocation(SAXParseException e) {
     String systemId = e.getSystemId();
     int n = e.getLineNumber();
-    Integer lineNumber = n >= 0 ? new Integer(n) : null;
+    Integer lineNumber = n >= 0 ? n : null;
     n = e.getColumnNumber();
-    Integer columnNumber = n >= 0 ? new Integer(n) : null;
+    Integer columnNumber = n >= 0 ? n : null;
     if (systemId != null) {
       systemId = UriOrFile.uriToUriOrFile(systemId);
       if (lineNumber != null) {

@@ -15,7 +15,7 @@ import java.util.Map;
 
 class ComplexityCache {
   private final ComplexityVisitor complexityVisitor = new ComplexityVisitor();
-  private final Map<Pattern, Complexity> cache = new HashMap<Pattern, Complexity>();
+  private final Map<Pattern, Complexity> cache = new HashMap<>();
 
   static private class Complexity {
     private int value;
@@ -51,11 +51,7 @@ class ComplexityCache {
 
   private class ComplexityVisitor extends AbstractPatternVisitor<Complexity> {
     Complexity visit(Pattern p) {
-      Complexity c = cache.get(p);
-      if (c == null) {
-        c = p.accept(this);
-        cache.put(p, c);
-      }
+      Complexity c = cache.computeIfAbsent(p, p1 -> p1.accept(this));
       return c;
     }
 

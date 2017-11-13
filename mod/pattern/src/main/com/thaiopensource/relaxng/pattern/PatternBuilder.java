@@ -32,7 +32,7 @@ public class PatternBuilder {
       return p1;
     if (p1 == notAllowed || p2 == notAllowed)
       return notAllowed;
-    if (false && p1 instanceof GroupPattern) {
+    if (false) {
       GroupPattern sp = (GroupPattern)p1;
       return makeGroup(sp.p1, makeGroup(sp.p2, p2));
     }
@@ -47,7 +47,7 @@ public class PatternBuilder {
       return p1;
     if (p1 == notAllowed || p2 == notAllowed)
       return notAllowed;
-    if (false && p1 instanceof InterleavePattern) {
+    if (false) {
       InterleavePattern ip = (InterleavePattern)p1;
       return makeInterleave(ip.p1, makeInterleave(ip.p2, p2));
     }

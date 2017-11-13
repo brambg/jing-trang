@@ -86,10 +86,10 @@ class SchemaReceiverImpl implements SchemaReceiver {
   public SchemaReceiverImpl(PropertyMap properties) {
     this.attributeOwner = properties.get(WrapProperty.ATTRIBUTE_OWNER);
     PropertyMapBuilder builder = new PropertyMapBuilder();
-    for (int i = 0; i < subSchemaProperties.length; i++) {
-      Object value = properties.get(subSchemaProperties[i]);
+    for (PropertyId subSchemaProperty : subSchemaProperties) {
+      Object value = properties.get(subSchemaProperty);
       if (value != null)
-        builder.put(subSchemaProperties[i], value);
+        builder.put(subSchemaProperty, value);
     }
     this.properties = builder.toPropertyMap();
     this.autoSchemaReader = new AutoSchemaReader(properties.get(SchemaReceiverFactory.PROPERTY));

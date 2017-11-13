@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Schema {
-  private final Map<Name, ElementDecl> elementDecls = new HashMap<Name, ElementDecl>();
+  private final Map<Name, ElementDecl> elementDecls = new HashMap<>();
   private Particle start;
-  private final Map<String, String> prefixMap = new HashMap<String, String>();
+  private final Map<String, String> prefixMap = new HashMap<>();
 
   public Map<Name, ElementDecl> getElementDecls() {
     return elementDecls;

@@ -41,9 +41,9 @@ public class VerifierFactoryImpl extends VerifierFactory {
       resolver = SAX.createResolver(entityResolver, true);
     SAXResolver saxResolver = new SAXResolver(resolver);
     Parseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl> parseable
-            = new SAXParseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl>(new SAXSource(saxResolver.createXMLReader(), inputSource),
-                                                                                                         saxResolver,
-                                                                                                         eh);
+            = new SAXParseable<>(new SAXSource(saxResolver.createXMLReader(), inputSource),
+        saxResolver,
+        eh);
     try {
       return new SchemaImpl(SchemaBuilderImpl.parse(parseable, eh, dlf, spb, false), spb);
     }

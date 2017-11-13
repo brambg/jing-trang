@@ -22,6 +22,6 @@ public class SAXParseInputFormat extends ParseInputFormat {
   }
 
   public Parseable<Pattern, NameClass, SourceLocation, ElementAnnotationBuilderImpl, CommentListImpl, AnnotationsImpl> makeParseable(InputSource in, SAXResolver resolver, ErrorHandler eh) throws SAXException {
-    return new SAXParseable<Pattern, NameClass, SourceLocation, ElementAnnotationBuilderImpl, CommentListImpl, AnnotationsImpl>(new SAXSource(resolver.createXMLReader(), in), resolver, eh);
+    return new SAXParseable<>(new SAXSource(resolver.createXMLReader(), in), resolver, eh);
   }
 }

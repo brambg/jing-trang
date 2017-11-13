@@ -45,9 +45,9 @@ public class Driver {
   }
 
   public int run(String[] args) {
-    List<String> inputParams = new ArrayList<String>();
-    List<String> outputParams = new ArrayList<String>();
-    List<String> catalogUris = new ArrayList<String>();
+    List<String> inputParams = new ArrayList<>();
+    List<String> outputParams = new ArrayList<>();
+    List<String> catalogUris = new ArrayList<>();
     try {
       OptionParser op = new OptionParser("C:I:O:i:o:", args);
       try {
@@ -144,16 +144,8 @@ public class Driver {
       outputFormat.output(sc, od, outputParams.toArray(new String[outputParams.size()]), inputType.toLowerCase(), eh);
       return 0;
     }
-    catch (OutputFailedException e) {
-    }
-    catch (InputFailedException e) {
-    }
-    catch (InvalidParamsException e) {
-    }
-    catch (IOException e) {
-      eh.printException(e);
-    }
-    catch (SAXException e) {
+    catch (OutputFailedException | InvalidParamsException | InputFailedException e) {
+    } catch (IOException | SAXException e) {
       eh.printException(e);
     }
     return 1;

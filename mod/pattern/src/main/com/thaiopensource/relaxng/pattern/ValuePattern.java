@@ -20,10 +20,7 @@ class ValuePattern extends StringPattern {
   boolean samePattern(Pattern other) {
     if (getClass() != other.getClass())
       return false;
-    if (!(other instanceof ValuePattern))
-      return false;
-    return (dt.equals(((ValuePattern)other).dt)
-	    && dt.sameValue(obj, ((ValuePattern)other).obj));
+    return other instanceof ValuePattern && (dt.equals(((ValuePattern) other).dt) && dt.sameValue(obj, ((ValuePattern) other).obj));
   }
 
   <T> T apply(PatternFunction<T> f) {

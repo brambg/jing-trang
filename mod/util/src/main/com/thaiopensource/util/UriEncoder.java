@@ -132,8 +132,7 @@ public class UriEncoder {
   static char[] percentEncode(byte[] bytes) {
     char[] buf = new char[bytes.length * 3];
     int j = 0;
-    for (int i = 0; i < bytes.length; i++) {
-      int b = bytes[i];
+    for (byte b : bytes) {
       buf[j++] = '%';
       buf[j++] = hexDigits.charAt((b >> 4) & 0xF);
       buf[j++] = hexDigits.charAt(b & 0xF);

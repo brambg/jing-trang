@@ -15,14 +15,14 @@ class ContentModelInferrerImpl extends ContentModelInferrer {
   /**
    * Maps names to nodes.
    */
-  private final Map<Name, SingleNode> nameMap = new HashMap<Name, SingleNode>();
+  private final Map<Name, SingleNode> nameMap = new HashMap<>();
 
   private SingleNode prevNode;
   private final SingleNode startNode;
   private final SingleNode endNode;
 
   private static class SingleNode {
-    final Set<SingleNode> followingNodes = new HashSet<SingleNode>();
+    final Set<SingleNode> followingNodes = new HashSet<>();
     final Name name;
     final int index;
     boolean repeated = false;
@@ -37,7 +37,7 @@ class ContentModelInferrerImpl extends ContentModelInferrer {
     final int index;
     Particle particle;
     int refCount = 0;
-    Set<ParticleNode> followingNodes = new HashSet<ParticleNode>();
+    Set<ParticleNode> followingNodes = new HashSet<>();
 
     ParticleNode(int index) {
       this.index = index;
@@ -57,7 +57,7 @@ class ContentModelInferrerImpl extends ContentModelInferrer {
     private final int[] visited;
     private final SingleNode[] root;
     private int visitIndex = 0;
-    private final Stack<SingleNode> stack = new Stack<SingleNode>();
+    private final Stack<SingleNode> stack = new Stack<>();
     private final ParticleNode[] particleNodes;
     private final SingleNode[] singleNodes;
     private int nParticles = 0;
@@ -224,11 +224,7 @@ class ContentModelInferrerImpl extends ContentModelInferrer {
   }
 
   private SingleNode lookup(Name name) {
-    SingleNode node = nameMap.get(name);
-    if (node == null) {
-      node = new SingleNode(name, nameMap.size());
-      nameMap.put(name, node);
-    }
+    SingleNode node = nameMap.computeIfAbsent(name, n -> new SingleNode(n, nameMap.size()));
     return node;
   }
 
@@ -248,7 +244,7 @@ class ContentModelInferrerImpl extends ContentModelInferrer {
   }
 
   public Set<Name> getElementNames() {
-    Set<Name> elementNames = new HashSet<Name>();
+    Set<Name> elementNames = new HashSet<>();
     elementNames.addAll(nameMap.keySet());
     elementNames.remove(START);
     elementNames.remove(END);

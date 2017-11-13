@@ -6,6 +6,7 @@ import com.thaiopensource.validate.Schema;
 import com.thaiopensource.validate.ValidateProperty;
 import com.thaiopensource.validate.Validator;
 import com.thaiopensource.xml.util.Name;
+import org.jetbrains.annotations.Contract;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.DTDHandler;
@@ -154,6 +155,7 @@ class ValidatorImpl extends DefaultHandler implements Validator {
             && subtrees.coveredNamespaces.contains(ns));
   }
 
+  @Contract("null -> false")
   private boolean wantsEvent(Subtree st) {
     return st != null && (!st.prune.containsElements() || (laxDepth == 0 && st == subtrees));
   }

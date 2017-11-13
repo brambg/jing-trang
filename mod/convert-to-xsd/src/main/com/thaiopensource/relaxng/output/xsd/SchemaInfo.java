@@ -42,9 +42,9 @@ class SchemaInfo {
   private final SchemaCollection sc;
   private final GrammarPattern grammar;
   private final ErrorReporter er;
-  private final Map<Pattern, ChildType> childTypeMap = new HashMap<Pattern, ChildType>();
-  private final Map<String, Define> defineMap = new HashMap<String, Define>();
-  private final Set<DefineComponent> ignoredDefines = new HashSet<DefineComponent>();
+  private final Map<Pattern, ChildType> childTypeMap = new HashMap<>();
+  private final Map<String, Define> defineMap = new HashMap<>();
+  private final Set<DefineComponent> ignoredDefines = new HashSet<>();
   private final PatternVisitor<ChildType> childTypeVisitor = new ChildTypeVisitor();
 
   private static final int DEFINE_KEEP = 0;
@@ -213,8 +213,8 @@ class SchemaInfo {
   }
 
   class GrammarVisitor implements ComponentVisitor<VoidValue> {
-    private final Set<String> openIncludes = new HashSet<String>();
-    private final Set<String> allIncludes = new HashSet<String>();
+    private final Set<String> openIncludes = new HashSet<>();
+    private final Set<String> allIncludes = new HashSet<>();
     private List<Override> overrides = null;
 
     public VoidValue visitDefine(DefineComponent c) {
@@ -264,7 +264,7 @@ class SchemaInfo {
     }
 
     public VoidValue visitInclude(IncludeComponent c) {
-      List<Override> overrides = new Vector<Override>();
+      List<Override> overrides = new Vector<>();
       List<Override> savedOverrides = this.overrides;
       this.overrides = overrides;
       c.componentsAccept(this);
@@ -341,11 +341,7 @@ class SchemaInfo {
   }
 
   ChildType getChildType(Pattern p) {
-    ChildType ct = childTypeMap.get(p);
-    if (ct == null) {
-      ct = p.accept(childTypeVisitor);
-      childTypeMap.put(p, ct);
-    }
+    ChildType ct = childTypeMap.computeIfAbsent(p, p1 -> p1.accept(childTypeVisitor));
     return ct;
   }
 
@@ -369,11 +365,7 @@ class SchemaInfo {
   }
 
   private Define lookupDefine(String name) {
-    Define define = defineMap.get(name);
-    if (define == null) {
-      define = new Define();
-      defineMap.put(name, define);
-    }
+    Define define = defineMap.computeIfAbsent(name, k -> new Define());
     return define;
   }
 

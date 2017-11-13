@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class DuplicateAttributeDetector {
-  private final List<NameClass> nameClasses = new ArrayList<NameClass>();
+  private final List<NameClass> nameClasses = new ArrayList<>();
   private Alternative alternatives = null;
 
   private static class Alternative {

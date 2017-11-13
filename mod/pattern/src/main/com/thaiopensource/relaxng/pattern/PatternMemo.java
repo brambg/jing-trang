@@ -116,7 +116,7 @@ final class PatternMemo {
   private PatternMemo startTagOpenDeriv(Name name, StartTagOpenDerivFunction f) {
     PatternMemo tem;
     if (startTagOpenDerivMap == null)
-      startTagOpenDerivMap = new HashMap<Name, PatternMemo>();
+      startTagOpenDerivMap = new HashMap<>();
     else {
       tem = startTagOpenDerivMap.get(name);
       if (tem != null)
@@ -140,7 +140,7 @@ final class PatternMemo {
   private PatternMemo startTagOpenRecoverDeriv(Name name, StartTagOpenRecoverDerivFunction f) {
     PatternMemo tem;
     if (startTagOpenRecoverDerivMap == null)
-      startTagOpenRecoverDerivMap = new HashMap<Name, PatternMemo>();
+      startTagOpenRecoverDerivMap = new HashMap<>();
     else {
       tem = startTagOpenRecoverDerivMap.get(name);
       if (tem != null)
@@ -164,7 +164,7 @@ final class PatternMemo {
   private PatternMemo startAttributeDeriv(Name name, StartAttributeDerivFunction f) {
     PatternMemo tem;
     if (startAttributeDerivMap == null)
-      startAttributeDerivMap = new HashMap<Name, PatternMemo>();
+      startAttributeDerivMap = new HashMap<>();
     else {
       tem = startAttributeDerivMap.get(name);
       if (tem != null)

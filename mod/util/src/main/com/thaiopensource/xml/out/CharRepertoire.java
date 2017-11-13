@@ -59,13 +59,11 @@ public class CharRepertoire {
       String s = new String(new String(new char[]{c1, c2}).getBytes(enc), enc);
       return s.length() == 2 && s.charAt(0) == c1 && s.charAt(1) == c2;
     }
-    catch (UnsupportedEncodingException e) {
+    catch (UnsupportedEncodingException | RuntimeException e) {
       return false;
     }
     // work around gcj bug (libgcj/9802)
-    catch (RuntimeException e) {
-      return false;
-    }
+
   }
 
 }

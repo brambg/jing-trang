@@ -52,7 +52,7 @@ class DateTimeDatatype extends RegexDatatype implements OrderRelation {
   }
 
   static private String makePattern(String template) {
-    StringBuffer pattern = new StringBuffer();
+    StringBuilder pattern = new StringBuilder();
     for (int i = 0, len = template.length(); i < len; i++) {
       char c = template.charAt(i);
       switch (c) {

@@ -108,9 +108,9 @@ public class CategoriesGen {
     w.write(lineSep);
     w.write(INDENT);
     w.write("static final String CATEGORY_NAMES = \"");
-    for (Iterator iter = set.iterator(); iter.hasNext();) {
-      Map.Entry entry = (Map.Entry)iter.next();
-      w.write((String)entry.getKey());
+    for (Object aSet : set) {
+      Map.Entry entry = (Map.Entry) aSet;
+      w.write((String) entry.getKey());
     }
     w.write("\";");
     w.write(lineSep);

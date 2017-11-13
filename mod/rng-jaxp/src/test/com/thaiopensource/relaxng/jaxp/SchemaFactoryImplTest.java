@@ -43,9 +43,7 @@ public abstract class SchemaFactoryImplTest {
     try {
       return factoryClass.newInstance();
     }
-    catch (InstantiationException e) {
-    }
-    catch (IllegalAccessException e) {
+    catch (InstantiationException | IllegalAccessException e) {
     }
     throw new AssertionError();
   }
@@ -140,18 +138,16 @@ public abstract class SchemaFactoryImplTest {
     SchemaFactory f = factory();
     Validator v = f.newSchema(charStreamSource(element("doc", element("inner")))).newValidator();
     Assert.assertNull(v.getResourceResolver());
-    LSResourceResolver rr = new LSResourceResolver() {
-      public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
-        // In Java 5 Xerces absolutized the systemId relative to the current directory
-        int slashIndex = systemId.lastIndexOf('/');
-        if (slashIndex >= 0)
-          systemId = systemId.substring(slashIndex + 1);
-        Assert.assertEquals(systemId, "e.xml");
-        Assert.assertEquals(type, "http://www.w3.org/TR/REC-xml");
-        LSInput in = new LSInputImpl();
-        in.setStringData("<inner/>");
-        return in;
-      }
+    LSResourceResolver rr = (type, namespaceURI, publicId, systemId, baseURI) -> {
+      // In Java 5 Xerces absolutized the systemId relative to the current directory
+      int slashIndex = systemId.lastIndexOf('/');
+      if (slashIndex >= 0)
+        systemId = systemId.substring(slashIndex + 1);
+      Assert.assertEquals(systemId, "e.xml");
+      Assert.assertEquals(type, "http://www.w3.org/TR/REC-xml");
+      LSInput in = new LSInputImpl();
+      in.setStringData("<inner/>");
+      return in;
     };
     v.setResourceResolver(rr);
     Assert.assertSame(v.getResourceResolver(), rr);
@@ -162,17 +158,15 @@ public abstract class SchemaFactoryImplTest {
   public void testSchemaResourceResolver() throws SAXException, IOException {
     SchemaFactory f = factory();
     Assert.assertNull(f.getResourceResolver());
-    LSResourceResolver rr = new LSResourceResolver() {
-      public LSInput resolveResource(String type, String namespaceURI, String publicId, String systemId, String baseURI) {
-        Assert.assertEquals(systemId, "myschema");
-        Assert.assertEquals(type, getLSType());
-        Assert.assertNull(baseURI);
-        Assert.assertNull(namespaceURI);
-        Assert.assertNull(publicId);
-        LSInput in = new LSInputImpl();
-        in.setStringData(createSchema("doc"));
-        return in;
-      }
+    LSResourceResolver rr = (type, namespaceURI, publicId, systemId, baseURI) -> {
+      Assert.assertEquals(systemId, "myschema");
+      Assert.assertEquals(type, getLSType());
+      Assert.assertNull(baseURI);
+      Assert.assertNull(namespaceURI);
+      Assert.assertNull(publicId);
+      LSInput in = new LSInputImpl();
+      in.setStringData(createSchema("doc"));
+      return in;
     };
     f.setResourceResolver(rr);
     Assert.assertSame(f.getResourceResolver(), rr);

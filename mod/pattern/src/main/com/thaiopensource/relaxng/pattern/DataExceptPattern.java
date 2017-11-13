@@ -17,9 +17,7 @@ class DataExceptPattern extends DataPattern {
   }
 
   boolean samePattern(Pattern other) {
-    if (!super.samePattern(other))
-      return false;
-    return except.samePattern(((DataExceptPattern)other).except);
+    return super.samePattern(other) && except.samePattern(((DataExceptPattern) other).except);
   }
 
   <T> T apply(PatternFunction<T> f) {

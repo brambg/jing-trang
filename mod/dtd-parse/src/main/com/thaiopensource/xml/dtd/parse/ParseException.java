@@ -39,8 +39,8 @@ public class ParseException extends IOException {
 			     new Object[] {
 			       super.getMessage(),
 			       location,
-			       new Integer(lineNumber),
-			       new Integer(columnNumber) });
+               lineNumber,
+               columnNumber});
   }
 
   public String getMessageBody() {

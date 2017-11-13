@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Datatypes {
 
-  private static final Map<String, Info> xsdMap = new HashMap<String, Info>();
+  private static final Map<String, Info> xsdMap = new HashMap<>();
 
   // exactly equivalent to DTD datatype of same name
   private static final int COMPATIBLE = 0x0;

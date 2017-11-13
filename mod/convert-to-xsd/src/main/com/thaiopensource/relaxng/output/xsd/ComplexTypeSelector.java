@@ -36,8 +36,8 @@ import java.util.Set;
 
 class ComplexTypeSelector extends SchemaWalker {
   static class Refs {
-    final Set<Element> referencingElements = new HashSet<Element>();
-    final Set<String> referencingDefinitions = new HashSet<String>();
+    final Set<Element> referencingElements = new HashSet<>();
+    final Set<String> referencingDefinitions = new HashSet<>();
     boolean nonTypeReference = false;
     boolean desirable = false;
   }
@@ -50,14 +50,14 @@ class ComplexTypeSelector extends SchemaWalker {
     }
   }
 
-  private final Map<String, Refs> groupMap = new HashMap<String, Refs>();
-  private final Map<String, Refs> attributeGroupMap = new HashMap<String, Refs>();
-  private final Map<String, Refs> simpleTypeMap = new HashMap<String, Refs>();
+  private final Map<String, Refs> groupMap = new HashMap<>();
+  private final Map<String, Refs> attributeGroupMap = new HashMap<>();
+  private final Map<String, Refs> simpleTypeMap = new HashMap<>();
   private String parentDefinition;
   private Element parentElement;
   private int nonTypeReference = 0;
   private int undesirable = 0;
-  private final Map<String, NamedComplexType> complexTypeMap = new HashMap<String, NamedComplexType>();
+  private final Map<String, NamedComplexType> complexTypeMap = new HashMap<>();
   private final Schema schema;
   private final Transformer transformer;
   private final ParticleVisitor<String> baseFinder = new BaseFinder();
@@ -263,11 +263,7 @@ class ComplexTypeSelector extends SchemaWalker {
   }
 
   static private Refs lookupRefs(Map<String, Refs> map, String name) {
-    Refs refs = map.get(name);
-    if (refs == null) {
-      refs = new Refs();
-      map.put(name, refs);
-    }
+    Refs refs = map.computeIfAbsent(name, k -> new Refs());
     return refs;
   }
 

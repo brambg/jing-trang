@@ -35,7 +35,7 @@ public class SAXParseable<P, NC, L, EA, CL extends CommentList<L>, A extends Ann
   public P parse(SchemaBuilder<P, NC, L, EA, CL, A> schemaBuilder, Scope<P, L, EA, CL, A> scope) throws BuildException, IllegalSchemaException {
     try {
       XMLReader xr = source.getXMLReader();
-      SchemaParser<P, NC, L, EA, CL, A> sp = new SchemaParser<P, NC, L, EA, CL, A>(xr, eh, schemaBuilder, null, scope);
+      SchemaParser<P, NC, L, EA, CL, A> sp = new SchemaParser<>(xr, eh, schemaBuilder, null, scope);
       xr.parse(source.getInputSource());
       return sp.getParsedPattern();
     }
@@ -51,7 +51,7 @@ public class SAXParseable<P, NC, L, EA, CL extends CommentList<L>, A extends Ann
           throws BuildException, IllegalSchemaException {
     try {
       XMLReader xr = source.getXMLReader();
-      SchemaParser<P, NC, L, EA, CL, A> sp = new SchemaParser<P, NC, L, EA, CL, A>(xr, eh, schemaBuilder, g, g);
+      SchemaParser<P, NC, L, EA, CL, A> sp = new SchemaParser<>(xr, eh, schemaBuilder, g, g);
       xr.parse(source.getInputSource());
       return sp.getParsedPattern();
     }

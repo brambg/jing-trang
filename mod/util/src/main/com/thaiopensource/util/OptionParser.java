@@ -95,8 +95,7 @@ public class OptionParser {
 	  System.err.println(" arg=" + arg);
       }
       args = opts.getRemainingArgs();
-      for (int i = 0; i < args.length; i++)
-	System.err.println("arg=" + args[i]);
+      for (String arg : args) System.err.println("arg=" + arg);
     }
     catch (OptionParser.MissingArgumentException e) {
       System.err.println("missing argument for option " + opts.getOptionChar());

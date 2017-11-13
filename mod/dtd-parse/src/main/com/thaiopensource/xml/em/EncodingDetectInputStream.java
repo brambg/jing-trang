@@ -91,7 +91,7 @@ public class EncodingDetectInputStream extends InputStream {
       }
       else if (ch == '?')
 	prevCharQuestion = true;
-      else if (ch =='>' && prevCharQuestion == true) {
+      else if (ch =='>' && prevCharQuestion) {
 	gotXmlDecl = true;
 	chIndex++;
 	break;

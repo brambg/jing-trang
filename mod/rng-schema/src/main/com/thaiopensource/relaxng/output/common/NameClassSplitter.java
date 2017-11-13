@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class NameClassSplitter implements NameClassVisitor<VoidValue> {
-  private final List<NameNameClass> names = new Vector<NameNameClass>();
+  private final List<NameNameClass> names = new Vector<>();
   private boolean negative = false;
 
   static public List<NameNameClass> split(NameClass nc) {

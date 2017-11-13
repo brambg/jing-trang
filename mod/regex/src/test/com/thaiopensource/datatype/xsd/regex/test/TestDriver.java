@@ -72,14 +72,20 @@ public class TestDriver extends DefaultHandler {
 
   public void endElement(String uri, String localName, String qName)
           throws SAXException {
-    if (localName.equals("valid"))
-      valid(buf.toString());
-    else if (localName.equals("invalid"))
-      invalid(buf.toString());
-    else if (localName.equals("correct"))
-      correct(buf.toString());
-    else if (localName.equals("incorrect"))
-      incorrect(buf.toString());
+    switch (localName) {
+      case "valid":
+        valid(buf.toString());
+        break;
+      case "invalid":
+        invalid(buf.toString());
+        break;
+      case "correct":
+        correct(buf.toString());
+        break;
+      case "incorrect":
+        incorrect(buf.toString());
+        break;
+    }
   }
 
   private void correct(String str) {
@@ -132,7 +138,7 @@ public class TestDriver extends DefaultHandler {
   static final private String ERROR_MARKER = ">>>>";
 
   static String display(String str, int pos) {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (int i = 0, len = str.length(); i < len; i++) {
       if (i == pos)
         buf.append(ERROR_MARKER);

@@ -12,8 +12,8 @@ public abstract class DtdContext implements DTDHandler, ValidationContext {
   private final Set<String> unparsedEntities;
 
   public DtdContext() {
-    notations = new HashSet<String>();
-    unparsedEntities = new HashSet<String>();
+    notations = new HashSet<>();
+    unparsedEntities = new HashSet<>();
   }
 
   public DtdContext(DtdContext dc) {

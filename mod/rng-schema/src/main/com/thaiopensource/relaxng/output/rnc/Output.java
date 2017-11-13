@@ -74,7 +74,7 @@ class Output {
   private final OutputDirectory od;
   private final ErrorReporter er;
   private final NamespaceManager.NamespaceBindings nsb;
-  private final Map<String, String> datatypeLibraryMap = new HashMap<String, String>();
+  private final Map<String, String> datatypeLibraryMap = new HashMap<>();
   private final ComplexityCache complexityCache = new ComplexityCache();
   private final NameClassVisitor<VoidValue> nameClassOutput = new NameClassOutput(true);
   private final NameClassVisitor<VoidValue> noParenNameClassOutput = new NameClassOutput(false);
@@ -94,11 +94,10 @@ class Output {
     "parent", "start", "string", "text", "token"
   };
 
-  static private final Set<String> keywordSet = new HashSet<String>();
+  static private final Set<String> keywordSet = new HashSet<>();
 
   static {
-    for (int i = 0; i < keywords.length; i++)
-      keywordSet.add(keywords[i]);
+    for (String keyword : keywords) keywordSet.add(keyword);
   }
 
   static void output(Pattern p, String encoding, String sourceUri, OutputDirectory od, ErrorReporter er) throws IOException {
@@ -159,7 +158,7 @@ class Output {
   }
 
   private void outputNamespaceDeclarations() {
-    List<String> prefixes = new Vector<String>();
+    List<String> prefixes = new Vector<>();
     prefixes.addAll(nsb.getPrefixes());
     Collections.sort(prefixes);
 
@@ -212,7 +211,7 @@ class Output {
 
   private void outputDatatypeLibraryDeclarations(Pattern p) {
     datatypeLibraryMap.put(WellKnownNamespaces.XML_SCHEMA_DATATYPES, "xsd");
-    List<String> datatypeLibraries = new Vector<String>();
+    List<String> datatypeLibraries = new Vector<>();
     datatypeLibraries.addAll(DatatypeLibraryVisitor.findDatatypeLibraries(p));
     if (datatypeLibraries.isEmpty())
       return;
@@ -259,7 +258,7 @@ class Output {
   }
 
   static class DatatypeLibraryVisitor extends VoidVisitor {
-    private final Set<String> datatypeLibraries = new HashSet<String>();
+    private final Set<String> datatypeLibraries = new HashSet<>();
 
     public void voidVisitValue(ValuePattern p) {
       noteDatatypeLibrary(p.getDatatypeLibrary());
@@ -963,7 +962,7 @@ class Output {
       return null;
     if (!elem.getAttributes().isEmpty())
       return null;
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (AnnotationChild a : elem.getChildren()) {
       if (!(a instanceof TextAnnotation))
         return null;
@@ -1080,10 +1079,10 @@ class Output {
         lim = len;
       else
         ++lim;
-      for (int j = 0; j < delims.length; j++) {
-        int end = (str + delims[j]).indexOf(delims[j], i);
+      for (String delim : delims) {
+        int end = (str + delim).indexOf(delim, i);
         if (end > bestEnd) {
-          bestDelim = delims[j];
+          bestDelim = delim;
           bestEnd = end;
           if (end >= lim) {
             bestEnd = lim;

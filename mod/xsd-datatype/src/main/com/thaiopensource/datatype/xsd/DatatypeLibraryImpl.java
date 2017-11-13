@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DatatypeLibraryImpl implements DatatypeLibrary {
-  private final Map<String, DatatypeBase> typeMap = new HashMap<String, DatatypeBase>();
+  private final Map<String, DatatypeBase> typeMap = new HashMap<>();
   private final RegexEngine regexEngine;
 
   static private final String LONG_MAX = "9223372036854775807";

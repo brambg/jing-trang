@@ -20,9 +20,7 @@ class DataPattern extends StringPattern {
   }
 
   boolean samePattern(Pattern other) {
-    if (other.getClass() != this.getClass())
-      return false;
-    return dt.equals(((DataPattern)other).dt);
+    return other.getClass() == this.getClass() && dt.equals(((DataPattern) other).dt);
   }
 
   <T> T apply(PatternFunction<T> f) {

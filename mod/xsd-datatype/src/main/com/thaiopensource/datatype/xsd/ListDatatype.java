@@ -33,9 +33,9 @@ class ListDatatype extends DatatypeBase implements Measure {
 
   boolean lexicallyAllows(String str) {
     String[] tokens = StringSplitter.split(str);
-    for (int i = 0; i < tokens.length; i++)
-      if (!itemType.lexicallyAllows(tokens[i]))
-	return false;
+    for (String token : tokens)
+      if (!itemType.lexicallyAllows(token))
+        return false;
     return true;
   }
 
@@ -61,8 +61,7 @@ class ListDatatype extends DatatypeBase implements Measure {
   public int valueHashCode(Object obj) {
     Object[] items = (Object[])obj;
     int hc = 0;
-    for (int i = 0; i < items.length; i++)
-      hc ^= itemType.valueHashCode(items[i]);
+    for (Object item : items) hc ^= itemType.valueHashCode(item);
     return hc;
   }
 

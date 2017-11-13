@@ -169,30 +169,43 @@ class SchemaImpl extends AbstractSchema {
       }
       if (ceh.getHadErrorOrFatalError())
         return;
-      if (localName.equals("rules"))
-        parseRules(attributes);
-      else if (localName.equals("mode"))
-        parseMode(attributes);
-      else if (localName.equals("namespace"))
-        parseNamespace(attributes);
-      else if (localName.equals("anyNamespace"))
-        parseAnyNamespace(attributes);
-      else if (localName.equals("validate"))
-        parseValidate(attributes);
-      else if (localName.equals("reject"))
-        parseReject(attributes);
-      else if (localName.equals("attach"))
-        parseAttach(attributes);
-      else if (localName.equals("unwrap"))
-        parseUnwrap(attributes);
-      else if (localName.equals("allow"))
-        parseAllow(attributes);
-      else if (localName.equals("context"))
-        parseContext(attributes);
-      else if (localName.equals("option"))
-        parseOption(attributes);
-      else
-        throw new RuntimeException("unexpected element \"" + localName + "\"");
+      switch (localName) {
+        case "rules":
+          parseRules(attributes);
+          break;
+        case "mode":
+          parseMode(attributes);
+          break;
+        case "namespace":
+          parseNamespace(attributes);
+          break;
+        case "anyNamespace":
+          parseAnyNamespace(attributes);
+          break;
+        case "validate":
+          parseValidate(attributes);
+          break;
+        case "reject":
+          parseReject(attributes);
+          break;
+        case "attach":
+          parseAttach(attributes);
+          break;
+        case "unwrap":
+          parseUnwrap(attributes);
+          break;
+        case "allow":
+          parseAllow(attributes);
+          break;
+        case "context":
+          parseContext(attributes);
+          break;
+        case "option":
+          parseOption(attributes);
+          break;
+        default:
+          throw new RuntimeException("unexpected element \"" + localName + "\"");
+      }
     }
 
     public void endElement(String namespaceURI, String localName,
@@ -454,9 +467,9 @@ class SchemaImpl extends AbstractSchema {
       if (value == null)
         return defaultValue;
       ElementsOrAttributes eoa = ElementsOrAttributes.NEITHER;
-      if (value.indexOf("elements") >= 0)
+      if (value.contains("elements"))
         eoa = eoa.addElements();
-      if (value.indexOf("attributes") >= 0)
+      if (value.contains("attributes"))
         eoa = eoa.addAttributes();
       return eoa;
     }

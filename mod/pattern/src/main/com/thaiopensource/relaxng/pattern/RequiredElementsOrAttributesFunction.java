@@ -28,7 +28,7 @@ abstract class RequiredElementsOrAttributesFunction extends AbstractPatternFunct
   protected Set<Name> caseNamed(NameClass nc) {
     if (!(nc instanceof SimpleNameClass))
       return Collections.emptySet();
-    Set<Name> s = new HashSet<Name>();
+    Set<Name> s = new HashSet<>();
     s.add(((SimpleNameClass)nc).getName());
     return s;
   }

@@ -281,12 +281,11 @@ class PatternParser {
         return "";
       }
     };
-    for (int i = 0; i < tests.length; i++) {
+    for (String test : tests) {
       try {
-        Pattern pattern = parser.parse(tests[i], null, nsc);
-        System.out.println(tests[i] + " => " + pattern.toString());
-      }
-      catch (InvalidPatternException e) {
+        Pattern pattern = parser.parse(test, null, nsc);
+        System.out.println(test + " => " + pattern.toString());
+      } catch (InvalidPatternException e) {
       }
     }
   }

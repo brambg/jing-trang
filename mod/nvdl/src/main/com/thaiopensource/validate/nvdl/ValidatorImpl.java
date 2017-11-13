@@ -452,9 +452,8 @@ class ValidatorImpl extends DefaultHandler implements Validator {
    */
   private boolean trigger(String namespace, String name, String parent) {
     // iterate triggers
-    Iterator i = triggers.iterator();
-    while (i.hasNext()) {
-      Trigger t = (Trigger)i.next();
+    for (Object trigger : triggers) {
+      Trigger t = (Trigger) trigger;
       if ((t.namespace.equals(namespace) && t.elementNames.contains(name) && !t.elementNames.contains(parent))) {
         return true;
       }
@@ -596,17 +595,17 @@ class ValidatorImpl extends DefaultHandler implements Validator {
     }
     // get the eventual schemas and validate the attributes against them
     Schema[] schemas = actions.getSchemas();
-    for (int j = 0; j < schemas.length; j++) {
+    for (Schema schema : schemas) {
       // if we already validated against this schema, skip it
-      if (attributeSchemas.contains(schemas[j]))
+      if (attributeSchemas.contains(schema))
         continue;
       // add the schema so that we will not validate again the same attributes against it
-      attributeSchemas.add(schemas[j]);
+      attributeSchemas.add(schema);
       // if we do not computed the filtered attributes for this namespace, compute them
       if (filteredAttributes == null)
         filteredAttributes = filterAttributes(indexSet, attributes);
       // validate the filtered attributes with the schema
-      validateAttributes(schemas[j], filteredAttributes);
+      validateAttributes(schema, filteredAttributes);
     }
     // return the actions in case they are needed further.
     return actions;
@@ -665,12 +664,11 @@ class ValidatorImpl extends DefaultHandler implements Validator {
         resultAction.perform(program.handler, section);
       // get the no result (validate, allow, reject) actions
       NoResultAction[] nra = actions.getNoResultActions();
-      for (int j = 0; j < nra.length; j++) {
-        NoResultAction tem = nra[j];
+      for (NoResultAction tem : nra) {
         // if we did not encountered this action already then perform it on the
         // section and add it to the noResultActions list
         if (!noResultActions.contains(tem)) {
-          nra[j].perform(section);
+          tem.perform(section);
           noResultActions.add(tem);
         }
       }

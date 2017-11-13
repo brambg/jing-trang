@@ -24,7 +24,7 @@ public class SAXSubParser<P, NC, L, EA, CL extends CommentList<L>, A extends Ann
 
   public SubParseable<P, NC, L, EA, CL, A> createSubParseable(String href, String base) throws BuildException {
     try {
-      return new SAXParseable<P, NC, L, EA, CL, A>(resolver.resolve(href, base, WellKnownNamespaces.RELAX_NG), resolver, eh);
+      return new SAXParseable<>(resolver.resolve(href, base, WellKnownNamespaces.RELAX_NG), resolver, eh);
     }
     catch (SAXException e) {
       throw BuildException.fromSAXException(e);

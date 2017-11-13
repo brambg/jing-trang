@@ -55,15 +55,15 @@ class Analysis {
   private final NamespaceManager nsm = new NamespaceManager();
   private final AttlistMapper am = new AttlistMapper();
   private final ErrorReporter er;
-  private final Map<Pattern, ContentType> contentTypes = new HashMap<Pattern, ContentType>();
-  private final Map<Pattern, AttributeType> attributeTypes = new HashMap<Pattern, AttributeType>();
-  private final Map<Pattern, Set<Name>> attributeAlphabets = new HashMap<Pattern, Set<Name>>();
-  private final Map<Pattern, Set<String>> attributeNamespaces = new HashMap<Pattern, Set<String>>();
+  private final Map<Pattern, ContentType> contentTypes = new HashMap<>();
+  private final Map<Pattern, AttributeType> attributeTypes = new HashMap<>();
+  private final Map<Pattern, Set<Name>> attributeAlphabets = new HashMap<>();
+  private final Map<Pattern, Set<String>> attributeNamespaces = new HashMap<>();
   private Map<String, Pattern> defines = null;
-  private final Set<String> attlists = new HashSet<String>();
-  private final Map<String, GrammarPart> parts = new HashMap<String, GrammarPart>();
-  private final Map<Pattern, Pattern> seenTable = new HashMap<Pattern, Pattern>();
-  private final Map<Name, ElementPattern> elementDecls = new HashMap<Name, ElementPattern>();
+  private final Set<String> attlists = new HashSet<>();
+  private final Map<String, GrammarPart> parts = new HashMap<>();
+  private final Map<Pattern, Pattern> seenTable = new HashMap<>();
+  private final Map<Name, ElementPattern> elementDecls = new HashMap<>();
   private ContentType startType = ContentType.ERROR;
   private GrammarPart mainPart;
   private final SchemaCollection schemas;
@@ -81,12 +81,12 @@ class Analysis {
     private final Set<String> pendingRefs;
 
     public Analyzer() {
-      pendingRefs = new HashSet<String>();
+      pendingRefs = new HashSet<>();
     }
 
     private Analyzer(ElementPattern ancestorPattern) {
       this.ancestorPattern = ancestorPattern;
-      pendingRefs = new HashSet<String>();
+      pendingRefs = new HashSet<>();
     }
 
     private Analyzer(Set<String> pendingRefs) {
@@ -150,8 +150,7 @@ class Analysis {
       nc.accept(this);
       List<NameNameClass> names = NameClassSplitter.split(nc);
       int len = names.size();
-      for (int i = 0; i < len; i++)
-        nsm.noteName(names.get(i), defaultable);
+      for (NameNameClass name : names) nsm.noteName(name, defaultable);
       return names;
     }
 
@@ -184,7 +183,7 @@ class Analysis {
                                ContentType.choice(tem, analyzeContentType(iter.next())),
                                p);
       if (getAttributeType(p) == AttributeType.MULTI) {
-        Set<Name> attributeNames = new HashSet<Name>();
+        Set<Name> attributeNames = new HashSet<>();
         for (Pattern child : children) {
           Set<Name> childAttributeNames = getAttributeAlphabet(child);
           for (Name name : childAttributeNames) {
@@ -246,7 +245,7 @@ class Analysis {
         er.error("sorry_nested_grammar", p.getSourceLocation());
         return ContentType.ERROR;
       }
-      defines = new HashMap<String, Pattern>();
+      defines = new HashMap<>();
       try {
         mainPart = new GrammarPart(er, defines, attlists, schemas, parts, p);
       }
@@ -274,8 +273,7 @@ class Analysis {
 
     public VoidValue visitContainer(Container c) {
       List<Component> list = c.getComponents();
-      for (int i = 0, len = list.size(); i < len; i++)
-        list.get(i).accept(this);
+      for (Component aList : list) aList.accept(this);
       return VoidValue.VOID;
     }
 
@@ -303,8 +301,7 @@ class Analysis {
 
     public VoidValue visitChoice(ChoiceNameClass nc) {
       List<NameClass> list = nc.getChildren();
-      for (int i = 0, len = list.size(); i < len; i++)
-        list.get(i).accept(this);
+      for (NameClass aList : list) aList.accept(this);
       return VoidValue.VOID;
     }
 
@@ -331,11 +328,7 @@ class Analysis {
     }
 
     ContentType analyzeContentType(Pattern p) {
-      ContentType t = contentTypes.get(p);
-      if (t == null) {
-        t = p.accept(this);
-        contentTypes.put(p, t);
-      }
+      ContentType t = contentTypes.computeIfAbsent(p, p1 -> p1.accept(this));
       return t;
     }
 
@@ -348,8 +341,7 @@ class Analysis {
   class IncludeContentChecker implements ComponentVisitor<VoidValue> {
     public VoidValue visitContainer(Container c) {
       List<Component> list = c.getComponents();
-      for (int i = 0, len = list.size(); i < len; i++)
-        list.get(i).accept(this);
+      for (Component aList : list) aList.accept(this);
       return VoidValue.VOID;
     }
 
@@ -433,17 +425,15 @@ class Analysis {
 
     public Set<Name> visitComposite(CompositePattern p) {
       List<Pattern> list = p.getChildren();
-      Set<Name> result = new HashSet<Name>();
-      for (int i = 0, len = list.size(); i < len; i++)
-        result.addAll(getAttributeAlphabet(list.get(i)));
+      Set<Name> result = new HashSet<>();
+      for (Pattern aList : list) result.addAll(getAttributeAlphabet(aList));
       return result;
     }
 
     public Set<Name> visitAttribute(AttributePattern p) {
-      Set<Name> result = new HashSet<Name>();
+      Set<Name> result = new HashSet<>();
       List<NameNameClass> names = NameClassSplitter.split(p.getNameClass());
-      for (int i = 0, len = names.size(); i < len; i++) {
-        NameNameClass nnc = names.get(i);
+      for (NameNameClass nnc : names) {
         String ns = nnc.getNamespaceUri();
         if (ns == NameClass.INHERIT_NS)
           ns = "";
@@ -488,7 +478,7 @@ class Analysis {
             result = tem;
           else {
             if (!newResult) {
-              result = new HashSet<String>(result);
+              result = new HashSet<>(result);
               newResult = true;
             }
             result.addAll(tem);
@@ -507,7 +497,7 @@ class Analysis {
         String ns = name.getNamespaceUri();
         if (ns.length() != 0 && ns != NameClass.INHERIT_NS && !ns.equals(WellKnownNamespaces.XML)) {
           if (result == null)
-            result = new HashSet<String>();
+            result = new HashSet<>();
           result.add(ns);
         }
       }
@@ -573,30 +563,18 @@ class Analysis {
   }
 
   AttributeType getAttributeType(Pattern p) {
-    AttributeType at = attributeTypes.get(p);
-    if (at == null) {
-      at = p.accept(attributeTyper);
-      attributeTypes.put(p, at);
-    }
+    AttributeType at = attributeTypes.computeIfAbsent(p, p1 -> p1.accept(attributeTyper));
     return at;
   }
 
   Set<Name> getAttributeAlphabet(Pattern p) {
-    Set<Name> aa = attributeAlphabets.get(p);
-    if (aa == null) {
-      aa = Collections.unmodifiableSet(p.accept(attributeAlphabetComputer));
-      attributeAlphabets.put(p, aa);
-    }
+    Set<Name> aa = attributeAlphabets.computeIfAbsent(p, p1 -> Collections.unmodifiableSet(p1.accept(attributeAlphabetComputer)));
     return aa;
   }
 
 
   Set<String> getAttributeNamespaces(Pattern p) {
-    Set<String> aa = attributeNamespaces.get(p);
-    if (aa == null) {
-      aa = p.accept(attributeNamespacesComputer);
-      attributeNamespaces.put(p, aa);
-    }
+    Set<String> aa = attributeNamespaces.computeIfAbsent(p, p1 -> p1.accept(attributeNamespacesComputer));
     return aa;
   }
 

@@ -46,7 +46,7 @@ class ValueDataDerivType extends DataDerivType {
     else {
       DatatypeValue dtv = new DatatypeValue(value, dt);
       if (valueMap == null)
-        valueMap = new HashMap<DatatypeValue, PatternMemo>();
+        valueMap = new HashMap<>();
       PatternMemo tem = valueMap.get(dtv);
       if (tem == null) {
         tem = super.dataDeriv(builder, p, str, vc, fail);

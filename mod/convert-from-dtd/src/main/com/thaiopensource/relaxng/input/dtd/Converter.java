@@ -69,7 +69,7 @@ public class Converter {
     String anyName;
     String annotationPrefix;
     String defaultNamespace;
-    final Map<String, String> prefixMap = new HashMap<String, String>();
+    final Map<String, String> prefixMap = new HashMap<>();
   }
 
   private final Dtd dtd;
@@ -87,25 +87,25 @@ public class Converter {
   /**
    * Maps each element name to an Integer containing a set of flags.
    */
-  private final Map<String, Integer> elementNameTable = new HashMap<String, Integer>();
+  private final Map<String, Integer> elementNameTable = new HashMap<>();
   /**
    * Maps each element name to a List of attribute groups of each attlist declaration.
    */
-  private final Map<String, List<AttributeGroup>> attlistDeclTable = new HashMap<String, List<AttributeGroup>>();
+  private final Map<String, List<AttributeGroup>> attlistDeclTable = new HashMap<>();
   /**
    * Set of strings representing names for which there are definitions in the DTD.
    */
-  private final Set<String> definedNames = new HashSet<String>();
+  private final Set<String> definedNames = new HashSet<>();
   /**
    * Maps prefixes to namespace URIs.
    */
-  private final Map<String, String> prefixTable = new HashMap<String, String>();
+  private final Map<String, String> prefixTable = new HashMap<>();
 
   /**
    * Maps a string representing an element name to the set of names of attributes
    * that have been declated for that element.
    */
-  private final Map<String, Set<String>> attributeNamesTable = new HashMap<String, Set<String>>();
+  private final Map<String, Set<String>> attributeNamesTable = new HashMap<>();
   /**
    * Contains the set of attribute names that have already been output in the current scope.
    */
@@ -155,8 +155,7 @@ public class Converter {
     public void flagDef(String name, Flag flag) throws Exception { }
     public void includedSection(Flag flag, TopLevel[] contents)
       throws Exception {
-      for (int i = 0; i < contents.length; i++)
-	contents[i].accept(this);
+      for (TopLevel content : contents) content.accept(this);
     }
 
     public void ignoredSection(Flag flag, String contents) throws Exception { }
@@ -169,8 +168,7 @@ public class Converter {
     public void externalIdRef(String name, ExternalId externalId,
 			      String uri, String encoding, TopLevel[] contents)
       throws Exception {
-      for (int i = 0; i < contents.length; i++)
-	contents[i].accept(this);
+      for (TopLevel content : contents) content.accept(this);
     }
     public void paramDef(String name, String value) throws Exception { }
     public void attributeDefaultDef(String name, AttributeDefault ad) throws Exception { }
@@ -213,13 +211,11 @@ public class Converter {
     }
 
     public void choice(ModelGroup[] members) throws Exception {
-      for (int i = 0; i < members.length; i++)
-	members[i].accept(this);
+      for (ModelGroup member : members) member.accept(this);
     }
 
     public void sequence(ModelGroup[] members) throws Exception {
-      for (int i = 0; i < members.length; i++)
-	members[i].accept(this);
+      for (ModelGroup member : members) member.accept(this);
     }
 
     public void oneOrMore(ModelGroup member) throws Exception {
@@ -291,7 +287,7 @@ public class Converter {
       if (options.inlineAttlistDecls) {
         List<AttributeGroup> groups = attlistDeclTable.get(nameSpec.getValue());
         if (groups != null) {
-          attributeNames = new HashSet<String>();
+          attributeNames = new HashSet<>();
           AttributeGroupVisitor agv = new AttributeGroupOutput(gp);
           for (AttributeGroup group : groups)
             group.accept(agv);
@@ -327,11 +323,7 @@ public class Converter {
         return;
       String name = nameSpec.getValue();
       attributeNames
-	= attributeNamesTable.get(name);
-      if (attributeNames == null) {
-	attributeNames = new HashSet<String>();
-	attributeNamesTable.put(name, attributeNames);
-      }
+          = attributeNamesTable.computeIfAbsent(name, k -> new HashSet<>());
       Pattern pattern = convert(attributeGroup);
       if (pattern instanceof EmptyPattern) {
         // Only keep an empty definition if this is the first attlist for this element,
@@ -340,7 +332,7 @@ public class Converter {
         List<AttributeGroup> decls = attlistDeclTable.get(name);
         if (decls.get(0) != attributeGroup)
           return;
-        attributeNames = new HashSet<String>();
+        attributeNames = new HashSet<>();
         for (int i = 1, len = decls.size(); i < len; i++)
           if (!(convert(decls.get(i)) instanceof EmptyPattern))
             return;
@@ -358,13 +350,12 @@ public class Converter {
     public void attributeGroupDef(String name, AttributeGroup attributeGroup)
             throws Exception {
       // This takes care of duplicates within the group
-      attributeNames = new HashSet<String>();
+      attributeNames = new HashSet<>();
       Pattern pattern;
       AttributeGroupMember[] members = attributeGroup.getMembers();
       GroupPattern group = new GroupPattern();
       AttributeGroupVisitor agv = new AttributeGroupOutput(group);
-      for (int i = 0; i < members.length; i++)
-        members[i].accept(agv);
+      for (AttributeGroupMember member : members) member.accept(agv);
       switch (group.getChildren().size()) {
       case 0:
         pattern = new EmptyPattern();
@@ -403,7 +394,7 @@ public class Converter {
 
     public void comment(String value) {
       if (comments == null)
-        comments = new Vector<Comment>();
+        comments = new Vector<>();
       comments.add(new Comment(CommentTrimmer.trimComment(value)));
     }
 
@@ -435,8 +426,7 @@ public class Converter {
       addComponent(ic);
       GrammarPattern included = new GrammarPattern();
       ComponentOutput co = new ComponentOutput(included);
-      for (int i = 0; i < contents.length; i++)
-        contents[i].accept(co);
+      for (TopLevel content : contents) content.accept(co);
       co.finish();
       sc.getSchemaDocumentMap().put(uri, new SchemaDocument(included, encoding));
     }
@@ -555,8 +545,7 @@ public class Converter {
         ChoicePattern tem = new ChoicePattern();
         pattern = tem;
         List<Pattern> children = tem.getChildren();
-	for (int i = 0; i < members.length; i++)
-          children.add(convert(members[i]));
+        for (ModelGroup member : members) children.add(convert(member));
       }
     }
 
@@ -569,8 +558,7 @@ public class Converter {
         GroupPattern tem = new GroupPattern();
         pattern = tem;
         List<Pattern> children = tem.getChildren();
-	for (int i = 0; i < members.length; i++)
-	  children.add(convert(members[i]));
+        for (ModelGroup member : members) children.add(convert(member));
       }
     }
 
@@ -609,7 +597,7 @@ public class Converter {
 
   private class DuplicateAttributeDetector implements AttributeGroupVisitor {
     private boolean containsDuplicate = false;
-    private final List<String> names = new Vector<String>();
+    private final List<String> names = new Vector<>();
 
     public void attribute(NameSpec nameSpec,
 			  Datatype datatype,
@@ -705,12 +693,12 @@ public class Converter {
       warning("cannot_use_any_name");
     }
     for (int n = 0;; n++) {
-      for (int i = 0; i < ANY_KEYWORDS.length; i++) {
-	anyName = repeatChar('_', n) + ANY_KEYWORDS[i];
-	if (!definedNames.contains(anyName)) {
-	  definedNames.add(anyName);
-	  return;
-	}
+      for (String ANY_KEYWORD : ANY_KEYWORDS) {
+        anyName = repeatChar('_', n) + ANY_KEYWORD;
+        if (!definedNames.contains(anyName)) {
+          definedNames.add(anyName);
+          return;
+        }
       }
     }
   }
@@ -774,7 +762,7 @@ public class Converter {
   }
 
   private boolean colonReplacementOk() {
-    Set<String> names = new HashSet<String>();
+    Set<String> names = new HashSet<>();
     for (String s : elementNameTable.keySet()) {
       String name = mungeQName(s);
       if (names.contains(name))
@@ -813,10 +801,10 @@ public class Converter {
 
   private String choosePattern(String metaPattern, String[] keywords, String otherPattern) {
     for (;;) {
-      for (int i = 0; i < keywords.length; i++) {
-	String pattern = substitute(metaPattern, '#', keywords[i]);
-	if (patternOk(pattern, otherPattern))
-	  return pattern;
+      for (String keyword : keywords) {
+        String pattern = substitute(metaPattern, '#', keyword);
+        if (patternOk(pattern, otherPattern))
+          return pattern;
       }
       // add another separator
       metaPattern = (metaPattern.substring(0, 1)
@@ -827,7 +815,7 @@ public class Converter {
   }
 
   private String namingPattern() {
-    Map<String, Integer> patternTable = new HashMap<String, Integer>();
+    Map<String, Integer> patternTable = new HashMap<>();
     for (String name : definedNames) {
       for (int i = 0; i < SEPARATORS.length(); i++) {
         char sep = SEPARATORS.charAt(i);
@@ -857,15 +845,11 @@ public class Converter {
   }
 
   private static void inc(Map<String, Integer> table, String str) {
-    Integer n = table.get(str);
-    if (n == null)
-      table.put(str, 1);
-    else
-      table.put(str, n + 1);
+    table.merge(str, 1, (a, b) -> a + b);
   }
 
   private boolean patternOk(String pattern, String otherPattern) {
-    Set<String> usedNames = new HashSet<String>();
+    Set<String> usedNames = new HashSet<>();
     for (String s : elementNameTable.keySet()) {
       String name = mungeQName(s);
       String declName = substitute(pattern, '%', name);
@@ -901,11 +885,7 @@ public class Converter {
   }
 
   private void noteAttlist(String name, AttributeGroup group) {
-    List<AttributeGroup> groups = attlistDeclTable.get(name);
-    if (groups == null) {
-      groups = new Vector<AttributeGroup>();
-      attlistDeclTable.put(name, groups);
-    }
+    List<AttributeGroup> groups = attlistDeclTable.computeIfAbsent(name, k -> new Vector<>());
     groups.add(group);
   }
 
@@ -985,7 +965,7 @@ public class Converter {
     int i = pattern.indexOf(ch);
     if (i < 0)
       return pattern;
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     buf.append(pattern.substring(0, i));
     buf.append(value);
     buf.append(pattern.substring(i + 1));
@@ -1036,7 +1016,7 @@ public class Converter {
   }
 
   private void outputUndefinedElements(List<Component> components) {
-    List<String> elementNames = new Vector<String>();
+    List<String> elementNames = new Vector<>();
     elementNames.addAll(elementNameTable.keySet());
     Collections.sort(elementNames);
     for (String elementName : elementNames) {

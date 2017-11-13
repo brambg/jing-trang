@@ -9,7 +9,7 @@ import java.util.Set;
 class FindElementFunction extends AbstractPatternFunction<VoidValue> {
   private final ValidatorPatternBuilder builder;
   private final Name name;
-  private final Set<Pattern> processed = new HashSet<Pattern>();
+  private final Set<Pattern> processed = new HashSet<>();
   private int specificity = NameClass.SPECIFICITY_NONE;
   private Pattern pattern = null;
 

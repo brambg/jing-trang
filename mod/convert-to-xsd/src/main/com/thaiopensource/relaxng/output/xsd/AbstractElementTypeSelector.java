@@ -21,7 +21,7 @@ class AbstractElementTypeSelector {
   private final Schema schema;
   private final NamespaceManager nsm;
   private final ComplexTypeSelector complexTypeSelector;
-  private final Map<Name, ComplexType> abstractElementComplexTypeMap = new HashMap<Name, ComplexType>();
+  private final Map<Name, ComplexType> abstractElementComplexTypeMap = new HashMap<>();
   private final ComplexType urType = new ComplexTypeNotAllowedContent();
 
   AbstractElementTypeSelector(Schema schema, NamespaceManager nsm, ComplexTypeSelector complexTypeSelector) {
@@ -75,10 +75,8 @@ class AbstractElementTypeSelector {
 
   private boolean isValidlyDerived(ComplexType ct1, ComplexType ct2) {
     if (ct1 instanceof ComplexTypeComplexContent && ct2 instanceof ComplexTypeComplexContent)
-      return isComplexContentValidlyDerived((ComplexTypeComplexContent)ct1, (ComplexTypeComplexContent)ct2);
-    if (ct1 instanceof ComplexTypeSimpleContent && ct2 instanceof ComplexTypeSimpleContent)
-      return isSimpleContentValidlyDerived((ComplexTypeSimpleContent)ct1, (ComplexTypeSimpleContent)ct2);
-    return false;
+      return isComplexContentValidlyDerived((ComplexTypeComplexContent) ct1, (ComplexTypeComplexContent) ct2);
+    return ct1 instanceof ComplexTypeSimpleContent && ct2 instanceof ComplexTypeSimpleContent && isSimpleContentValidlyDerived((ComplexTypeSimpleContent) ct1, (ComplexTypeSimpleContent) ct2);
   }
 
   private boolean isComplexContentValidlyDerived(ComplexTypeComplexContent ct1, ComplexTypeComplexContent ct2) {
@@ -118,10 +116,8 @@ class AbstractElementTypeSelector {
     if (st2 instanceof SimpleTypeRef)
       return isSimpleTypeValidlyDerivedFromName(st1, ((SimpleTypeRef)st2).getName());
     if (st2 instanceof SimpleTypeRestriction) {
-      SimpleTypeRestriction restriction = (SimpleTypeRestriction)st2;
-      if (restriction.getFacets().size() > 0)
-        return false;
-      return isSimpleTypeValidlyDerivedFromBuiltin(st1, restriction.getName());
+      SimpleTypeRestriction restriction = (SimpleTypeRestriction) st2;
+      return restriction.getFacets().size() <= 0 && isSimpleTypeValidlyDerivedFromBuiltin(st1, restriction.getName());
     }
     return false;
   }

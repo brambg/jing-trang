@@ -25,8 +25,7 @@ public abstract class AbstractSchema implements Schema {
 
   static public PropertyMap filterProperties(PropertyMap properties, PropertyId<?>[] supportedPropertyIds) {
     PropertyMapBuilder builder = new PropertyMapBuilder();
-    for (int i = 0; i < supportedPropertyIds.length; i++)
-      copy(builder, supportedPropertyIds[i], properties);
+    for (PropertyId<?> supportedPropertyId : supportedPropertyIds) copy(builder, supportedPropertyId, properties);
     return builder.toPropertyMap();
   }
 

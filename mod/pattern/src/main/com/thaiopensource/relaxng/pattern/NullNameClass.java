@@ -19,9 +19,7 @@ class NullNameClass implements NameClass {
   }
 
   public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof NullNameClass))
-      return false;
-    return true;
+    return obj != null && obj instanceof NullNameClass;
   }
 
   public void accept(NameClassVisitor visitor) {

@@ -193,20 +193,29 @@ class SchemaImpl extends AbstractSchema {
       }
       if (ceh.getHadErrorOrFatalError())
         return;
-      if (localName.equals("rules"))
-        parseRules(attributes);
-      else if (localName.equals("cover"))
-        parseCover(attributes);
-      else if (localName.equals("context"))
-        parseContext(attributes);
-      else if (localName.equals("root"))
-        parseRoot(attributes);
-      else if (localName.equals("element"))
-        parseElement(attributes);
-      else if (localName.equals("lax"))
-        parseLax(attributes);
-      else
-        parseValidate(localName.equals("validateAttributes"), attributes);
+      switch (localName) {
+        case "rules":
+          parseRules(attributes);
+          break;
+        case "cover":
+          parseCover(attributes);
+          break;
+        case "context":
+          parseContext(attributes);
+          break;
+        case "root":
+          parseRoot(attributes);
+          break;
+        case "element":
+          parseElement(attributes);
+          break;
+        case "lax":
+          parseLax(attributes);
+          break;
+        default:
+          parseValidate(localName.equals("validateAttributes"), attributes);
+          break;
+      }
     }
 
     public void endElement(String namespaceURI, String localName,
@@ -331,7 +340,7 @@ class SchemaImpl extends AbstractSchema {
     }
 
     private String displayPath(boolean isRoot, Stack nameStack) {
-      StringBuffer buf = new StringBuffer();
+      StringBuilder buf = new StringBuilder();
       for (int i = 0, len = nameStack.size(); i < len; i++) {
         if (i > 0 || isRoot)
           buf.append('/');
@@ -367,9 +376,9 @@ class SchemaImpl extends AbstractSchema {
       if (value == null)
         return defaultValue;
       ElementsOrAttributes eoa = ElementsOrAttributes.NEITHER;
-      if (value.indexOf("elements") >= 0)
+      if (value.contains("elements"))
         eoa = eoa.addElements();
-      if (value.indexOf("attributes") >= 0)
+      if (value.contains("attributes"))
         eoa = eoa.addAttributes();
       return eoa;
     }

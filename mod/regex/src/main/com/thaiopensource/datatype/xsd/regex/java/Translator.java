@@ -298,7 +298,7 @@ public class Translator {
   }
 
   private String parseQuantExact() throws RegexSyntaxException {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     do {
       if ("0123456789".indexOf(curChar) < 0)
         throw makeException("expected_digit");
@@ -344,11 +344,7 @@ public class Translator {
         return -1;
       if (this.min > other.min)
         return 1;
-      if (this.max > other.max)
-        return -1;
-      if (this.max < other.max)
-        return 1;
-      return 0;
+      return Integer.compare(other.max, this.max);
     }
   }
 
@@ -469,9 +465,9 @@ public class Translator {
     }
 
     static String highSurrogateRanges(List ranges) {
-      StringBuffer highRanges = new StringBuffer();
-      for (int i = 0, len = ranges.size(); i < len; i++) {
-        Range r = (Range)ranges.get(i);
+      StringBuilder highRanges = new StringBuilder();
+      for (Object range : ranges) {
+        Range r = (Range) range;
         char min1 = Utf16.surrogate1(r.getMin());
         char min2 = Utf16.surrogate2(r.getMin());
         char max1 = Utf16.surrogate1(r.getMax());
@@ -489,9 +485,9 @@ public class Translator {
     }
 
     static String lowSurrogateRanges(List ranges) {
-      StringBuffer lowRanges = new StringBuffer();
-      for (int i = 0, len = ranges.size(); i < len; i++) {
-        Range r = (Range)ranges.get(i);
+      StringBuilder lowRanges = new StringBuilder();
+      for (Object range : ranges) {
+        Range r = (Range) range;
         char min1 = Utf16.surrogate1(r.getMin());
         char min2 = Utf16.surrogate2(r.getMin());
         char max1 = Utf16.surrogate1(r.getMax());
@@ -502,8 +498,7 @@ public class Translator {
             lowRanges.append(min2);
             lowRanges.append(max2);
           }
-        }
-        else {
+        } else {
           if (min2 != SURROGATE2_MIN) {
             lowRanges.append(min1);
             lowRanges.append(min2);
@@ -736,11 +731,11 @@ public class Translator {
         negRange = (Range)negIter.next();
       else
         negRange = null;
-      for (int i = 0, len = posList.size(); i < len; i++) {
-        Range posRange = (Range)posList.get(i);
+      for (Object aPosList : posList) {
+        Range posRange = (Range) aPosList;
         while (negRange != null && negRange.getMax() < posRange.getMin()) {
           if (negIter.hasNext())
-            negRange = (Range)negIter.next();
+            negRange = (Range) negIter.next();
           else
             negRange = null;
         }
@@ -754,7 +749,7 @@ public class Translator {
           if (min > posRange.getMax())
             break;
           if (negIter.hasNext())
-            negRange = (Range)negIter.next();
+            negRange = (Range) negIter.next();
           else
             negRange = null;
         }
@@ -773,8 +768,7 @@ public class Translator {
 
     static private List toList(CharClass[] v) {
       List members = new Vector();
-      for (int i = 0; i < v.length; i++)
-        members.add(v[i]);
+      for (CharClass aV : v) members.add(aV);
       return members;
     }
 
@@ -785,11 +779,11 @@ public class Translator {
 
     void outputDirect(StringBuffer buf) {
       buf.append('[');
-      for (int i = 0, len = members.size(); i < len; i++) {
-        CharClass cc = (CharClass)members.get(i);
+      for (Object member : members) {
+        CharClass cc = (CharClass) member;
         if (surrogatesDirect || cc.getContainsBmp() != NONE) {
           if (cc instanceof SimpleCharClass)
-            ((SimpleCharClass)cc).inClassOutputDirect(buf);
+            ((SimpleCharClass) cc).inClassOutputDirect(buf);
           else
             cc.outputDirect(buf);
         }
@@ -800,24 +794,23 @@ public class Translator {
     void outputComplementDirect(StringBuffer buf) {
       boolean first = true;
       int len = members.size();
-      for (int i = 0; i < len; i++) {
-        CharClass cc = (CharClass)members.get(i);
+      for (Object member1 : members) {
+        CharClass cc = (CharClass) member1;
         if ((surrogatesDirect || cc.getContainsBmp() != NONE) && cc instanceof SimpleCharClass) {
           if (first) {
             buf.append("[^");
             first = false;
           }
-          ((SimpleCharClass)cc).inClassOutputDirect(buf);
+          ((SimpleCharClass) cc).inClassOutputDirect(buf);
         }
       }
-      for (int i = 0; i < len; i++) {
-        CharClass cc = (CharClass)members.get(i);
+      for (Object member : members) {
+        CharClass cc = (CharClass) member;
         if ((surrogatesDirect || cc.getContainsBmp() != NONE) && !(cc instanceof SimpleCharClass)) {
           if (first) {
             buf.append('[');
             first = false;
-          }
-          else
+          } else
             buf.append("&&");
           // can't have any members that are ALL, because that would make this ALL, which violates
           // the precondition for outputComplementDirect
@@ -832,21 +825,18 @@ public class Translator {
     }
 
     void addNonBmpRanges(List ranges) {
-      for (int i = 0, len = members.size(); i < len; i++)
-        ((CharClass)members.get(i)).addNonBmpRanges(ranges);
+      for (Object member : members) ((CharClass) member).addNonBmpRanges(ranges);
     }
 
     private static int computeContainsBmp(List members) {
       int ret = NONE;
-      for (int i = 0, len = members.size(); i < len; i++)
-        ret = Math.max(ret, ((CharClass)members.get(i)).getContainsBmp());
+      for (Object member : members) ret = Math.max(ret, ((CharClass) member).getContainsBmp());
       return ret;
     }
 
     private static int computeContainsNonBmp(List members) {
       int ret = NONE;
-      for (int i = 0, len = members.size(); i < len; i++)
-        ret = Math.max(ret, ((CharClass)members.get(i)).getContainsNonBmp());
+      for (Object member : members) ret = Math.max(ret, ((CharClass) member).getContainsNonBmp());
       return ret;
     }
   }
@@ -871,8 +861,8 @@ public class Translator {
       cc.addNonBmpRanges(tem);
       sortRangeList(tem);
       int c = NONBMP_MIN;
-      for (int i = 0, len = tem.size(); i < len; i++) {
-        Range r = (Range)tem.get(i);
+      for (Object aTem : tem) {
+        Range r = (Range) aTem;
         if (r.getMin() > c)
           ranges.add(new Range(c, r.getMin() - 1));
         c = r.getMax() + 1;
@@ -1070,8 +1060,8 @@ public class Translator {
   }
 
   static private boolean isBlock(String name) {
-    for (int i = 0; i < blockNames.length; i++)
-      if (name.equals(blockNames[i]))
+    for (String blockName : blockNames)
+      if (name.equals(blockName))
         return true;
     return false;
   }
@@ -1081,9 +1071,7 @@ public class Translator {
       return true;
     if ('A' <= c && c <= 'Z')
       return true;
-    if ('0' <= c && c <= '9')
-      return true;
-    return false;
+    return '0' <= c && c <= '9';
   }
 
   private void expect(char c) throws RegexSyntaxException {
@@ -1271,16 +1259,21 @@ public class Translator {
           classes.add(new CharRange(addRanges[i], addRanges[i + 1]));
       }
     }
-    if (name.equals("Lu"))
-      classes.add(new SingleChar(UNICODE_3_1_ADD_Lu));
-    else if (name.equals("Ll"))
-      classes.add(new SingleChar(UNICODE_3_1_ADD_Ll));
-    else if (name.equals("Nl"))
-      classes.add(new CharRange(UNICODE_3_1_CHANGE_No_to_Nl_MIN, UNICODE_3_1_CHANGE_No_to_Nl_MAX));
-    else if (name.equals("No"))
-      return new Subtraction(new Union(classes),
-                             new CharRange(UNICODE_3_1_CHANGE_No_to_Nl_MIN,
-                                           UNICODE_3_1_CHANGE_No_to_Nl_MAX));
+    switch (name) {
+      case "Lu":
+        classes.add(new SingleChar(UNICODE_3_1_ADD_Lu));
+        break;
+      case "Ll":
+        classes.add(new SingleChar(UNICODE_3_1_ADD_Ll));
+        break;
+      case "Nl":
+        classes.add(new CharRange(UNICODE_3_1_CHANGE_No_to_Nl_MIN, UNICODE_3_1_CHANGE_No_to_Nl_MAX));
+        break;
+      case "No":
+        return new Subtraction(new Union(classes),
+            new CharRange(UNICODE_3_1_CHANGE_No_to_Nl_MIN,
+                UNICODE_3_1_CHANGE_No_to_Nl_MAX));
+    }
     if (classes.size() == 1)
       return base;
     return new Union(classes);

@@ -267,13 +267,9 @@ class Parser extends Token {
 	}
       }
     }
-    catch (EndOfPrologException e) {
+    catch (EndOfPrologException | PrologSyntaxException e) {
       fatal("SYNTAX_ERROR");
-    }
-    catch (PrologSyntaxException e) {
-      fatal("SYNTAX_ERROR");
-    }
-    catch (EmptyTokenException e) { }
+    } catch (EmptyTokenException e) { }
     if (pp.getGroupLevel() != groupLevel)
       fatal("PE_GROUP_NESTING");
   }
@@ -440,8 +436,7 @@ class Parser extends Token {
 	fatal("INVALID_TEXT_DECL");
       }
     }
-    catch (EmptyTokenException e) { }
-    catch (EndOfPrologException e) { }
+    catch (EmptyTokenException | EndOfPrologException e) { }
   }
 
   private final int tokenizeProlog()
@@ -549,9 +544,7 @@ class Parser extends Token {
 	return null;
       return v;
     }
-    catch (EndOfPrologException e) { }
-    catch (PartialTokenException e) { }
-    catch (InvalidTokenException e) { }
+    catch (EndOfPrologException | InvalidTokenException | PartialTokenException e) { }
     return null;
   }
 
@@ -650,7 +643,7 @@ class Parser extends Token {
     int i = str.indexOf('\r');
     if (i < 0)
       return str;
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (i = 0; i < str.length(); i++) {
       char c = str.charAt(i);
       if (c == '\r') {

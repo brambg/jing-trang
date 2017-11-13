@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChoiceNameClass extends NameClass {
-  private final List<NameClass> children = new ArrayList<NameClass>();
+  private final List<NameClass> children = new ArrayList<>();
 
   public List<NameClass> getChildren() {
     return children;

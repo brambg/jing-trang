@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CompositePattern extends Pattern {
-  private final List<Pattern> children = new ArrayList<Pattern>();
+  private final List<Pattern> children = new ArrayList<>();
   public List<Pattern> getChildren() {
     return children;
   }

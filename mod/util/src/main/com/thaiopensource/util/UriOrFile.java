@@ -61,9 +61,9 @@ public class UriOrFile {
         return new File(new URI(uri)).toString();
       }
       // not a valid URI
-      catch (URISyntaxException e) { }
+      catch (URISyntaxException | IllegalArgumentException e) { }
       // not a valid file URI
-      catch (IllegalArgumentException e) { }
+
     }
     return uri;
   }

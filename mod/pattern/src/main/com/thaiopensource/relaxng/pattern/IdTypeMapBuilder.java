@@ -21,9 +21,9 @@ public class IdTypeMapBuilder {
   private final ErrorHandler eh;
   private final PatternFunction<Integer> idTypeFunction = new IdTypeFunction();
   private final IdTypeMapImpl idTypeMap = new IdTypeMapImpl();
-  private final Set<ElementPattern> elementProcessed = new HashSet<ElementPattern>();
-  private final Stack<ElementPattern> elementsToProcess = new Stack<ElementPattern>();
-  private final List<PossibleConflict> possibleConflicts = new ArrayList<PossibleConflict>();
+  private final Set<ElementPattern> elementProcessed = new HashSet<>();
+  private final Stack<ElementPattern> elementsToProcess = new Stack<>();
+  private final List<PossibleConflict> possibleConflicts = new ArrayList<>();
 
   private void notePossibleConflict(NameClass elementNameClass, NameClass attributeNameClass, Locator loc) {
     possibleConflicts.add(new PossibleConflict(elementNameClass, attributeNameClass, loc));
@@ -70,7 +70,7 @@ public class IdTypeMapBuilder {
   }
 
   private static class IdTypeMapImpl implements IdTypeMap {
-    private final Map<ScopedName, Integer> table = new HashMap<ScopedName, Integer>();
+    private final Map<ScopedName, Integer> table = new HashMap<>();
     public int getIdType(Name elementName, Name attributeName) {
       Integer n = table.get(new ScopedName(elementName, attributeName));
       if (n == null)

@@ -14,7 +14,6 @@ public class AttributeGroup {
   }
   
   public void accept(AttributeGroupVisitor visitor) throws Exception {
-    for (int i = 0; i < members.length; i++)
-      members[i].accept(visitor);
+    for (AttributeGroupMember member : members) member.accept(visitor);
   }
 }

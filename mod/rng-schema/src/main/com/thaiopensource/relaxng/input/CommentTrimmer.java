@@ -72,7 +72,7 @@ public class CommentTrimmer {
     }
     if (minIndent < 0)
       return value;
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     int currentIndent = -1;
     for (int i = 0, len = value.length(); i < len; i++) {
       char c = value.charAt(i);

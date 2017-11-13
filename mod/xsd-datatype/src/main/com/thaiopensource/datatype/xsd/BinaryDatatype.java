@@ -9,8 +9,7 @@ abstract class BinaryDatatype extends DatatypeBase implements Measure {
   public int valueHashCode(Object value) {
     byte[] v = (byte[])value;
     int hc = 0;
-    for (int i = 0, len = v.length; i < len; i++)
-      hc = (hc * 33) ^ (v[i] & 0xFF);
+    for (byte aV : v) hc = (hc * 33) ^ (aV & 0xFF);
     return hc;
   }
 

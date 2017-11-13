@@ -10,7 +10,7 @@ import java.util.List;
  * Computes the normalized intersection of zero or more name classes.
  */
 public class IntersectionNameClassNormalizer extends AbstractNameClassNormalizer {
-  private final List<NameClass> nameClasses = new ArrayList<NameClass>();
+  private final List<NameClass> nameClasses = new ArrayList<>();
 
   public void add(NameClass nc) {
     nameClasses.add(nc);

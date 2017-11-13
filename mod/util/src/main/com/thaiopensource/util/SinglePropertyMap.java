@@ -37,6 +37,6 @@ public class SinglePropertyMap<T> implements PropertyMap {
   }
 
   public static <T> SinglePropertyMap newInstance(PropertyId<T> pid, T value) {
-    return new SinglePropertyMap<T>(pid, value);
+    return new SinglePropertyMap<>(pid, value);
   }
 }

@@ -11,10 +11,10 @@ import java.util.Set;
 
 class NamespaceManager {
   // map namespace URIs to non-empty prefix
-  private final Map<String, String> namespaceUriMap = new HashMap<String, String>();
+  private final Map<String, String> namespaceUriMap = new HashMap<>();
   private String defaultNamespaceUri = null;
-  private final Set<String> usedPrefixes = new HashSet<String>();
-  private final Set<String> unassignedNamespaceUris = new HashSet<String>();
+  private final Set<String> usedPrefixes = new HashSet<>();
+  private final Set<String> unassignedNamespaceUris = new HashSet<>();
 
   NamespaceManager() {
     usedPrefixes.add("xml");

@@ -22,27 +22,25 @@ public class Driver {
     String failDir = args[1];
     String[] files = new File(dir).list();
     Hashtable fileTable = new Hashtable();
-    for (int i = 0; i < files.length; i++)
-      fileTable.put(files[i], files[i]);
+    for (String file1 : files) fileTable.put(file1, file1);
     String failures = null;
-    for (int i = 0; i < files.length; i++)
-      if (files[i].endsWith(".dtd")) {
-	String inFile = files[i];
-	String outFile = inFile.substring(0, inFile.length() - 4) + ".xml";
-	if (fileTable.get(outFile) != null) {
-	  try {
-	    System.err.println("Running test " + inFile);
-	    runCompareTest(new File(dir, inFile), new File(dir, outFile));
-	  }
-	  catch (CompareFailException e) {
-	    System.err.println(inFile + " failed at byte " + e.getByteIndex());
-	    if (failures == null)
-	      failures = inFile;
-	    else
-	      failures += " " + inFile;
-	    runOutputTest(new File(dir, inFile), new File(failDir, outFile));
-	  }
-	}
+    for (String file : files)
+      if (file.endsWith(".dtd")) {
+        String inFile = file;
+        String outFile = inFile.substring(0, inFile.length() - 4) + ".xml";
+        if (fileTable.get(outFile) != null) {
+          try {
+            System.err.println("Running test " + inFile);
+            runCompareTest(new File(dir, inFile), new File(dir, outFile));
+          } catch (CompareFailException e) {
+            System.err.println(inFile + " failed at byte " + e.getByteIndex());
+            if (failures == null)
+              failures = inFile;
+            else
+              failures += " " + inFile;
+            runOutputTest(new File(dir, inFile), new File(failDir, outFile));
+          }
+        }
       }
     if (failures != null)
       throw new TestFailException(failures);

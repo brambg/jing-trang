@@ -254,13 +254,13 @@ class ValidatorImpl extends DefaultHandler implements Validator {
                                        locator));
     }
     Schema[] schemas = actions.getSchemas();
-    for (int j = 0; j < schemas.length; j++) {
-      if (attributeSchemas.contains(schemas[j]))
+    for (Schema schema : schemas) {
+      if (attributeSchemas.contains(schema))
         continue;
-      attributeSchemas.add(schemas[j]);
+      attributeSchemas.add(schema);
       if (filteredAttributes == null)
         filteredAttributes = filterAttributes(indexSet, attributes);
-      validateAttributes(schemas[j], filteredAttributes);
+      validateAttributes(schema, filteredAttributes);
     }
     return actions;
   }
@@ -286,10 +286,9 @@ class ValidatorImpl extends DefaultHandler implements Validator {
       if (resultAction != null)
         resultAction.perform(program.handler, section);
       NoResultAction[] nra = actions.getNoResultActions();
-      for (int j = 0; j < nra.length; j++) {
-        NoResultAction tem = nra[j];
+      for (NoResultAction tem : nra) {
         if (!noResultActions.contains(tem)) {
-          nra[j].perform(section);
+          tem.perform(section);
           noResultActions.add(tem);
         }
       }

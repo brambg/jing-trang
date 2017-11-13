@@ -255,8 +255,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
       xw.attribute("datatypeLibrary", p.getDatatypeLibrary());
     innerAnnotations(p);
     List<Param> list = p.getParams();
-    for (int i = 0, len = list.size(); i < len; i++) {
-      Param param = list.get(i);
+    for (Param param : list) {
       leadingAnnotations(param);
       xw.startElement("param");
       xw.attribute("name", param.getName());
@@ -316,8 +315,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
     xw.startElement(name);
     innerAnnotations(p);
     List<Pattern> list = p.getChildren();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (Pattern aList : list) aList.accept(this);
     end(p);
     return VoidValue.VOID;
   }
@@ -327,8 +325,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
     xw.startElement("choice");
     innerAnnotations(nc);
     List<NameClass> list = nc.getChildren();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (NameClass aList : list) aList.accept(this);
     end(nc);
     return VoidValue.VOID;
   }
@@ -431,8 +428,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
   private void finishContainer(Annotated subject, Container container) {
     innerAnnotations(subject);
     List<Component> list = container.getComponents();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (Component aList : list) aList.accept(this);
     end(subject);
   }
 
@@ -450,20 +446,18 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
   }
 
   private void annotationAttributes(List<AttributeAnnotation> list) {
-    for (int i = 0, len = list.size(); i < len; i++) {
-      AttributeAnnotation att = list.get(i);
+    for (AttributeAnnotation att : list) {
       String name = att.getLocalName();
       String prefix = att.getPrefix();
       xw.attribute(prefix == null ? name : prefix + ":" + name,
-                   att.getValue());
+          att.getValue());
     }
   }
 
   private void annotationChildren(List<? extends AnnotationChild> list, boolean haveDefaultNamespace) {
-    for (int i = 0, len = list.size(); i < len; i++) {
-      AnnotationChild child = list.get(i);
+    for (AnnotationChild child : list) {
       if (child instanceof ElementAnnotation) {
-        ElementAnnotation elem = (ElementAnnotation)child;
+        ElementAnnotation elem = (ElementAnnotation) child;
         String name = elem.getLocalName();
         String prefix = elem.getPrefix();
         if (prefix == null) {
@@ -472,17 +466,15 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
             xw.attribute("xmlns", "");
             haveDefaultNamespace = false;
           }
-        }
-        else
+        } else
           xw.startElement(prefix + ":" + name);
         annotationAttributes(elem.getAttributes());
         annotationChildren(elem.getChildren(), haveDefaultNamespace);
         xw.endElement();
-      }
-      else if (child instanceof TextAnnotation)
-        xw.text(((TextAnnotation)child).getValue());
+      } else if (child instanceof TextAnnotation)
+        xw.text(((TextAnnotation) child).getValue());
       else if (child instanceof Comment)
-        xw.comment(fixupComment(((Comment)child).getValue()));
+        xw.comment(fixupComment(((Comment) child).getValue()));
     }
   }
 
@@ -509,8 +501,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
   private void implicitGroup(Pattern p) {
     if (!hasAnnotations(p) && p instanceof GroupPattern) {
       List<Pattern> list = ((GroupPattern)p).getChildren();
-      for (int i = 0, len = list.size(); i < len; i++)
-        (list.get(i)).accept(this);
+      for (Pattern aList : list) aList.accept(this);
     }
     else
       p.accept(this);
@@ -519,8 +510,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
   private void implicitChoice(Pattern p) {
     if (!hasAnnotations(p) && p instanceof ChoicePattern) {
       List<Pattern> list = ((ChoicePattern)p).getChildren();
-      for (int i = 0, len = list.size(); i < len; i++)
-        (list.get(i)).accept(this);
+      for (Pattern aList : list) aList.accept(this);
     }
     else
       p.accept(this);
@@ -529,8 +519,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
   private void implicitChoice(NameClass nc) {
     if (!hasAnnotations(nc) && nc instanceof ChoiceNameClass) {
       List<NameClass> list = ((ChoiceNameClass)nc).getChildren();
-      for (int i = 0, len = list.size(); i < len; i++)
-        (list.get(i)).accept(this);
+      for (NameClass aList : list) aList.accept(this);
     }
     else
       nc.accept(this);

@@ -55,7 +55,7 @@ class Path {
    * It can be either /name1/name2 or name1/name2.
    */
   public String toString() {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     if (root)
       buf.append('/');
     for (int i = 0, len = names.size(); i < len; i++) {

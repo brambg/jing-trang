@@ -749,11 +749,9 @@ public class PrologParser implements Cloneable {
   }
 
   public boolean isCompatible(PrologParser orig) {
-    if (groupLevel > 0
-	&& connector[groupLevel - 1] != 0
-	&& connector[groupLevel - 1] != orig.connector[groupLevel - 1])
-      return false;
-    return true;
+    return groupLevel <= 0
+        || connector[groupLevel - 1] == 0
+        || connector[groupLevel - 1] == orig.connector[groupLevel - 1];
   }
 
   public final int getGroupLevel() {
@@ -766,9 +764,7 @@ public class PrologParser implements Cloneable {
 
   private static boolean matches(String token, int off, String key) {
     int keyLen = key.length();
-    if (token.length() - off != keyLen)
-      return false;
-    return token.regionMatches(off, key, 0, keyLen);
+    return token.length() - off == keyLen && token.regionMatches(off, key, 0, keyLen);
   }
 
   private static final String[] attributeTypes = {

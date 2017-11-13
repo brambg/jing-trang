@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ValidatorPatternBuilder extends PatternBuilder {
-  private final Map<Pattern, PatternMemo> patternMemoMap = new HashMap<Pattern, PatternMemo>();
+  private final Map<Pattern, PatternMemo> patternMemoMap = new HashMap<>();
   private final PatternFunction<Pattern> endAttributesFunction;
   private final PatternFunction<Pattern> ignoreMissingAttributesFunction;
   private final PatternFunction<Pattern> endTagDerivFunction;
@@ -17,7 +17,7 @@ public class ValidatorPatternBuilder extends PatternBuilder {
   private final PatternFunction<Pattern> recoverAfterFunction;
   private final PatternFunction<DataDerivType> dataDerivTypeFunction;
 
-  private final Map<Pattern, Pattern> choiceMap = new HashMap<Pattern, Pattern>();
+  private final Map<Pattern, Pattern> choiceMap = new HashMap<>();
   private final PatternFunction<Pattern> removeChoicesFunction = new RemoveChoicesFunction();
   private final PatternFunction<VoidValue> noteChoicesFunction = new NoteChoicesFunction();
   private final PatternFunction<Set<Name>> requiredElementsFunction = new RequiredElementsFunction();
@@ -71,11 +71,7 @@ public class ValidatorPatternBuilder extends PatternBuilder {
   }
 
   PatternMemo getPatternMemo(Pattern p) {
-    PatternMemo memo = patternMemoMap.get(p);
-    if (memo == null) {
-      memo = new PatternMemo(p, this);
-      patternMemoMap.put(p, memo);
-    }
+    PatternMemo memo = patternMemoMap.computeIfAbsent(p, p1 -> new PatternMemo(p1, this));
     return memo;
   }
 

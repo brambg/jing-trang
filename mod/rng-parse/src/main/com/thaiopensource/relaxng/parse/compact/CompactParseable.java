@@ -52,7 +52,7 @@ public class CompactParseable<P, NC, L, EA, CL extends CommentList<L>, A extends
     catch (IOException e) {
       throw new BuildException(e);
     }
-    return new CompactParseable<P, NC, L, EA, CL, A>(input, resolver, eh);
+    return new CompactParseable<>(input, resolver, eh);
   }
 
   public P parseAsInclude(SchemaBuilder<P, NC, L, EA, CL, A> sb, IncludedGrammar<P, L, EA, CL, A> g)

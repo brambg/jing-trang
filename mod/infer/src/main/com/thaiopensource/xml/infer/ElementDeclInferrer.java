@@ -11,9 +11,9 @@ import java.util.Set;
 class ElementDeclInferrer {
   private final DatatypeRepertoire datatypes;
   private ContentModelInferrer contentModelInferrer;
-  private final Map<Name, DatatypeInferrer> attributeTypeMap = new HashMap<Name, DatatypeInferrer>();
+  private final Map<Name, DatatypeInferrer> attributeTypeMap = new HashMap<>();
   private DatatypeInferrer valueInferrer;
-  private final Set<Name> requiredAttributeNames = new HashSet<Name>();
+  private final Set<Name> requiredAttributeNames = new HashSet<>();
   private Set<Name> mixedContentNames = null;
 
   ElementDeclInferrer(DatatypeRepertoire datatypes, List<Name> attributeNames) {
@@ -97,7 +97,7 @@ class ElementDeclInferrer {
 
   private void useMixedContent() {
     if (mixedContentNames == null) {
-      mixedContentNames = new HashSet<Name>();
+      mixedContentNames = new HashSet<>();
       if (contentModelInferrer != null) {
         mixedContentNames.addAll(contentModelInferrer.getElementNames());
         contentModelInferrer = null;

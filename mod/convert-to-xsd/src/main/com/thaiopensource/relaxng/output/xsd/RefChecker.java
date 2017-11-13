@@ -21,7 +21,7 @@ import java.util.Map;
 class RefChecker extends AbstractVisitor {
   private final SchemaInfo schema;
   private final ErrorReporter er;
-  private final Map<String, Ref> refMap = new HashMap<String, Ref>();
+  private final Map<String, Ref> refMap = new HashMap<>();
   private int currentDepth = 0;
 
   static private class Ref {

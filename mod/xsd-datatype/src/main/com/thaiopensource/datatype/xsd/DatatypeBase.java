@@ -108,7 +108,7 @@ abstract class DatatypeBase implements Datatype2 {
     int i = collapseStart(s);
     if (i < 0)
       return s;
-    StringBuffer buf = new StringBuffer(s.substring(0, i));
+    StringBuilder buf = new StringBuilder(s.substring(0, i));
     boolean collapsing = (i == 0 || s.charAt(i - 1) == ' ');
     for (int len = s.length(); i < len; i++) {
       char c = s.charAt(i);

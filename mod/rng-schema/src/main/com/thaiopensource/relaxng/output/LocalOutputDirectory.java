@@ -19,7 +19,7 @@ public class LocalOutputDirectory implements OutputDirectory {
   private boolean alwaysUseDefaultEncoding;
   private int lineLength;
   // maps URIs to filenames
-  private final Map<String, String> uriMap = new HashMap<String, String>();
+  private final Map<String, String> uriMap = new HashMap<>();
   private final String mainInputExtension;
   private int indent;
 
@@ -58,11 +58,7 @@ public class LocalOutputDirectory implements OutputDirectory {
   }
 
   private String mapFilename(String sourceUri) {
-    String filename = uriMap.get(sourceUri);
-    if (filename == null) {
-      filename = chooseFilename(sourceUri);
-      uriMap.put(sourceUri, filename);
-    }
+    String filename = uriMap.computeIfAbsent(sourceUri, this::chooseFilename);
     return filename;
   }
 

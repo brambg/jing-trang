@@ -60,8 +60,8 @@ public class CompactTestDriver {
   private boolean runTestSuite(File dir) throws IOException {
     boolean passed = true;
     String[] subdirs = dir.list();
-    for (int i = 0; i < subdirs.length; i++) {
-      File subdir = new File(dir, subdirs[i]);
+    for (String subdir1 : subdirs) {
+      File subdir = new File(dir, subdir1);
       if (subdir.isDirectory()) {
         if (!runTestCase(subdir))
           passed = false;
@@ -121,28 +121,25 @@ public class CompactTestDriver {
   private boolean compareDir(File goodDir, File testDir) {
     try {
       String[] files = goodDir.list();
-      for (int i = 0; i < files.length; i++) {
-        File file = new File(goodDir, files[i]);
+      for (String file1 : files) {
+        File file = new File(goodDir, file1);
         if (file.isDirectory()) {
-          if (!compareDir(file, new File(testDir, files[i])))
+          if (!compareDir(file, new File(testDir, file1)))
             return false;
-        }
-        else if (!Compare.compare(file, new File(testDir, files[i]), saxResolver))
+        } else if (!Compare.compare(file, new File(testDir, file1), saxResolver))
           return false;
       }
       return true;
     }
-    catch (SAXException e) {
-    }
-    catch (IOException e) {
+    catch (SAXException | IOException e) {
     }
     return false;
   }
 
   private void cleanDir(File dir) {
     String[] files = dir.list();
-    for (int i = 0; i < files.length; i++) {
-      File file = new File(dir, files[i]);
+    for (String file1 : files) {
+      File file = new File(dir, file1);
       if (file.isDirectory())
         cleanDir(file);
       file.delete();
@@ -161,16 +158,7 @@ public class CompactTestDriver {
       of.output(sc, od, new String[0], null, eh);
       return true;
     }
-    catch (SAXException e) {
-      return false;
-    }
-    catch (InvalidParamsException e) {
-      return false;
-    }
-    catch (InputFailedException e) {
-      return false;
-    }
-    catch (OutputFailedException e) {
+    catch (SAXException | OutputFailedException | InputFailedException | InvalidParamsException e) {
       return false;
     }
   }

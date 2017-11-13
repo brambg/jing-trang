@@ -112,15 +112,13 @@ public class SchemaWriter implements TopLevelVisitor,
 
   public void choice(ModelGroup[] members) throws Exception {
     w.startElement("choice");
-    for (int i = 0; i < members.length; i++)
-      members[i].accept(this);
+    for (ModelGroup member : members) member.accept(this);
     w.endElement();
   }
 
   public void sequence(ModelGroup[] members) throws Exception {
     w.startElement("sequence");
-    for (int i = 0; i < members.length; i++)
-      members[i].accept(this);
+    for (ModelGroup member : members) member.accept(this);
     w.endElement();
   }
 
@@ -244,8 +242,7 @@ public class SchemaWriter implements TopLevelVisitor,
     w.startElement("includedSection");
     if (flag instanceof FlagRef)
       w.attribute("flag", ((FlagRef)flag).getName());
-    for (int i = 0; i < contents.length; i++)
-      contents[i].accept(this);
+    for (TopLevel content : contents) content.accept(this);
     w.endElement();
   }
 
@@ -269,8 +266,7 @@ public class SchemaWriter implements TopLevelVisitor,
     throws Exception {
     w.startElement("externalIdRef");
     w.attribute("name", name);
-    for (int i = 0; i < contents.length; i++)
-      contents[i].accept(this);
+    for (TopLevel content : contents) content.accept(this);
     w.endElement();
   }
 

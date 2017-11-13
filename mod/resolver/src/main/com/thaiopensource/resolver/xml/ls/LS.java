@@ -66,7 +66,6 @@ public class LS {
         final String stringData = lsInput.getStringData();
         if (stringData != null) {
           input.setCharacterStream(new StringReader(stringData));
-          return;
         }
         // we don't support redirecting to a public ID
       }

@@ -11,22 +11,22 @@ public class Schema extends Annotated {
   private final String uri;
   private final String encoding;
   private Schema parent;
-  private final List<TopLevel> topLevel = new Vector<TopLevel>();
+  private final List<TopLevel> topLevel = new Vector<>();
   private final Map<String, GroupDefinition> groupMap;
   private final Map<String, AttributeGroupDefinition> attributeGroupMap;
   private final Map<String, SimpleTypeDefinition> simpleTypeMap;
   private final List<Schema> subSchemas;
-  private final List<Comment> leadingComments = new Vector<Comment>();
-  private final List<Comment> trailingComments = new Vector<Comment>();
+  private final List<Comment> leadingComments = new Vector<>();
+  private final List<Comment> trailingComments = new Vector<>();
 
   public Schema(SourceLocation location, Annotation annotation, String uri, String encoding) {
     super(location, annotation);
     this.uri = uri;
     this.encoding = encoding;
-    this.groupMap = new HashMap<String, GroupDefinition>();
-    this.attributeGroupMap = new HashMap<String, AttributeGroupDefinition>();
-    this.simpleTypeMap = new HashMap<String, SimpleTypeDefinition>();
-    this.subSchemas = new Vector<Schema>();
+    this.groupMap = new HashMap<>();
+    this.attributeGroupMap = new HashMap<>();
+    this.simpleTypeMap = new HashMap<>();
+    this.subSchemas = new Vector<>();
     this.subSchemas.add(this);
   }
 

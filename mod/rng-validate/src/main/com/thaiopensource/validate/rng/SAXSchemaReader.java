@@ -30,6 +30,6 @@ public class SAXSchemaReader extends SchemaReaderImpl {
   protected Parseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl> createParseable(SAXSource source, SAXResolver resolver, ErrorHandler eh, PropertyMap properties) throws SAXException {
     if (source.getXMLReader() == null)
       source = new SAXSource(resolver.createXMLReader(), source.getInputSource());
-    return new SAXParseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl>(source, resolver, eh);
+    return new SAXParseable<>(source, resolver, eh);
   }
 }

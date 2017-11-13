@@ -99,7 +99,7 @@ public class BasicBuilder {
     public SimpleType visitData(DataPattern p) {
       String library = p.getDatatypeLibrary();
       String type = p.getType();
-      List<Facet> facets = new Vector<Facet>();
+      List<Facet> facets = new Vector<>();
       SourceLocation location = p.getSourceLocation();
       if (!library.equals("") && !library.equals(WellKnownNamespaces.XML_SCHEMA_DATATYPES)) {
         type = "string";
@@ -120,7 +120,7 @@ public class BasicBuilder {
     public SimpleType visitValue(ValuePattern p) {
       String library = p.getDatatypeLibrary();
       String type = p.getType();
-      List<Facet> facets = new Vector<Facet>();
+      List<Facet> facets = new Vector<>();
       SourceLocation location = p.getSourceLocation();
       if (!library.equals("") && !library.equals(WellKnownNamespaces.XML_SCHEMA_DATATYPES)) {
         type = "string";
@@ -143,7 +143,7 @@ public class BasicBuilder {
     }
 
     public SimpleType visitComposite(CompositePattern p) {
-      List<SimpleType> result = new Vector<SimpleType>();
+      List<SimpleType> result = new Vector<>();
       for (Pattern child : p.getChildren()) {
         if (si.getChildType(child).contains(ChildType.DATA))
           result.add(child.accept(this));
@@ -228,8 +228,7 @@ public class BasicBuilder {
     private Occurs sum(CompositePattern p) {
       Occurs occ = new Occurs(0, 0);
       List<Pattern> children = p.getChildren();
-      for (int i = 0, len = children.size(); i < len; i++)
-        occ = Occurs.add(occ, children.get(i).accept(this));
+      for (Pattern aChildren : children) occ = Occurs.add(occ, aChildren.accept(this));
       return occ;
     }
 
@@ -301,11 +300,10 @@ public class BasicBuilder {
       Wildcard[] wc = splitElementWildcard(WildcardBuilder.createWildcard(p.getNameClass(), inheritedNamespace));
       Annotation annotation = makeAnnotation(p);
       Annotation elementAnnotation = names.size() + wc.length == 1 ? annotation : null;
-      List<Particle> result = new Vector<Particle>();
+      List<Particle> result = new Vector<>();
       for (NameNameClass name : names)
         result.add(new Element(p.getSourceLocation(), elementAnnotation, makeName(name), type));
-      for (int i = 0; i < wc.length; i++)
-        result.add(new WildcardElement(p.getSourceLocation(), elementAnnotation, wc[i]));
+      for (Wildcard aWc : wc) result.add(new WildcardElement(p.getSourceLocation(), elementAnnotation, aWc));
       if (result.size() == 1)
         return result.get(0);
       return new ParticleChoice(p.getSourceLocation(), annotation, result);
@@ -334,7 +332,7 @@ public class BasicBuilder {
     }
 
     public Particle visitChoice(ChoicePattern p) {
-      List<Particle> children = new Vector<Particle>();
+      List<Particle> children = new Vector<>();
       boolean optional = false;
       for (Pattern pattern : p.getChildren()) {
         ChildType ct = si.getChildType(pattern);
@@ -373,7 +371,7 @@ public class BasicBuilder {
     }
 
     private List<Particle> buildChildren(CompositePattern p) {
-      List<Particle> result = new Vector<Particle>();
+      List<Particle> result = new Vector<>();
       for (Pattern pattern : p.getChildren()) {
         if (si.getChildType(pattern).contains(ChildType.ELEMENT))
           result.add(pattern.accept(this));
@@ -415,7 +413,7 @@ public class BasicBuilder {
         value = null;
       List<NameNameClass> names = NameClassSplitter.split(p.getNameClass());
       Wildcard wc = WildcardBuilder.createWildcard(p.getNameClass(), inheritedNamespace);
-      List<AttributeUse> choices = new Vector<AttributeUse>();
+      List<AttributeUse> choices = new Vector<>();
       Annotation annotation = makeAnnotation(p);
       boolean singleChoice = names.size() + (wc != null ? 1 : 0) == 1;
       Annotation attributeAnnotation = singleChoice ? annotation : null;
@@ -468,14 +466,14 @@ public class BasicBuilder {
       AttributeUse ref = new AttributeGroupRef(p.getSourceLocation(), makeAnnotation(p), p.getName());
       if (!isOptional())
         return ref;
-      List<AttributeUse> choices = new Vector<AttributeUse>();
+      List<AttributeUse> choices = new Vector<>();
       choices.add(ref);
       choices.add(AttributeGroup.EMPTY);
       return new AttributeUseChoice(p.getSourceLocation(), null, choices);
     }
 
     public AttributeUse visitComposite(CompositePattern p) {
-      List<AttributeUse> uses = new Vector<AttributeUse>();
+      List<AttributeUse> uses = new Vector<>();
       for (Pattern child : p.getChildren()) {
         if (si.getChildType(child).contains(ChildType.ATTRIBUTE))
           uses.add(child.accept(this));
@@ -498,7 +496,7 @@ public class BasicBuilder {
         }
       }
       boolean hasChildren = false;
-      List<AttributeUse> uses = new Vector<AttributeUse>();
+      List<AttributeUse> uses = new Vector<>();
       for (Pattern child : p.getChildren()) {
         ChildType ct = si.getChildType(child);
         if (ct.contains(ChildType.ATTRIBUTE)) {
@@ -637,14 +635,14 @@ public class BasicBuilder {
   }
 
   private static SimpleType makeUnionWithEmptySimpleType(SimpleType type, SourceLocation location) {
-    List<SimpleType> list = new Vector<SimpleType>();
+    List<SimpleType> list = new Vector<>();
     list.add(type);
     list.add(makeEmptySimpleType(location));
     return new SimpleTypeUnion(location, null, list);
   }
 
   private static SimpleType makeEmptySimpleType(SourceLocation location) {
-    List<Facet> facets = new Vector<Facet>();
+    List<Facet> facets = new Vector<>();
     facets.add(new Facet(location, null, "length", "0"));
     return new SimpleTypeRestriction(location, null, "token", facets);
   }
@@ -676,13 +674,13 @@ public class BasicBuilder {
       return new Wildcard[0];
     if (wc.isPositive() || wc.getNamespaces().contains("") || wc.getNamespaces().size() != 1)
       return new Wildcard[] { wc };
-    Set<String> positiveNamespaces = new HashSet<String>();
+    Set<String> positiveNamespaces = new HashSet<>();
     positiveNamespaces.add("");
-    Set<String> negativeNamespaces = new HashSet<String>();
+    Set<String> negativeNamespaces = new HashSet<>();
     negativeNamespaces.add(wc.getNamespaces().iterator().next());
     negativeNamespaces.add("");
-    Set<Name> positiveExcludeNames = new HashSet<Name>();
-    Set<Name> negativeExcludeNames = new HashSet<Name>();
+    Set<Name> positiveExcludeNames = new HashSet<>();
+    Set<Name> negativeExcludeNames = new HashSet<>();
     for (Name name : wc.getExcludedNames())
       (name.getNamespaceUri().equals("") ? positiveExcludeNames : negativeExcludeNames).add(name);
     return new Wildcard[] {
@@ -734,10 +732,10 @@ public class BasicBuilder {
     String value = null;
     StringBuffer buf = null;
     List<AnnotationChild> children = elem.getChildren();
-    for (int i = 0, len = children.size(); i < len; i++) {
-      Object obj = children.get(i);
+    for (AnnotationChild aChildren : children) {
+      Object obj = aChildren;
       if (obj instanceof TextAnnotation) {
-        String tem = ((TextAnnotation)obj).getValue();
+        String tem = ((TextAnnotation) obj).getValue();
         if (buf != null)
           buf.append(tem);
         else if (value == null)
@@ -747,8 +745,7 @@ public class BasicBuilder {
           buf.append(tem);
           value = null;
         }
-      }
-      else if (obj instanceof ElementAnnotation)
+      } else if (obj instanceof ElementAnnotation)
         return null;
     }
     if (buf != null)

@@ -14,15 +14,15 @@ import java.util.Set;
 import java.util.Vector;
 
 public class InferHandler extends DefaultHandler {
-  private final Map<Name, ElementDeclInferrer> inferrerMap = new HashMap<Name, ElementDeclInferrer>();
+  private final Map<Name, ElementDeclInferrer> inferrerMap = new HashMap<>();
   private OpenElement openElement = null;
-  private final Set<Name> startSet = new HashSet<Name>();
-  private final List<Name> attributeNames = new Vector<Name>();
+  private final Set<Name> startSet = new HashSet<>();
+  private final List<Name> attributeNames = new Vector<>();
   private final DatatypeRepertoire datatypes;
   private final StringBuffer textBuffer = new StringBuffer();
-  private final Set<String> usedNamespaceUris = new HashSet<String>();
+  private final Set<String> usedNamespaceUris = new HashSet<>();
   private final Schema schema = new Schema();
-  private final Set<String> assignedPrefixes = new HashSet<String>();
+  private final Set<String> assignedPrefixes = new HashSet<>();
 
   private static class OpenElement {
     final OpenElement parent;

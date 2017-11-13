@@ -16,7 +16,7 @@ class PatternBuilder {
   private int attributeType = NO_ATTRIBUTE;
 
   void addName(byte type, String namespaceUri, String localName) {
-    descendantsOrSelf.addElement(Boolean.valueOf(hadDescendantOrSelf));
+    descendantsOrSelf.addElement(hadDescendantOrSelf);
     hadDescendantOrSelf = false;
     names.addElement(namespaceUri);
     names.addElement(localName);
@@ -54,7 +54,7 @@ class PatternBuilder {
         namesArray[i] = (String)names.elementAt(i);
       boolean[] descendantsOrSelfArray = new boolean[descendantsOrSelf.size() + 1];
       for (int i = 0; i < descendantsOrSelfArray.length - 1; i++)
-        descendantsOrSelfArray[i] = ((Boolean)descendantsOrSelf.elementAt(i)).booleanValue();
+        descendantsOrSelfArray[i] = (Boolean) descendantsOrSelf.elementAt(i);
       descendantsOrSelfArray[descendantsOrSelfArray.length - 1] = hadDescendantOrSelf;
       if (attributeType == NO_ATTRIBUTE)
         result = new ElementPathPattern(namesArray, descendantsOrSelfArray);

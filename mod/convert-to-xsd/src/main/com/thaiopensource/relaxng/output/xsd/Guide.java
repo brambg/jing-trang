@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 class Guide {
   private boolean defaultGroupEnableAbstractElements;
-  private final Set<String> nonDefaultGroupSet = new HashSet<String>();
+  private final Set<String> nonDefaultGroupSet = new HashSet<>();
 
   Guide(boolean defaultGroupEnableAbstractElements) {
     this.defaultGroupEnableAbstractElements = defaultGroupEnableAbstractElements;
@@ -21,9 +21,7 @@ class Guide {
   }
 
   boolean getGroupEnableAbstractElement(String name) {
-    return nonDefaultGroupSet.contains(name)
-            ? !defaultGroupEnableAbstractElements
-            : defaultGroupEnableAbstractElements;
+    return nonDefaultGroupSet.contains(name) != defaultGroupEnableAbstractElements;
   }
 
   boolean getDefaultGroupEnableAbstractElements() {

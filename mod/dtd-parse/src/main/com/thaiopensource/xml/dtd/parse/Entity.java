@@ -196,47 +196,45 @@ class Entity {
       return;
     Vector newAtoms = null;
     int nCopiedAtoms = 0;
-    for (int i = 0; i < references.length; i++) {
-      int start = textIndexToAtomIndex(references[i].start);
-      int end = textIndexToAtomIndex(references[i].end);
+    for (Reference reference : references) {
+      int start = textIndexToAtomIndex(reference.start);
+      int end = textIndexToAtomIndex(reference.end);
       if (start >= 0
-	  && end >= 0
-	  && !(start == end && atomMaybePasted(start))
-	  && atomsAreProperlyNested(start, end, true)) {
-	if (newAtoms == null)
-	  newAtoms = new Vector();
-	appendSlice(newAtoms, atoms, nCopiedAtoms, start);
-	newAtoms.addElement(new Atom(references[i].entity));
-	if (references[i].entity.atoms == null) {
-	  Vector tem = new Vector();
-	  references[i].entity.atoms = tem;
-	  appendSlice(tem, atoms, start, end);
-	  references[i].entity.unexpandEntities();
-	}
-	nCopiedAtoms = end;
-      }
-      else if (start >= 0
-	       && (end = textIndexToAtomIndexOccur(references[i].end)) >= 0
-	       && atomsAreProperlyNested(start, end, false)) {
-	// This deals with a case like %foo;* by turning it into (%foo;)*.
-	if (newAtoms == null)
-	  newAtoms = new Vector();
-	Atom[] split = splitAtom((Atom)atoms.elementAt(end - 1));
-	appendSlice(newAtoms, atoms, nCopiedAtoms, start);
-	newAtoms.addElement(new Atom(Tokenizer.TOK_OPEN_PAREN, "("));
-	newAtoms.addElement(new Atom(references[i].entity));
-	newAtoms.addElement(split[1]);
-	if (references[i].entity.atoms == null) {
-	  Vector tem = new Vector();
-	  references[i].entity.atoms = tem;
-	  appendSlice(tem, atoms, start, end - 1);
-	  tem.addElement(split[0]);
-	  references[i].entity.unexpandEntities();
-	}
-	nCopiedAtoms = end;
-      }
-      else if (!overridden)
-	references[i].entity.problem = UNEXPAND_PROBLEM;
+          && end >= 0
+          && !(start == end && atomMaybePasted(start))
+          && atomsAreProperlyNested(start, end, true)) {
+        if (newAtoms == null)
+          newAtoms = new Vector();
+        appendSlice(newAtoms, atoms, nCopiedAtoms, start);
+        newAtoms.addElement(new Atom(reference.entity));
+        if (reference.entity.atoms == null) {
+          Vector tem = new Vector();
+          reference.entity.atoms = tem;
+          appendSlice(tem, atoms, start, end);
+          reference.entity.unexpandEntities();
+        }
+        nCopiedAtoms = end;
+      } else if (start >= 0
+          && (end = textIndexToAtomIndexOccur(reference.end)) >= 0
+          && atomsAreProperlyNested(start, end, false)) {
+        // This deals with a case like %foo;* by turning it into (%foo;)*.
+        if (newAtoms == null)
+          newAtoms = new Vector();
+        Atom[] split = splitAtom((Atom) atoms.elementAt(end - 1));
+        appendSlice(newAtoms, atoms, nCopiedAtoms, start);
+        newAtoms.addElement(new Atom(Tokenizer.TOK_OPEN_PAREN, "("));
+        newAtoms.addElement(new Atom(reference.entity));
+        newAtoms.addElement(split[1]);
+        if (reference.entity.atoms == null) {
+          Vector tem = new Vector();
+          reference.entity.atoms = tem;
+          appendSlice(tem, atoms, start, end - 1);
+          tem.addElement(split[0]);
+          reference.entity.unexpandEntities();
+        }
+        nCopiedAtoms = end;
+      } else if (!overridden)
+        reference.entity.problem = UNEXPAND_PROBLEM;
     }
     if (newAtoms == null)
       return;

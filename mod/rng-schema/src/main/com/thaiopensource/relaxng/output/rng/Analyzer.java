@@ -47,18 +47,16 @@ class Analyzer extends AbstractVisitor {
   }
 
   private void visitAnnotationAttributes(List<AttributeAnnotation> list) {
-    for (int i = 0, len = list.size(); i < len; i++) {
-      AttributeAnnotation att = list.get(i);
+    for (AttributeAnnotation att : list) {
       if (att.getNamespaceUri().length() != 0)
         noteNs(att.getPrefix(), att.getNamespaceUri());
     }
   }
 
   private void visitAnnotationChildren(List<AnnotationChild> list) {
-    for (int i = 0, len = list.size(); i < len; i++) {
-      AnnotationChild ac = list.get(i);
+    for (AnnotationChild ac : list) {
       if (ac instanceof ElementAnnotation) {
-        ElementAnnotation elem = (ElementAnnotation)ac;
+        ElementAnnotation elem = (ElementAnnotation) ac;
         if (elem.getPrefix() != null)
           noteNs(elem.getPrefix(), elem.getNamespaceUri());
         visitAnnotationAttributes(elem.getAttributes());
@@ -94,8 +92,7 @@ class Analyzer extends AbstractVisitor {
 
   private VoidValue visitContainer(Container c) {
     List<Component> list = c.getComponents();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (Component aList : list) aList.accept(this);
     return VoidValue.VOID;
   }
 
@@ -107,8 +104,7 @@ class Analyzer extends AbstractVisitor {
   public VoidValue visitComposite(CompositePattern p) {
     visitAnnotated(p);
     List<Pattern> list = p.getChildren();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (Pattern aList : list) aList.accept(this);
     return VoidValue.VOID;
   }
 
@@ -128,8 +124,7 @@ class Analyzer extends AbstractVisitor {
   public VoidValue visitChoice(ChoiceNameClass nc) {
     visitAnnotated(nc);
     List<NameClass> list = nc.getChildren();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (NameClass aList : list) aList.accept(this);
     return VoidValue.VOID;
   }
 
@@ -184,7 +179,7 @@ class Analyzer extends AbstractVisitor {
   }
 
   private String datatypeLibrary = null;
-  private final Map<String, String> prefixMap = new HashMap<String, String>();
+  private final Map<String, String> prefixMap = new HashMap<>();
   private boolean haveInherit = false;
   private NamespaceContext lastContext = null;
   private String noPrefixNs = null;

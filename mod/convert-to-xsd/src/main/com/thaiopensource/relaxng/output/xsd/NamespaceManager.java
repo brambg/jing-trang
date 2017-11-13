@@ -27,25 +27,25 @@ import java.util.Vector;
 
 public class NamespaceManager {
   private final Schema schema;
-  private final Map<Name, NameInfo> elementNameMap = new HashMap<Name, NameInfo>();
-  private final Map<Name, NameInfo> attributeNameMap = new HashMap<Name, NameInfo>();
-  private final Map<Object, Name> substitutionGroupMap = new HashMap<Object, Name>();
-  private final Map<String, Name> groupDefinitionAbstractElementMap = new HashMap<String, Name>();
-  private final Map<Name, List<Name>> abstractElementSubstitutionGroupMemberMap = new HashMap<Name, List<Name>>();
+  private final Map<Name, NameInfo> elementNameMap = new HashMap<>();
+  private final Map<Name, NameInfo> attributeNameMap = new HashMap<>();
+  private final Map<Object, Name> substitutionGroupMap = new HashMap<>();
+  private final Map<String, Name> groupDefinitionAbstractElementMap = new HashMap<>();
+  private final Map<Name, List<Name>> abstractElementSubstitutionGroupMemberMap = new HashMap<>();
 
   static class SourceUri {
     String targetNamespace;
     // list of strings giving included URIs
-    final List<String> includes = new Vector<String>();
+    final List<String> includes = new Vector<>();
   }
 
   static class TargetNamespace {
     String rootSchema;
-    final List<Structure> movedStructures = new Vector<Structure>();
-    final Set<Structure> movedStructureSet = new HashSet<Structure>();
-    final Map<Structure, String> movedStructureNameMap = new HashMap<Structure, String>();
-    final Set<String> movedElementNameSet = new HashSet<String>();
-    final Set<String> movedAttributeNameSet = new HashSet<String>();
+    final List<Structure> movedStructures = new Vector<>();
+    final Set<Structure> movedStructureSet = new HashSet<>();
+    final Map<Structure, String> movedStructureNameMap = new HashMap<>();
+    final Set<String> movedElementNameSet = new HashSet<>();
+    final Set<String> movedAttributeNameSet = new HashSet<>();
     boolean movedOtherElement = false;
     boolean movedOtherAttribute = false;
     String otherElementName;
@@ -63,9 +63,9 @@ public class NamespaceManager {
   }
 
   // Maps sourceUri to SourceUri
-  private final Map<String, SourceUri> sourceUriMap = new HashMap<String, SourceUri>();
+  private final Map<String, SourceUri> sourceUriMap = new HashMap<>();
   // Maps targetNamespace to TargetNamespace
-  private final Map<String, TargetNamespace> targetNamespaceMap = new HashMap<String,TargetNamespace>();
+  private final Map<String, TargetNamespace> targetNamespaceMap = new HashMap<>();
 
   class IncludeFinder extends SchemaWalker {
     private final SourceUri source;
@@ -113,7 +113,7 @@ public class NamespaceManager {
 
   class TargetNamespaceSelector extends SchemaWalker {
     private boolean nested;
-    private final Map<String, NamespaceUsage> namespaceUsageMap = new HashMap<String, NamespaceUsage>();
+    private final Map<String, NamespaceUsage> namespaceUsageMap = new HashMap<>();
 
     TargetNamespaceSelector(Schema schema) {
       schema.accept(this);
@@ -328,7 +328,7 @@ public class NamespaceManager {
     List<String> includes = lookupSourceUri(sourceUri).includes;
     if (includes.size() == 0)
       return null;
-    Map<String, Integer> occurMap = new HashMap<String, Integer>();
+    Map<String, Integer> occurMap = new HashMap<>();
     for (String include : includes) {
       String tem = filterUpTargetNamespace(include);
       if (tem != null) {
@@ -367,7 +367,7 @@ public class NamespaceManager {
   private void chooseRootSchemas(SourceUriGenerator sug) {
     for (Map.Entry<String, TargetNamespace> entry : targetNamespaceMap.entrySet()) {
       String ns = entry.getKey();
-      List<String> list = new Vector<String>();
+      List<String> list = new Vector<>();
       findRootSchemas(schema.getUri(), ns, list);
       if (list.size() == 1)
         (entry.getValue()).rootSchema = list.get(0);
@@ -399,11 +399,7 @@ public class NamespaceManager {
   String getProxyName(Structure struct) {
     String ns = struct.getName().getNamespaceUri();
     TargetNamespace tn = lookupTargetNamespace(ns);
-    String name = tn.movedStructureNameMap.get(struct);
-    if (name == null) {
-      name = generateName(ns, tn, struct.getName().getLocalName(), struct instanceof Element);
-      tn.movedStructureNameMap.put(struct, name);
-    }
+    String name = tn.movedStructureNameMap.computeIfAbsent(struct, s -> generateName(ns, tn, s.getName().getLocalName(), s instanceof Element));
     return name;
   }
 
@@ -448,7 +444,7 @@ public class NamespaceManager {
   }
 
   static class GroupDefinitionFinder extends SchemaWalker {
-    final List<GroupDefinition> list = new Vector<GroupDefinition>();
+    final List<GroupDefinition> list = new Vector<>();
 
     public void visitGroup(GroupDefinition def) {
       list.add(def);
@@ -463,7 +459,7 @@ public class NamespaceManager {
 
   private void findSubstitutionGroups(Guide guide) {
     List<GroupDefinition> groups = GroupDefinitionFinder.findGroupDefinitions(schema);
-    Map<Name, String> elementNameToGroupName = new HashMap<Name, String>();
+    Map<Name, String> elementNameToGroupName = new HashMap<>();
     while (addAbstractElements(guide, groups, elementNameToGroupName))
       ;
     cleanSubstitutionGroupMap(elementNameToGroupName);
@@ -471,7 +467,7 @@ public class NamespaceManager {
   }
 
   private boolean addAbstractElements(Guide guide, List<GroupDefinition> groups, Map<Name, String> elementNameToGroupName) {
-    Set<Name> newAbstractElements = new HashSet<Name>();
+    Set<Name> newAbstractElements = new HashSet<>();
     for (GroupDefinition def : groups) {
       if (guide.getGroupEnableAbstractElement(def.getName())
           && getGroupDefinitionAbstractElementName(def) == null) {
@@ -516,10 +512,7 @@ public class NamespaceManager {
   }
 
   private void cleanAbstractElementSubstitutionGroupMemberMap(Map<Name, String> elementNameToGroupName) {
-    for (Iterator<Name> iter = abstractElementSubstitutionGroupMemberMap.keySet().iterator(); iter.hasNext();) {
-      if (groupDefinitionAbstractElementMap.get(elementNameToGroupName.get(iter.next())) == null)
-        iter.remove();
-    }
+    abstractElementSubstitutionGroupMemberMap.keySet().removeIf(name -> groupDefinitionAbstractElementMap.get(elementNameToGroupName.get(name)) == null);
   }
 
   private Name abstractElementName(GroupDefinition def) {
@@ -532,7 +525,7 @@ public class NamespaceManager {
   private List<Name> substitutionGroupMembers(GroupDefinition def) {
     if (def.getParticle() instanceof Element)
       return null;
-    List<Name> members = new Vector<Name>();
+    List<Name> members = new Vector<>();
     if (!particleMembers(def.getParticle(), members))
       return null;
     return members;
@@ -614,7 +607,7 @@ public class NamespaceManager {
 
   List<String> effectiveIncludes(String sourceUri) {
     String ns = getTargetNamespace(sourceUri);
-    List<String> list = new Vector<String>();
+    List<String> list = new Vector<>();
     for (String uri : lookupSourceUri(sourceUri).includes)
       findRootSchemas(uri, ns, list);
     return list;
@@ -630,38 +623,22 @@ public class NamespaceManager {
   }
 
   private SourceUri lookupSourceUri(String uri) {
-    SourceUri s = sourceUriMap.get(uri);
-    if (s == null) {
-      s = new SourceUri();
-      sourceUriMap.put(uri, s);
-    }
+    SourceUri s = sourceUriMap.computeIfAbsent(uri, k -> new SourceUri());
     return s;
   }
 
   private TargetNamespace lookupTargetNamespace(String ns) {
-    TargetNamespace t = targetNamespaceMap.get(ns);
-    if (t == null) {
-      t = new TargetNamespace();
-      targetNamespaceMap.put(ns, t);
-    }
+    TargetNamespace t = targetNamespaceMap.computeIfAbsent(ns, k -> new TargetNamespace());
     return t;
   }
 
   private NameInfo lookupElementName(Name name) {
-    NameInfo info = elementNameMap.get(name);
-    if (info == null) {
-      info = new NameInfo();
-      elementNameMap.put(name, info);
-    }
+    NameInfo info = elementNameMap.computeIfAbsent(name, k -> new NameInfo());
     return info;
   }
 
   private NameInfo lookupAttributeName(Name name) {
-    NameInfo info = attributeNameMap.get(name);
-    if (info == null) {
-      info = new NameInfo();
-      attributeNameMap.put(name, info);
-    }
+    NameInfo info = attributeNameMap.computeIfAbsent(name, k -> new NameInfo());
     return info;
   }
 

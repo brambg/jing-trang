@@ -65,16 +65,22 @@ class AtomParser {
 	case Tokenizer.TOK_DECL_OPEN:
 	  {
 	    int type;
-	    if (as.token.equals("<!ENTITY"))
-	      type = Decl.ENTITY;
-	    else if (as.token.equals("<!ATTLIST"))
-	      type = Decl.ATTLIST;
-	    else if (as.token.equals("<!ELEMENT"))
-	      type = Decl.ELEMENT;
-	    else if (as.token.equals("<!NOTATION"))
-	      type = Decl.NOTATION;
-	    else
-	      throw new Error("unexpected decl type"); // should have been caught
+      switch (as.token) {
+        case "<!ENTITY":
+          type = Decl.ENTITY;
+          break;
+        case "<!ATTLIST":
+          type = Decl.ATTLIST;
+          break;
+        case "<!ELEMENT":
+          type = Decl.ELEMENT;
+          break;
+        case "<!NOTATION":
+          type = Decl.NOTATION;
+          break;
+        default:
+          throw new Error("unexpected decl type"); // should have been caught
+      }
 	    d = new Decl(type);
 	    d.params = new Vector();
 	    new AtomParser(db, as, pp, d.params).parseParams();

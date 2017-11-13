@@ -21,6 +21,6 @@ public class SAXParseReceiver<P, NC, L, EA, CL extends CommentList<L>, A extends
   public ParsedPatternFuture<P> installHandlers(XMLReader xr, SchemaBuilder<P, NC, L, EA, CL, A> schemaBuilder,
                                                 Scope<P, L, EA, CL, A> scope)
           throws SAXException {
-    return new SchemaParser<P, NC, L, EA, CL, A>(xr, eh, schemaBuilder, null, scope);
+    return new SchemaParser<>(xr, eh, schemaBuilder, null, scope);
   }
 }

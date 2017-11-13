@@ -179,7 +179,7 @@ public class SchemaTransformer implements SchemaVisitor, ParticleVisitor<Particl
       if (transformed != null)
         transformed.add(use);
       else if (use != list.get(i)) {
-        transformed = new Vector<AttributeUse>();
+        transformed = new Vector<>();
         for (int j = 0; j < i; j++)
           transformed.add(list.get(j));
         if (!use.equals(AttributeGroup.EMPTY))
@@ -200,7 +200,7 @@ public class SchemaTransformer implements SchemaVisitor, ParticleVisitor<Particl
           transformed.add(p);
       }
       else if (p != list.get(i)) {
-        transformed = new Vector<Particle>();
+        transformed = new Vector<>();
         for (int j = 0; j < i; j++)
           transformed.add(list.get(j));
         if (p != null)
@@ -219,7 +219,7 @@ public class SchemaTransformer implements SchemaVisitor, ParticleVisitor<Particl
       if (transformed != null)
         transformed.add(st);
       else if (st != list.get(i)) {
-        transformed = new Vector<SimpleType>();
+        transformed = new Vector<>();
         for (int j = 0; j < i; j++)
           transformed.add(list.get(j));
         transformed.add(st);

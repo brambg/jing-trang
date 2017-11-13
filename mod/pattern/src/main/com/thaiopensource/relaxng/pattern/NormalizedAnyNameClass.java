@@ -47,12 +47,10 @@ public class NormalizedAnyNameClass extends NormalizedNameClass {
   public boolean equals(Object obj) {
     if (!(obj instanceof NormalizedAnyNameClass))
       return false;
-    NormalizedAnyNameClass other = (NormalizedAnyNameClass)obj;
+    NormalizedAnyNameClass other = (NormalizedAnyNameClass) obj;
     if (!(excludedNamespaces.equals(other.excludedNamespaces)))
       return false;
-     if (!(excludedNames.equals(other.excludedNames)))
-      return false;
-    return equal(this, other);
+    return excludedNames.equals(other.excludedNames) && equal(this, other);
   }
 
   boolean includesNamespace(String ns) {

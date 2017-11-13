@@ -142,10 +142,7 @@ class ValidatorImpl extends Validator2 {
     try {
       xr.setProperty(LEXICAL_HANDLER_PROPERTY, lexicalHandler);
     }
-    catch (SAXNotRecognizedException e) {
-      // ignore it
-    }
-    catch (SAXNotSupportedException e) {
+    catch (SAXNotRecognizedException | SAXNotSupportedException e) {
       // ignore it
     }
     xr.setContentHandler(handler);

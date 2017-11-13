@@ -48,7 +48,7 @@ class Driver {
     SchemaReader sr = null;
     boolean compact = false;
     boolean outputSimplifiedSchema = false;
-    List<String> catalogUris = new ArrayList<String>();
+    List<String> catalogUris = new ArrayList<>();
 
     try {
       while (op.moveToNextOption()) {
@@ -158,11 +158,7 @@ class Driver {
       else
 	hadError = true;
     }
-    catch (SAXException e) {
-      hadError = true;
-      eh.printException(e);
-    }
-    catch (IOException e) {
+    catch (SAXException | IOException e) {
       hadError = true;
       eh.printException(e);
     }

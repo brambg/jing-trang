@@ -48,9 +48,7 @@ public class Sax2XMLReaderCreator implements XMLReaderCreator {
     try {
       xr.setFeature("http://xml.org/sax/features/validation", false);
     }
-    catch (SAXNotRecognizedException e) {
-    }
-    catch (SAXNotSupportedException e) {
+    catch (SAXNotRecognizedException | SAXNotSupportedException e) {
     }
     return xr;
   }

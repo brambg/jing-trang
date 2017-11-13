@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class BuiltinDatatypeLibraryFactory implements DatatypeLibraryFactory {
-  private final Map<String, DatatypeLibrary> cache = new HashMap<String, DatatypeLibrary>();
+  private final Map<String, DatatypeLibrary> cache = new HashMap<>();
   private final DatatypeLibraryFactory factory;
   private final DatatypeLibrary builtinDatatypeLibrary
     = new BuiltinDatatypeLibrary();

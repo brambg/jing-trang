@@ -198,11 +198,8 @@ public class DatatypeLibraryLoader implements DatatypeLibraryFactory {
 		    return true;
 		  }
 		}
-		catch (ClassNotFoundException e) { }
-		catch (InstantiationException e) { }
-		catch (IllegalAccessException e) { }
-		catch (LinkageError e) { }
-	      }
+		catch (ClassNotFoundException | LinkageError | IllegalAccessException | InstantiationException e) { }
+        }
 	      classNames = null;
 	    }
 	  }
@@ -223,7 +220,7 @@ public class DatatypeLibraryLoader implements DatatypeLibraryFactory {
 	      }
 	      r = new BufferedReader(r);
 	      Vector tokens = new Vector();
-	      StringBuffer tokenBuf = new StringBuffer();
+	      StringBuilder tokenBuf = new StringBuilder();
 	      int state = START;
 	      for (;;) {
 		int n = r.read();

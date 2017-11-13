@@ -30,8 +30,7 @@ public class XMLSyntaxSchemaFactoryTest extends SchemaFactoryImplTest {
     builder.append("<element xmlns='" + NS + "' name='")
             .append(name)
             .append("'>");
-    for (int i = 0; i < contentPatterns.length; i++)
-      builder.append(contentPatterns[i]);
+    for (String contentPattern : contentPatterns) builder.append(contentPattern);
     if (contentPatterns.length == 0)
       builder.append("<empty/>");
     builder.append("</element>");

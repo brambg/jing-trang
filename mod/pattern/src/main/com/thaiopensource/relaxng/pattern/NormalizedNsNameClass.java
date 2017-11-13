@@ -45,10 +45,8 @@ public class NormalizedNsNameClass extends NormalizedNameClass {
   public boolean equals(Object obj) {
     if (!(obj instanceof NormalizedNsNameClass))
       return false;
-    NormalizedNsNameClass other = (NormalizedNsNameClass)obj;
-    if (!nsMap.equals(other.nsMap))
-      return false;
-    return equal(this, other);
+    NormalizedNsNameClass other = (NormalizedNsNameClass) obj;
+    return nsMap.equals(other.nsMap) && equal(this, other);
   }
 
   boolean includesNamespace(String ns) {

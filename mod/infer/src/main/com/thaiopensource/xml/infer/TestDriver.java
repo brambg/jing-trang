@@ -17,8 +17,7 @@ public class TestDriver {
     SAXResolver resolver = new SAXResolver();
     XMLReader xr = resolver.createXMLReader();
     xr.setContentHandler(handler);
-    for (int i = 0; i < args.length; i++)
-       xr.parse(new InputSource(UriOrFile.toUri(args[i])));
+    for (String arg : args) xr.parse(new InputSource(UriOrFile.toUri(arg)));
     Schema schema = handler.getSchema();
     for (Map.Entry<Name, ElementDecl> entry : schema.getElementDecls().entrySet()) {
       Name name = entry.getKey();

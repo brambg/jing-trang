@@ -17,16 +17,12 @@ public class SchematronSchemaReaderFactory implements SchemaReaderFactory, Trans
       try {
         return new ISOSchemaReaderImpl(newTransformerFactory(), this);
       }
-      catch (TransformerFactoryConfigurationError e) { }
-      catch (IncorrectSchemaException e) { }
-      catch (TransformerConfigurationException e) { }
+      catch (TransformerFactoryConfigurationError | TransformerConfigurationException | IncorrectSchemaException e) { }
     } else if (namespaceUri.equals(SchemaReaderImpl.SCHEMATRON_URI)) {
       try {
         return new SchemaReaderImpl(newTransformerFactory(), this);
       }
-      catch (TransformerFactoryConfigurationError e) { }
-      catch (IncorrectSchemaException e) { }
-      catch (TransformerConfigurationException e) { }
+      catch (TransformerFactoryConfigurationError | TransformerConfigurationException | IncorrectSchemaException e) { }
     } 
     return null;
   }

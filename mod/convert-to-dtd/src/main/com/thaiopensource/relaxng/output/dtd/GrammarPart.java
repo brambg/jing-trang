@@ -29,7 +29,7 @@ class GrammarPart implements ComponentVisitor<VoidValue> {
   private final SchemaCollection schemas;
   private final Map<String, GrammarPart> parts;
   // maps name to component that provides it
-  private final Map<String, Component> whereProvided = new HashMap<String, Component>();
+  private final Map<String, Component> whereProvided = new HashMap<>();
   private final Set<String> pendingIncludes;
 
   public static class IncludeLoopException extends RuntimeException {
@@ -51,9 +51,9 @@ class GrammarPart implements ComponentVisitor<VoidValue> {
     this.attlists = attlists;
     this.schemas = schemas;
     this.parts = parts;
-    this.pendingIncludes = new HashSet<String>();
-    this.implicitlyCombinedDefines = new HashSet<String>();
-    this.combineTypes = new HashMap<String, Combine>();
+    this.pendingIncludes = new HashSet<>();
+    this.implicitlyCombinedDefines = new HashSet<>();
+    this.combineTypes = new HashMap<>();
     visitContainer(p);
   }
 
@@ -75,8 +75,7 @@ class GrammarPart implements ComponentVisitor<VoidValue> {
 
   public VoidValue visitContainer(Container c) {
     List<Component> list = c.getComponents();
-    for (int i = 0, len = list.size(); i < len; i++)
-      (list.get(i)).accept(this);
+    for (Component aList : list) aList.accept(this);
     return VoidValue.VOID;
   }
 
