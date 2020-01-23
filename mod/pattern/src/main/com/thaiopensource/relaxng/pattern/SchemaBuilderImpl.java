@@ -230,7 +230,7 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
     String messageId = attributeNameClassChecker.checkNameClass(nc);
     if (messageId != null)
       error(messageId, loc);
-    return pb.makeAttribute(nc, p, loc);
+    return pb.makeAttribute(nc, p, loc, (anno != null ? anno.defaultValue : null));
   }
 
   public Pattern makeElement(NameClass nc, Pattern p, Locator loc, AnnotationsImpl anno)
@@ -705,7 +705,7 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
   }
 
   public AnnotationsImpl makeAnnotations(CommentListImpl comments, Context context) {
-    return this;
+    return new AnnotationsImpl();
   }
 
   public VoidValue makeElementAnnotation() throws BuildException {

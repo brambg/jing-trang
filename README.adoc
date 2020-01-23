@@ -1,0 +1,36 @@
+= jing-trang
+:groupId: org.relaxng
+:artifactId: jing
+:repository: jing-trang
+
+image:https://travis-ci.org/relaxng/{repository}.svg?branch=master["Build Status", link="https://travis-ci.org/relaxng/{repository}"]
+image:https://maven-badges.herokuapp.com/maven-central/{groupId}/{artifactId}/badge.svg["Artifact on Maven Central", link="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22{groupId}%22%20a%3A%22{artifactId}%22"]
+image:http://www.javadoc.io/badge/{groupId}/{artifactId}.svg["Javadocs", link="http://www.javadoc.io/doc/{groupId}/{artifactId}"]
+
+After cloning the repository, here's how to build.
+
+. Ensure you have git and JDK 8 or above installed.
+   All other dependencies are included in the repository.
+
+. Set the `JAVA_HOME` environment variable to point to the directory
+   where the JDK is installed. For example:
+
+   * `export JAVA_HOME=/usr/lib/jvm/openjdk-11`    <- Ubuntu, etc.
+   * `export JAVA_HOME=$(/usr/libexec/java_home)`  <- macOS
+   * `set JAVA_HOME=C:\Program Files\Java\jdk-11`  <- Windows
+
+. Clone the repository
+
+    git clone https://github.com/relaxng/jing-trang.git`
+
+. Change your working directory to be the `jing-trang` directory (that is,
+   the directory containing this file).
+
+. Run the `ant` script included in the repository. On Linux, use the
+   command `./ant`. On Windows, use `.\ant`.
+   That runs the version of `ant` included in the repository. When the
+   `ant` script completes, you should find `jing.jar` and `trang.jar` files
+   in the `build` subdirectory.
+   You can also tell the `ant` script to build the `test` target, which
+   will build the jars and then run some tests. On Linux, use the command
+   `./ant test`. On Windows, use `.\ant test`.
