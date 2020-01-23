@@ -36,14 +36,12 @@ class ValueDataDerivType extends DataDerivType {
       else if (fail != null && noValue.isNotAllowed()) {
         try {
           dt.checkValid(str, vc);
-        }
-        catch (DatatypeException e) {
+        } catch (DatatypeException e) {
           fail.add(new DataDerivFailure(dt, dtName, e));
         }
       }
       return noValue;
-    }
-    else {
+    } else {
       DatatypeValue dtv = new DatatypeValue(value, dt);
       if (valueMap == null)
         valueMap = new HashMap<>();
@@ -51,8 +49,7 @@ class ValueDataDerivType extends DataDerivType {
       if (tem == null) {
         tem = super.dataDeriv(builder, p, str, vc, fail);
         valueMap.put(dtv, tem);
-      }
-      else if (tem.isNotAllowed() && fail != null)
+      } else if (tem.isNotAllowed() && fail != null)
         super.dataDeriv(builder, p, str, vc, fail);
       return tem;
     }
@@ -60,12 +57,11 @@ class ValueDataDerivType extends DataDerivType {
 
   DataDerivType combine(DataDerivType ddt) {
     if (ddt instanceof ValueDataDerivType) {
-      if (((ValueDataDerivType)ddt).dt == this.dt)
+      if (((ValueDataDerivType) ddt).dt == this.dt)
         return this;
       else
         return InconsistentDataDerivType.getInstance();
-    }
-    else
+    } else
       return ddt.combine(this);
   }
 

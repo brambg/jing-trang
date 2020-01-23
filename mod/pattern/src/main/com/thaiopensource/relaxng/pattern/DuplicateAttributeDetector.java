@@ -23,7 +23,7 @@ class DuplicateAttributeDetector {
     int lim = nameClasses.size();
     for (Alternative a = alternatives; a != null; a = a.parent) {
       for (int i = a.endIndex; i < lim; i++)
-	checkAttributeOverlap(nc, nameClasses.get(i));
+        checkAttributeOverlap(nc, nameClasses.get(i));
       lim = a.startIndex;
     }
     for (int i = 0; i < lim; i++)
@@ -33,11 +33,11 @@ class DuplicateAttributeDetector {
 
   static private void checkAttributeOverlap(NameClass nc1, NameClass nc2) throws RestrictionViolationException {
     OverlapDetector.checkOverlap(nc1, nc2,
-                                 "duplicate_attribute_name",
-                                 "duplicate_attribute_ns",
-                                 "duplicate_attribute");
+        "duplicate_attribute_name",
+        "duplicate_attribute_ns",
+        "duplicate_attribute");
   }
-  
+
   void startChoice() {
     alternatives = new Alternative(nameClasses.size(), alternatives);
   }

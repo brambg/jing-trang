@@ -7,7 +7,8 @@ class InconsistentDataDerivType extends DataDerivType {
     return instance;
   }
 
-  private InconsistentDataDerivType() { }
+  private InconsistentDataDerivType() {
+  }
 
   DataDerivType combine(DataDerivType ddt) {
     return this;

@@ -31,12 +31,7 @@ import com.thaiopensource.util.VoidValue;
 import com.thaiopensource.relaxng.edit.ZeroOrMorePattern;
 import com.thaiopensource.relaxng.output.common.ErrorReporter;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 class SchemaInfo {
   private final SchemaCollection sc;
@@ -285,7 +280,7 @@ class SchemaInfo {
         openIncludes.remove(uri);
         for (Override or : overrides) {
           if (or.define.status == DEFINE_REQUIRE) {
-            if (or.name == DefineComponent.START)
+            if (Objects.equals(or.name, DefineComponent.START))
               er.error("missing_start_replacement", c.getSourceLocation());
             else
               er.error("missing_define_replacement", or.name, c.getSourceLocation());

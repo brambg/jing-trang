@@ -5,14 +5,7 @@ import com.thaiopensource.relaxng.parse.IllegalSchemaException;
 import com.thaiopensource.relaxng.parse.Parseable;
 import com.thaiopensource.relaxng.parse.compact.CompactParseable;
 import com.thaiopensource.relaxng.parse.sax.SAXParseable;
-import com.thaiopensource.relaxng.pattern.AnnotationsImpl;
-import com.thaiopensource.relaxng.pattern.CommentListImpl;
-import com.thaiopensource.relaxng.pattern.FeasibleTransform;
-import com.thaiopensource.relaxng.pattern.MatchablePatternImpl;
-import com.thaiopensource.relaxng.pattern.NameClass;
-import com.thaiopensource.relaxng.pattern.Pattern;
-import com.thaiopensource.relaxng.pattern.SchemaBuilderImpl;
-import com.thaiopensource.relaxng.pattern.SchemaPatternBuilder;
+import com.thaiopensource.relaxng.pattern.*;
 import com.thaiopensource.resolver.Input;
 import com.thaiopensource.resolver.xml.sax.SAXResolver;
 import com.thaiopensource.util.VoidValue;
@@ -29,6 +22,7 @@ import java.io.IOException;
 public class MatchablePatternLoader {
   public static final int COMPACT_SYNTAX_FLAG = 0x1;
   public static final int FEASIBLE_FLAG = 0x2;
+
   public MatchablePattern load(Input input,
                                SAXResolver saxResolver,
                                ErrorHandler eh,
@@ -47,8 +41,7 @@ public class MatchablePatternLoader {
       if ((flags & FEASIBLE_FLAG) != 0)
         start = FeasibleTransform.transform(spb, start);
       return new MatchablePatternImpl(spb, start);
-    }
-    catch (IllegalSchemaException e) {
+    } catch (IllegalSchemaException e) {
       throw new IncorrectSchemaException();
     }
   }

@@ -15,23 +15,23 @@ class StartAttributeDerivFunction extends StartTagOpenDerivFunction {
     final Pattern p1 = p.getOperand1();
     final Pattern p2 = p.getOperand2();
     return getPatternBuilder().makeChoice(
-            memoApply(p1).apply(new ApplyAfterFunction(getPatternBuilder()) {
-              Pattern apply(Pattern x) {
-                return getPatternBuilder().makeGroup(x, p2);
-              }
-            }),
-            memoApply(p2).apply(new ApplyAfterFunction(getPatternBuilder()) {
-              Pattern apply(Pattern x) {
-                return getPatternBuilder().makeGroup(p1, x);
-              }
-            }));
+        memoApply(p1).apply(new ApplyAfterFunction(getPatternBuilder()) {
+          Pattern apply(Pattern x) {
+            return getPatternBuilder().makeGroup(x, p2);
+          }
+        }),
+        memoApply(p2).apply(new ApplyAfterFunction(getPatternBuilder()) {
+          Pattern apply(Pattern x) {
+            return getPatternBuilder().makeGroup(p1, x);
+          }
+        }));
   }
 
   public Pattern caseAttribute(AttributePattern p) {
     if (!p.getNameClass().contains(getName()))
       return getPatternBuilder().makeNotAllowed();
     return getPatternBuilder().makeAfter(p.getContent(),
-					 getPatternBuilder().makeEmpty());
+        getPatternBuilder().makeEmpty());
   }
 
   PatternMemo apply(PatternMemo memo) {

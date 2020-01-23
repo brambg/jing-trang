@@ -14,12 +14,12 @@ class ChoiceNameClass implements NameClass {
 
   public boolean contains(Name name) {
     return (nameClass1.contains(name)
-	    || nameClass2.contains(name));
+        || nameClass2.contains(name));
   }
 
   public int containsSpecificity(Name name) {
     return Math.max(nameClass1.containsSpecificity(name),
-                    nameClass2.containsSpecificity(name));
+        nameClass2.containsSpecificity(name));
   }
 
   public int hashCode() {
@@ -29,9 +29,9 @@ class ChoiceNameClass implements NameClass {
   public boolean equals(Object obj) {
     if (obj == null || !(obj instanceof ChoiceNameClass))
       return false;
-    ChoiceNameClass other = (ChoiceNameClass)obj;
+    ChoiceNameClass other = (ChoiceNameClass) obj;
     return (nameClass1.equals(other.nameClass1)
-	    && nameClass2.equals(other.nameClass2));
+        && nameClass2.equals(other.nameClass2));
   }
 
   public void accept(NameClassVisitor visitor) {

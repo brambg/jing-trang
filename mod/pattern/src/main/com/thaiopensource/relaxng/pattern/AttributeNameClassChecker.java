@@ -1,11 +1,11 @@
 package com.thaiopensource.relaxng.pattern;
 
-import com.thaiopensource.xml.util.WellKnownNamespaces;
 import com.thaiopensource.xml.util.Name;
+import com.thaiopensource.xml.util.WellKnownNamespaces;
 
 class AttributeNameClassChecker implements NameClassVisitor {
   private String errorMessageId = null;
-  
+
   public void visitChoice(NameClass nc1, NameClass nc2) {
     nc1.accept(this);
     nc2.accept(this);
@@ -21,7 +21,8 @@ class AttributeNameClassChecker implements NameClassVisitor {
     nc.accept(this);
   }
 
-  public void visitAnyName() { }
+  public void visitAnyName() {
+  }
 
   public void visitAnyNameExcept(NameClass nc) {
     nc.accept(this);
@@ -33,9 +34,11 @@ class AttributeNameClassChecker implements NameClassVisitor {
       errorMessageId = "xmlns_attribute";
   }
 
-  public void visitNull() { }
+  public void visitNull() {
+  }
 
-  public void visitError() { }
+  public void visitError() {
+  }
 
   String checkNameClass(NameClass nc) {
     errorMessageId = null;

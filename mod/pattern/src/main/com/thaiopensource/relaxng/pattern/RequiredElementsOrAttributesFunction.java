@@ -29,7 +29,7 @@ abstract class RequiredElementsOrAttributesFunction extends AbstractPatternFunct
     if (!(nc instanceof SimpleNameClass))
       return Collections.emptySet();
     Set<Name> s = new HashSet<>();
-    s.add(((SimpleNameClass)nc).getName());
+    s.add(((SimpleNameClass) nc).getName());
     return s;
   }
 

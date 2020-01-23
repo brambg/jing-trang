@@ -68,13 +68,7 @@ import com.thaiopensource.relaxng.output.xsd.basic.WildcardElement;
 import com.thaiopensource.xml.util.Name;
 import com.thaiopensource.xml.util.WellKnownNamespaces;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 public class BasicBuilder {
   private final PatternVisitor<SimpleType> simpleTypeBuilder = new SimpleTypeBuilder();
@@ -539,7 +533,7 @@ public class BasicBuilder {
       String name = c.getName();
       SourceLocation location = c.getSourceLocation();
       Annotation annotation = makeAnnotation(c);
-      if (name == DefineComponent.START) {
+      if (Objects.equals(name, DefineComponent.START)) {
         if (!si.isIgnored(c)) {
           Pattern body = c.getBody();
           ChildType ct = si.getChildType(body);
@@ -664,7 +658,7 @@ public class BasicBuilder {
   }
 
   private static String resolveNamespace(String ns, String inheritedNamespace) {
-    if (ns == NameNameClass.INHERIT_NS)
+    if (Objects.equals(ns, NameNameClass.INHERIT_NS))
       return inheritedNamespace;
     return ns;
   }

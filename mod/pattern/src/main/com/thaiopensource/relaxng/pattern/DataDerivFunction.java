@@ -1,8 +1,8 @@
 package com.thaiopensource.relaxng.pattern;
 
 import org.relaxng.datatype.Datatype;
-import org.relaxng.datatype.ValidationContext;
 import org.relaxng.datatype.DatatypeException;
+import org.relaxng.datatype.ValidationContext;
 
 import java.util.List;
 
@@ -24,13 +24,13 @@ class DataDerivFunction extends AbstractPatternFunction<Pattern> {
     int len = str.length();
     for (int i = 0; i < len; i++) {
       switch (str.charAt(i)) {
-      case '\r':
-      case '\n':
-      case ' ':
-      case '\t':
-	break;
-      default:
-	return false;
+        case '\r':
+        case '\n':
+        case ' ':
+        case '\t':
+          break;
+        default:
+          return false;
       }
     }
     return true;
@@ -51,19 +51,19 @@ class DataDerivFunction extends AbstractPatternFunction<Pattern> {
     PatternMemo memo = builder.getPatternMemo(p.getOperand());
     for (int i = 0; i < len; i++) {
       switch (str.charAt(i)) {
-      case '\r':
-      case '\n':
-      case ' ':
-      case '\t':
-	if (tokenStart >= 0) {
-	  memo = tokenDeriv(memo, tokenIndex++, tokenStart, i);
-	  tokenStart = -1;
-	}
-	break;
-      default:
-	if (tokenStart < 0)
-	  tokenStart = i;
-	break;
+        case '\r':
+        case '\n':
+        case ' ':
+        case '\t':
+          if (tokenStart >= 0) {
+            memo = tokenDeriv(memo, tokenIndex++, tokenStart, i);
+            tokenStart = -1;
+          }
+          break;
+        default:
+          if (tokenStart < 0)
+            tokenStart = i;
+          break;
       }
     }
     if (tokenStart >= 0)
@@ -97,12 +97,10 @@ class DataDerivFunction extends AbstractPatternFunction<Pattern> {
       if (value == null) {
         try {
           dt.checkValid(str, vc);
-        }
-        catch (DatatypeException e) {
+        } catch (DatatypeException e) {
           fail.add(new DataDerivFailure(dt, p.getDatatypeName(), e));
         }
-      }
-      else
+      } else
         fail.add(new DataDerivFailure(p));
     }
     return builder.makeNotAllowed();
@@ -115,8 +113,7 @@ class DataDerivFunction extends AbstractPatternFunction<Pattern> {
       try {
         p.getDatatype().checkValid(str, vc);
         return builder.makeEmpty();
-      }
-      catch (DatatypeException e) {
+      } catch (DatatypeException e) {
         fail.add(new DataDerivFailure(p, e));
         return builder.makeNotAllowed();
       }
@@ -152,12 +149,12 @@ class DataDerivFunction extends AbstractPatternFunction<Pattern> {
   public Pattern caseChoice(ChoicePattern p) {
     final int failStartSize = failSize();
     Pattern tem = builder.makeChoice(memoApplyWithFailure(p.getOperand1()),
-		  	             memoApplyWithFailure(p.getOperand2()));
+        memoApplyWithFailure(p.getOperand2()));
     if (!tem.isNotAllowed())
       clearFailures(failStartSize);
     return tem;
   }
-  
+
   public Pattern caseGroup(GroupPattern p) {
     final int failStartSize = failSize();
     final Pattern p1 = p.getOperand1();
@@ -175,12 +172,12 @@ class DataDerivFunction extends AbstractPatternFunction<Pattern> {
     final Pattern p1 = p.getOperand1();
     final Pattern p2 = p.getOperand2();
     return builder.makeChoice(builder.makeInterleave(memoApply(p1), p2),
-			      builder.makeInterleave(p1, memoApply(p2)));
+        builder.makeInterleave(p1, memoApply(p2)));
   }
 
   public Pattern caseOneOrMore(OneOrMorePattern p) {
     return builder.makeGroup(memoApplyWithFailure(p.getOperand()),
-			     builder.makeOptional(p));
+        builder.makeOptional(p));
   }
 
   public Pattern caseOther(Pattern p) {
@@ -196,7 +193,7 @@ class DataDerivFunction extends AbstractPatternFunction<Pattern> {
   }
 
   private int failSize() {
-    return fail == null ? 0 : fail.size(); 
+    return fail == null ? 0 : fail.size();
   }
 
   private void clearFailures(int failStartSize) {

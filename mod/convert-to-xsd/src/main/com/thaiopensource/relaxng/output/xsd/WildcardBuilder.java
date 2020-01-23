@@ -10,10 +10,7 @@ import com.thaiopensource.util.VoidValue;
 import com.thaiopensource.relaxng.output.xsd.basic.Wildcard;
 import com.thaiopensource.xml.util.Name;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 class WildcardBuilder implements NameClassVisitor<VoidValue> {
   private boolean inExcept = false;
@@ -97,7 +94,7 @@ class WildcardBuilder implements NameClassVisitor<VoidValue> {
   }
 
   private String resolve(String ns) {
-    if (ns == NameNameClass.INHERIT_NS)
+    if (Objects.equals(ns, NameNameClass.INHERIT_NS))
       return inheritedNamespace;
     return ns;
   }

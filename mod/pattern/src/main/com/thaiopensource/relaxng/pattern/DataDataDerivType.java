@@ -24,20 +24,17 @@ class DataDataDerivType extends DataDerivType {
       try {
         dt.checkValid(str, vc);
         isValid = true;
-      }
-      catch (DatatypeException e) {
+      } catch (DatatypeException e) {
         isValid = false;
         ddf = new DataDerivFailure(dp, e);
       }
-    }
-    else
+    } else
       isValid = dt.isValid(str, vc);
     if (isValid) {
       if (validMemo == null || (fail != null && validMemo.isNotAllowed()))
         validMemo = super.dataDeriv(builder, p, str, vc, fail);
       return validMemo;
-    }
-    else {
+    } else {
       if (invalidMemo == null)
         invalidMemo = super.dataDeriv(builder, p, str, vc, fail);
       else if (invalidMemo.isNotAllowed() && ddf != null)
@@ -52,12 +49,12 @@ class DataDataDerivType extends DataDerivType {
 
   DataDerivType combine(DataDerivType ddt) {
     if (ddt instanceof DataDataDerivType) {
-      if (((DataDataDerivType)ddt).dp.getDatatype() == dp.getDatatype())
+      if (((DataDataDerivType) ddt).dp.getDatatype() == dp.getDatatype())
         return this;
       return InconsistentDataDerivType.getInstance();
     }
     if (ddt instanceof ValueDataDerivType) {
-      if (((ValueDataDerivType)ddt).getDatatype() == dp.getDatatype())
+      if (((ValueDataDerivType) ddt).getDatatype() == dp.getDatatype())
         return ddt;
       return InconsistentDataDerivType.getInstance();
     }

@@ -13,8 +13,8 @@ class BuiltinDatatypeBuilder implements DatatypeBuilder {
   }
 
   public void addParameter(String name,
-			   String value,
-			   ValidationContext context) throws DatatypeException {
+                           String value,
+                           ValidationContext context) throws DatatypeException {
     throw new DatatypeException(SchemaBuilderImpl.localizer.message("builtin_param"));
   }
 

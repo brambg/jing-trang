@@ -8,13 +8,7 @@ import com.thaiopensource.util.Localizer;
 import com.thaiopensource.xml.util.Name;
 import org.relaxng.datatype.Datatype;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PatternMatcher implements Cloneable, Matcher {
 
@@ -22,6 +16,7 @@ public class PatternMatcher implements Cloneable, Matcher {
     private final Pattern start;
     private final ValidatorPatternBuilder builder;
     private Map<Name, Pattern> recoverPatternTable;
+
     Shared(Pattern start, ValidatorPatternBuilder builder) {
       this.start = start;
       this.builder = builder;
@@ -60,18 +55,18 @@ public class PatternMatcher implements Cloneable, Matcher {
   public Matcher start() {
     return new PatternMatcher(shared.builder.getPatternMemo(shared.start), shared);
   }
-  
+
   public boolean equals(Object obj) {
     if (!(obj instanceof PatternMatcher))
       return false;
-    PatternMatcher other = (PatternMatcher)obj;
+    PatternMatcher other = (PatternMatcher) obj;
     // don't need to test equality of shared, because the memos can only be ==
     // if the shareds are ==.
     return (memo == other.memo
-            && hadError == other.hadError
-            && Equal.equal(errorMessage, other.errorMessage)
-            && ignoreNextEndTagOrAttributeValue == other.ignoreNextEndTagOrAttributeValue
-            && textTyped == other.textTyped);
+        && hadError == other.hadError
+        && Equal.equal(errorMessage, other.errorMessage)
+        && ignoreNextEndTagOrAttributeValue == other.ignoreNextEndTagOrAttributeValue
+        && textTyped == other.textTyped);
   }
 
   public int hashCode() {
@@ -80,17 +75,16 @@ public class PatternMatcher implements Cloneable, Matcher {
 
   public final Object clone() {
     try {
-      PatternMatcher cloned = (PatternMatcher)super.clone();
+      PatternMatcher cloned = (PatternMatcher) super.clone();
       cloned.dataDerivFailureList = new ArrayList<DataDerivFailure>();
       return cloned;
-    }
-    catch (CloneNotSupportedException e) {
+    } catch (CloneNotSupportedException e) {
       throw new Error("unexpected CloneNotSupportedException");
     }
   }
 
   public Matcher copy() {
-    return (Matcher)clone();
+    return (Matcher) clone();
   }
 
   public boolean matchStartDocument() {
@@ -114,23 +108,22 @@ public class PatternMatcher implements Cloneable, Matcher {
         Set<Name> missing = requiredElementNames();
         if (!missing.isEmpty())
           error(missing.size() == 1
-                ? "unexpected_element_required_element_missing"
-                : "unexpected_element_required_elements_missing",
-                errorArgQName(qName, name, context, false),
-                formatNames(missing, FORMAT_NAMES_ELEMENT|FORMAT_NAMES_AND, context));
+                  ? "unexpected_element_required_element_missing"
+                  : "unexpected_element_required_elements_missing",
+              errorArgQName(qName, name, context, false),
+              formatNames(missing, FORMAT_NAMES_ELEMENT | FORMAT_NAMES_AND, context));
         else
           error("element_not_allowed_yet",
-                errorArgQName(qName, name, context, false),
-                expectedContent(context));
+              errorArgQName(qName, name, context, false),
+              expectedContent(context));
       }
-    }
-    else {
+    } else {
       final ValidatorPatternBuilder builder = shared.builder;
       next = builder.getPatternMemo(builder.makeAfter(shared.findElement(name), memo.getPattern()));
       if (!ok)
         error(next.isNotAllowed() ? "unknown_element" : "out_of_context_element",
-              errorArgQName(qName, name, context, false),
-              expectedContent(context));
+            errorArgQName(qName, name, context, false),
+            expectedContent(context));
     }
     memo = next;
     return ok;
@@ -161,7 +154,7 @@ public class PatternMatcher implements Cloneable, Matcher {
     if (setMemo(memo.dataDeriv(value, context, dataDerivFailureList)))
       return true;
     boolean ok = error("invalid_attribute_value", errorArgQName(qName, name, context, true),
-                       formatDataDerivFailures(value, context));
+        formatDataDerivFailures(value, context));
     memo = memo.recoverAfter();
     return ok;
   }
@@ -176,12 +169,12 @@ public class PatternMatcher implements Cloneable, Matcher {
         Set<Name> missing = requiredAttributeNames();
         if (missing.isEmpty())
           error("required_attributes_missing_expected",
-                errorArgQName(qName, name, context, false),
-                expectedAttributes(context));
+              errorArgQName(qName, name, context, false),
+              expectedAttributes(context));
         else
           error(missing.size() == 1 ? "required_attribute_missing" : "required_attributes_missing",
-                errorArgQName(qName, name, context, false),
-                formatNames(missing, FORMAT_NAMES_ATTRIBUTE|FORMAT_NAMES_AND, context));
+              errorArgQName(qName, name, context, false),
+              formatNames(missing, FORMAT_NAMES_ATTRIBUTE | FORMAT_NAMES_AND, context));
       }
       memo = memo.ignoreMissingAttributes();
     }
@@ -193,8 +186,7 @@ public class PatternMatcher implements Cloneable, Matcher {
     if (textTyped) {
       ignoreNextEndTagOrAttributeValue = true;
       return setDataDeriv(string, name, qName, context);
-    }
-    else
+    } else
       return matchUntypedText(string, context);
   }
 
@@ -227,15 +219,15 @@ public class PatternMatcher implements Cloneable, Matcher {
     PatternMemo next = memo.recoverAfter();
     boolean ok = ignoreError();
     if (!ok && (!next.isNotAllowed()
-                || textOnlyMemo.emptyAfter().dataDeriv(string, context).isNotAllowed())) {
+        || textOnlyMemo.emptyAfter().dataDeriv(string, context).isNotAllowed())) {
       NormalizedNameClass nnc = memo.possibleStartTagNames();
       if (!nnc.isEmpty() && DataDerivFunction.isBlank(string))
         error("blank_not_allowed",
-              errorArgQName(qName, name, context, false),
-              expectedContent(context));
+            errorArgQName(qName, name, context, false),
+            expectedContent(context));
       else
         error("invalid_element_value", errorArgQName(qName, name, context, false),
-              formatDataDerivFailures(string, context));
+            formatDataDerivFailures(string, context));
     }
     memo = next;
     return ok;
@@ -255,20 +247,20 @@ public class PatternMatcher implements Cloneable, Matcher {
     // The tricky thing here is that the derivative that we compute may be notAllowed simply because the parent
     // is notAllowed; we don't want to give an error in this case.
     if (!ok && (!next.isNotAllowed()
-                // Retry computing the deriv on a pattern where the after is OK (not notAllowed)
-                || memo.emptyAfter().endTagDeriv().isNotAllowed())) {
+        // Retry computing the deriv on a pattern where the after is OK (not notAllowed)
+        || memo.emptyAfter().endTagDeriv().isNotAllowed())) {
       Set<Name> missing = requiredElementNames();
       if (!missing.isEmpty())
         error(missing.size() == 1
-              ? "incomplete_element_required_element_missing"
-              : "incomplete_element_required_elements_missing",
-              errorArgQName(qName, name, context, false),
-              formatNames(missing, FORMAT_NAMES_ELEMENT|FORMAT_NAMES_AND, context));
+                ? "incomplete_element_required_element_missing"
+                : "incomplete_element_required_elements_missing",
+            errorArgQName(qName, name, context, false),
+            formatNames(missing, FORMAT_NAMES_ELEMENT | FORMAT_NAMES_AND, context));
       else
         // XXX  Could do better here and describe what is required instead of what is possible
         error("incomplete_element_required_elements_missing_expected",
-              errorArgQName(qName, name, context, false),
-              expectedContent(context));
+            errorArgQName(qName, name, context, false),
+            expectedContent(context));
     }
     memo = next;
     return ok;
@@ -315,19 +307,19 @@ public class PatternMatcher implements Cloneable, Matcher {
    * Return true if the error was ignored, false otherwise.
    */
   private boolean error(String key) {
-    return error(key, new String[] { });
+    return error(key, new String[]{});
   }
 
   private boolean error(String key, String arg) {
-    return error(key, new String[] { arg });
+    return error(key, new String[]{arg});
   }
 
   private boolean error(String key, String arg1, String arg2) {
-    return error(key, new String[] { arg1, arg2 });
+    return error(key, new String[]{arg1, arg2});
   }
 
   private boolean error(String key, String arg1, String arg2, String arg3) {
-    return error(key, new String[] { arg1, arg2, arg3 });
+    return error(key, new String[]{arg1, arg2, arg3});
   }
 
   private boolean error(String key, String[] args) {
@@ -337,7 +329,7 @@ public class PatternMatcher implements Cloneable, Matcher {
     errorMessage = localizer().message(key, args);
     return false;
   }
-   
+
   private String errorArgQName(String qName, Name name, MatchContext context, boolean isAttribute) {
     if (ignoreError())
       return null;
@@ -350,7 +342,7 @@ public class PatternMatcher implements Cloneable, Matcher {
         String prefix = context.getPrefix(ns);
         if (prefix != null)
           qName = prefix + ":" + localName;
-        // this shouldn't happen unless the parser isn't supplying prefixes properly
+          // this shouldn't happen unless the parser isn't supplying prefixes properly
         else
           qName = "{" + ns + "}" + localName;
       }
@@ -360,7 +352,7 @@ public class PatternMatcher implements Cloneable, Matcher {
 
   static private final int UNDEFINED_TOKEN_INDEX = -3;
   static private final int INCONSISTENT_TOKEN_INDEX = -2;
-  
+
   private String formatDataDerivFailures(String str, MatchContext context) {
     if (ignoreError())
       return null;
@@ -386,13 +378,12 @@ public class PatternMatcher implements Cloneable, Matcher {
         Object value = fail.getValue();
         // we imply some special semantics for Datatype2
         if (value instanceof Name && dt instanceof Datatype2)
-          names.add((Name)value);
+          names.add((Name) value);
         else if (value instanceof String && dt instanceof Datatype2)
-          stringValues.add((String)value);
+          stringValues.add((String) value);
         else
           stringValues.add(s);
-      }
-      else {
+      } else {
         String message = fail.getMessage();
         // XXX this might produce strangely worded messages for 3rd party datatype libraries
         if (message != null)
@@ -401,20 +392,20 @@ public class PatternMatcher implements Cloneable, Matcher {
           return ""; // XXX do better for except
         else
           messages.add(localizer().message("require_datatype",
-                                           fail.getDatatypeName().getLocalName()));
+              fail.getDatatypeName().getLocalName()));
       }
       switch (tokenIndex) {
-      case INCONSISTENT_TOKEN_INDEX:
-        break;
-      case UNDEFINED_TOKEN_INDEX:
-        tokenIndex = fail.getTokenIndex();
-        tokenStart = fail.getTokenStart();
-        tokenEnd = fail.getTokenEnd();
-        break;
-      default:
-        if (tokenIndex != fail.getTokenIndex())
-          tokenIndex = INCONSISTENT_TOKEN_INDEX;
-        break;
+        case INCONSISTENT_TOKEN_INDEX:
+          break;
+        case UNDEFINED_TOKEN_INDEX:
+          tokenIndex = fail.getTokenIndex();
+          tokenStart = fail.getTokenStart();
+          tokenEnd = fail.getTokenEnd();
+          break;
+        default:
+          if (tokenIndex != fail.getTokenIndex())
+            tokenIndex = INCONSISTENT_TOKEN_INDEX;
+          break;
       }
     }
     if (stringValues.size() > 0) {
@@ -422,14 +413,14 @@ public class PatternMatcher implements Cloneable, Matcher {
       for (int i = 0; i < stringValues.size(); i++)
         stringValues.set(i, quoteValue(stringValues.get(i)));
       messages.add(localizer().message("require_values",
-                                       formatList(stringValues, "or")));
+          formatList(stringValues, "or")));
     }
     if (names.size() > 0)
       // XXX provide the strings as well so that a sensible prefix can be chosen if none is declared
       messages.add(localizer().message("require_qnames",
-                                       formatNames(names,
-                                                   FORMAT_NAMES_OR|FORMAT_NAMES_ELEMENT,
-                                                   context)));
+          formatNames(names,
+              FORMAT_NAMES_OR | FORMAT_NAMES_ELEMENT,
+              context)));
     if (messages.size() == 0)
       return "";
     String arg = formatList(messages, "or");
@@ -438,8 +429,8 @@ public class PatternMatcher implements Cloneable, Matcher {
       if (tokenStart == str.length())
         return localizer().message("missing_token", arg);
       return localizer().message("token_failures",
-                                 quoteValue(str.substring(tokenStart, tokenEnd)),
-                                 arg);
+          quoteValue(str.substring(tokenStart, tokenEnd)),
+          arg);
     }
     return localizer().message("data_failures", arg);
   }
@@ -459,10 +450,10 @@ public class PatternMatcher implements Cloneable, Matcher {
     Set<Name> expectedNames = nnc.getIncludedNames();
     if (!expectedNames.isEmpty())
       return localizer().message(nnc.isAnyNameIncluded() || !nnc.getIncludedNamespaces().isEmpty()
-                                 ? "expected_attribute_or_other_ns"
-                                 : "expected_attribute",
-                                 formatNames(expectedNames,
-                                             FORMAT_NAMES_ATTRIBUTE|FORMAT_NAMES_OR, context));
+              ? "expected_attribute_or_other_ns"
+              : "expected_attribute",
+          formatNames(expectedNames,
+              FORMAT_NAMES_ATTRIBUTE | FORMAT_NAMES_OR, context));
     return "";
   }
 
@@ -474,24 +465,24 @@ public class PatternMatcher implements Cloneable, Matcher {
       expected.add(localizer().message("element_end_tag"));
     // getContentType isn't so well-defined on after patterns
     switch (memo.emptyAfter().getPattern().getContentType()) {
-    case Pattern.MIXED_CONTENT_TYPE:
-      // A pattern such as (element foo { empty }, text) has a MIXED_CONTENT_TYPE
-      // but text is not allowed everywhere.
-      if (!memo.mixedTextDeriv().isNotAllowed())
-        expected.add(localizer().message("text"));
-      break;
-    case Pattern.DATA_CONTENT_TYPE:
-      expected.add(localizer().message("data"));
-      break;
+      case Pattern.MIXED_CONTENT_TYPE:
+        // A pattern such as (element foo { empty }, text) has a MIXED_CONTENT_TYPE
+        // but text is not allowed everywhere.
+        if (!memo.mixedTextDeriv().isNotAllowed())
+          expected.add(localizer().message("text"));
+        break;
+      case Pattern.DATA_CONTENT_TYPE:
+        expected.add(localizer().message("data"));
+        break;
     }
     NormalizedNameClass nnc = memo.possibleStartTagNames();
     Set<Name> expectedNames = nnc.getIncludedNames();
     // XXX say something about wildcards
     if (!expectedNames.isEmpty()) {
       expected.add(localizer().message("element_list",
-                                       formatNames(expectedNames,
-                                                   FORMAT_NAMES_ELEMENT|FORMAT_NAMES_OR,
-                                                   context)));
+          formatNames(expectedNames,
+              FORMAT_NAMES_ELEMENT | FORMAT_NAMES_OR,
+              context)));
       if (nnc.isAnyNameIncluded() || !nnc.getIncludedNamespaces().isEmpty())
         expected.add(localizer().message("element_other_ns"));
     }
@@ -500,7 +491,7 @@ public class PatternMatcher implements Cloneable, Matcher {
     return localizer().message("expected", formatList(expected, "or"));
   }
 
-  static final String GENERATED_PREFIXES[] = { "ns", "ns-", "ns_", "NS", "NS-", "NS_"};
+  static final String GENERATED_PREFIXES[] = {"ns", "ns-", "ns_", "NS", "NS-", "NS_"};
 
   // Values for flags parameter of formatNames
   static private final int FORMAT_NAMES_ELEMENT = 0x0;
@@ -556,8 +547,7 @@ public class PatternMatcher implements Cloneable, Matcher {
       if (prefix == null) {
         undeclaredNamespaces.add(ns);
         namesWithUndeclaredNamespaces.add(name);
-      }
-      else
+      } else
         qNames.add(makeQName(prefix, name.getLocalName()));
     }
     if (namesWithUndeclaredNamespaces.isEmpty())
@@ -604,12 +594,12 @@ public class PatternMatcher implements Cloneable, Matcher {
   private static String formatList(List<String> list, String conjunction) {
     int len = list.size();
     switch (len) {
-    case 0:
-      return "";
-    case 1:
-      return list.get(0);
-    case 2:
-      return localizer().message(conjunction + "_list_pair", list.get(0), list.get(1));
+      case 0:
+        return "";
+      case 1:
+        return list.get(0);
+      case 2:
+        return localizer().message(conjunction + "_list_pair", list.get(0), list.get(1));
     }
     String s = localizer().message(conjunction + "_list_many_first", list.get(0));
     for (int i = 1; i < len - 1; i++)
@@ -643,18 +633,18 @@ public class PatternMatcher implements Cloneable, Matcher {
 
   private static String quoteForAttributeValue(char c) {
     switch (c) {
-    case '<':
-      return "&lt;";
-    case '"':
-      return "&quot;";
-    case '&':
-      return "&amp;";
-    case 0xA:
-      return "&#xA;";
-    case 0xD:
-      return "&#xD;";
-    case 0x9:
-      return "&#x9;";
+      case '<':
+        return "&lt;";
+      case '"':
+        return "&quot;";
+      case '&':
+        return "&amp;";
+      case 0xA:
+        return "&#xA;";
+      case 0xD:
+        return "&#xD;";
+      case 0x9:
+        return "&#x9;";
     }
     return null;
   }

@@ -47,7 +47,8 @@ public abstract class Pattern {
     this.contentType = EMPTY_CONTENT_TYPE;
   }
 
-  void checkRecursion(int depth) throws SAXException { }
+  void checkRecursion(int depth) throws SAXException {
+  }
 
   Pattern expand(SchemaPatternBuilder b) {
     return this;
@@ -71,7 +72,7 @@ public abstract class Pattern {
   static final int DATA_EXCEPT_CONTEXT = 7;
 
   void checkRestrictions(int context, DuplicateAttributeDetector dad, Alphabet alpha)
-    throws RestrictionViolationException {
+      throws RestrictionViolationException {
   }
 
   // Know that other is not null

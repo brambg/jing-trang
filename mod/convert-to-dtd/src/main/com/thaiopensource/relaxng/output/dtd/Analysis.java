@@ -43,13 +43,7 @@ import com.thaiopensource.xml.util.Name;
 import com.thaiopensource.xml.util.Naming;
 import com.thaiopensource.xml.util.WellKnownNamespaces;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 class Analysis {
   private final NamespaceManager nsm = new NamespaceManager();
@@ -121,7 +115,7 @@ class Analysis {
         for (int i = 0; i < len; i++) {
           NameNameClass nnc = names.get(i);
           String ns = nnc.getNamespaceUri();
-          if (ns == NameClass.INHERIT_NS)
+          if (Objects.equals(ns, NameClass.INHERIT_NS))
             ns = "";
           Name name = new Name(ns, nnc.getLocalName());
           ElementPattern prev = elementDecls.get(name);
@@ -282,7 +276,7 @@ class Analysis {
     }
 
     public VoidValue visitDefine(DefineComponent c) {
-      if (c.getName() == DefineComponent.START)
+      if (Objects.equals(c.getName(), DefineComponent.START))
         startType = analyzeContentType(c.getBody());
       else
         new Analyzer().analyzeContentType(c.getBody());
@@ -435,7 +429,7 @@ class Analysis {
       List<NameNameClass> names = NameClassSplitter.split(p.getNameClass());
       for (NameNameClass nnc : names) {
         String ns = nnc.getNamespaceUri();
-        if (ns == NameClass.INHERIT_NS)
+        if (Objects.equals(ns, NameClass.INHERIT_NS))
           ns = "";
         result.add(new Name(ns, nnc.getLocalName()));
       }
@@ -495,7 +489,7 @@ class Analysis {
       List<NameNameClass> names = NameClassSplitter.split(p.getNameClass());
       for (NameNameClass name : names) {
         String ns = name.getNamespaceUri();
-        if (ns.length() != 0 && ns != NameClass.INHERIT_NS && !ns.equals(WellKnownNamespaces.XML)) {
+        if (ns.length() != 0 && !Objects.equals(ns, NameClass.INHERIT_NS) && !ns.equals(WellKnownNamespaces.XML)) {
           if (result == null)
             result = new HashSet<>();
           result.add(ns);
@@ -542,7 +536,7 @@ class Analysis {
   }
 
   String getElementPrefixForNamespaceUri(String ns) {
-    if (ns.equals("") || ns.equals(nsm.getDefaultNamespaceUri()) || ns == NameClass.INHERIT_NS)
+    if (ns.equals("") || ns.equals(nsm.getDefaultNamespaceUri()) || Objects.equals(ns, NameClass.INHERIT_NS))
       return null;
     return nsm.getPrefixForNamespaceUri(ns);
   }

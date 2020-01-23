@@ -17,6 +17,7 @@ import com.thaiopensource.relaxng.output.common.ErrorReporter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 class RefChecker extends AbstractVisitor {
   private final SchemaInfo schema;
@@ -48,7 +49,7 @@ class RefChecker extends AbstractVisitor {
 
   public VoidValue visitDefine(DefineComponent c) {
     String name = c.getName();
-    if (name == DefineComponent.START || refMap.get(name) == null)
+    if (Objects.equals(name, DefineComponent.START) || refMap.get(name) == null)
       c.getBody().accept(this);
     return VoidValue.VOID;
   }

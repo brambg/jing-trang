@@ -44,10 +44,7 @@ import com.thaiopensource.xml.util.WellKnownNamespaces;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
+import java.util.*;
 
 class DtdOutput {
   private final boolean warnDatatypes;
@@ -551,7 +548,7 @@ class DtdOutput {
         NameNameClass nnc = name;
         String ns = nnc.getNamespaceUri();
 
-        if (!ns.equals("") && ns != NameClass.INHERIT_NS) {
+        if (!ns.equals("") && !Objects.equals(ns, NameClass.INHERIT_NS)) {
           String prefix = analysis.getPrefixForNamespaceUri(ns);
           buf.append(prefix);
           buf.append(':');
@@ -779,7 +776,7 @@ class DtdOutput {
     }
 
     public VoidValue visitDefine(DefineComponent c) {
-      if (c.getName() == DefineComponent.START) {
+      if (Objects.equals(c.getName(), DefineComponent.START)) {
         outputLeadingComments(c);
         outputFollowingComments(c);
         if (analysis.getPattern() == analysis.getGrammarPattern())
@@ -1098,10 +1095,7 @@ class DtdOutput {
       outputNewline();
       outputModelBreak("<!ELEMENT " + qName + " ", contentModel, ">");
       boolean needXmlns;
-      if (ns == NameClass.INHERIT_NS)
-        needXmlns = false;
-      else
-        needXmlns = prefix == null || !analysis.getAttributeNamespaces(content).contains(ns);
+      needXmlns = ns != NameClass.INHERIT_NS && (prefix == null || !analysis.getAttributeNamespaces(content).contains(ns));
       if (atts.length() != 0 || needXmlns) {
         write("<!ATTLIST ");
         write(qName);
@@ -1111,8 +1105,7 @@ class DtdOutput {
           if (prefix != null) {
             write("xmlns:");
             write(prefix);
-          }
-          else
+          } else
             write("xmlns");
           write(" CDATA #FIXED ");
           buf.setLength(0);

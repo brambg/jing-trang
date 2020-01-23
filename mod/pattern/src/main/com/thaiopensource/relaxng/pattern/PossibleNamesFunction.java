@@ -4,6 +4,7 @@ import com.thaiopensource.util.VoidValue;
 
 /**
  * Common base class for PossibleAttributeNamesFunction and PossibleStartTagNamesFunction.
+ *
  * @see PossibleAttributeNamesFunction
  * @see PossibleStartTagNamesFunction
  */

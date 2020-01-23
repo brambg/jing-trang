@@ -29,8 +29,7 @@ class IntSet {
         break;
       }
     }
-    for (int j = len; j >= i; j--)
-      v[j + 1] = v[j];
+    System.arraycopy(v, i, v, i + 1, len + 1 - i);
     v[i] = n;
     ++len;
   }

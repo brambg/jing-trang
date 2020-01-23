@@ -1,11 +1,7 @@
 package com.thaiopensource.relaxng.pattern;
 
-import org.relaxng.datatype.Datatype;
-import org.relaxng.datatype.DatatypeBuilder;
-import org.relaxng.datatype.DatatypeException;
-import org.relaxng.datatype.DatatypeLibrary;
-import org.relaxng.datatype.DatatypeLibraryFactory;
 import com.thaiopensource.xml.util.WellKnownNamespaces;
+import org.relaxng.datatype.*;
 
 class CompatibilityDatatypeLibrary implements DatatypeLibrary {
   private final DatatypeLibraryFactory factory;
@@ -16,7 +12,7 @@ class CompatibilityDatatypeLibrary implements DatatypeLibrary {
   }
 
   public DatatypeBuilder createDatatypeBuilder(String type)
-          throws DatatypeException {
+      throws DatatypeException {
     if (type.equals("ID") || type.equals("IDREF") || type.equals("IDREFS")) {
       if (xsdDatatypeLibrary == null) {
         xsdDatatypeLibrary = factory.createDatatypeLibrary(WellKnownNamespaces.XML_SCHEMA_DATATYPES);

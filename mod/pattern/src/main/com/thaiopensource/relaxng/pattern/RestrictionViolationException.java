@@ -1,7 +1,7 @@
 package com.thaiopensource.relaxng.pattern;
 
-import org.xml.sax.Locator;
 import com.thaiopensource.xml.util.Name;
+import org.xml.sax.Locator;
 
 class RestrictionViolationException extends Exception {
   private final String messageId;

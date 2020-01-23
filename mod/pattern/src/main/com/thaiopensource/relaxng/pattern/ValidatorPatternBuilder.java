@@ -134,12 +134,10 @@ public class ValidatorPatternBuilder extends PatternBuilder {
     if (!(p1 instanceof ChoicePattern)) {
       if (p2.containsChoice(p1))
         return p2;
-    }
-    else if (!(p2 instanceof ChoicePattern)) {
+    } else if (!(p2 instanceof ChoicePattern)) {
       if (p1.containsChoice(p2))
         return p1;
-    }
-    else {
+    } else {
       p1.apply(noteChoicesFunction);
       p2 = p2.apply(removeChoicesFunction);
       if (choiceMap.size() > 0)
@@ -148,8 +146,8 @@ public class ValidatorPatternBuilder extends PatternBuilder {
         return p1;
     }
     if (p1 instanceof AfterPattern && p2 instanceof AfterPattern) {
-      AfterPattern ap1 = (AfterPattern)p1;
-      AfterPattern ap2 = (AfterPattern)p2;
+      AfterPattern ap1 = (AfterPattern) p1;
+      AfterPattern ap2 = (AfterPattern) p2;
       if (ap1.getOperand1() == ap2.getOperand1())
         return makeAfter(ap1.getOperand1(), makeChoice(ap1.getOperand2(), ap2.getOperand2()));
       if (ap1.getOperand1() == notAllowed)

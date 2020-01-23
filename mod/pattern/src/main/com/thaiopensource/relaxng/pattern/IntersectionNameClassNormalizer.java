@@ -25,7 +25,7 @@ public class IntersectionNameClassNormalizer extends AbstractNameClassNormalizer
     Iterator<NameClass> iter = nameClasses.iterator();
     if (!iter.hasNext())
       return false;
-    for (;;) {
+    for (; ; ) {
       if (!(iter.next()).contains(name))
         return false;
       if (!iter.hasNext())

@@ -13,7 +13,7 @@ abstract class ApplyAfterFunction extends AbstractPatternFunction<Pattern> {
 
   public Pattern caseChoice(ChoicePattern p) {
     return builder.makeChoice(p.getOperand1().apply(this),
-                              p.getOperand2().apply(this));
+        p.getOperand2().apply(this));
   }
 
   public Pattern caseNotAllowed(NotAllowedPattern p) {

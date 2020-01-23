@@ -33,6 +33,7 @@ final class DataDerivFailure {
   DataDerivFailure(Datatype dt, Name dtName, DatatypeException e) {
     this(dt, dtName, null, e.getMessage(), e.getIndex());
   }
+
   // failed because it matched the except in a dataExcept
   DataDerivFailure(DataExceptPattern p) {
     this(p.getDatatype(), p.getDatatypeName(), p.getParams(), p.getExcept());
@@ -79,13 +80,13 @@ final class DataDerivFailure {
   public boolean equals(Object obj) {
     if (!(obj instanceof DataDerivFailure))
       return false;
-    DataDerivFailure other = (DataDerivFailure)obj;
+    DataDerivFailure other = (DataDerivFailure) obj;
     return (datatype == other.datatype
-            && equal(message, other.message)
-            && equal(stringValue, other.stringValue)
-            && except == other.except
-            && tokenIndex == other.tokenIndex
-            && index == other.index);
+        && equal(message, other.message)
+        && equal(stringValue, other.stringValue)
+        && except == other.except
+        && tokenIndex == other.tokenIndex
+        && index == other.index);
   }
 
   public int hashCode() {

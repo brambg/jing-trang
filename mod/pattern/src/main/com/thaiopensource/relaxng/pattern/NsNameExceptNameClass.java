@@ -14,7 +14,7 @@ class NsNameExceptNameClass implements NameClass {
 
   public boolean contains(Name name) {
     return (this.namespaceURI.equals(name.getNamespaceUri())
-	    && !nameClass.contains(name));
+        && !nameClass.contains(name));
   }
 
   public int containsSpecificity(Name name) {
@@ -24,9 +24,9 @@ class NsNameExceptNameClass implements NameClass {
   public boolean equals(Object obj) {
     if (obj == null || !(obj instanceof NsNameExceptNameClass))
       return false;
-    NsNameExceptNameClass other = (NsNameExceptNameClass)obj;
+    NsNameExceptNameClass other = (NsNameExceptNameClass) obj;
     return (namespaceURI.equals(other.namespaceURI)
-	    && nameClass.equals(other.nameClass));
+        && nameClass.equals(other.nameClass));
   }
 
   public int hashCode() {

@@ -4,11 +4,7 @@ import com.thaiopensource.util.VoidValue;
 import com.thaiopensource.xml.util.Name;
 import com.thaiopensource.xml.util.WellKnownNamespaces;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PatternDumper {
   private static final String INTERNAL_NAMESPACE = "http://www.thaiopensource.com/relaxng/internal";
@@ -70,7 +66,7 @@ public class PatternDumper {
     if (name == null) {
       NameClass nc = p.getNameClass();
       if (nc instanceof SimpleNameClass) {
-        String localName = ((SimpleNameClass)nc).getName().getLocalName();
+        String localName = ((SimpleNameClass) nc).getName().getLocalName();
         Integer i = localNamePatternCount.get(localName);
         if (i == null) {
           i = 1;
@@ -82,17 +78,14 @@ public class PatternDumper {
               if (Integer.valueOf(name.substring(u + 1, name.length())) > 0)
                 // it can, so transform it so that it cannot
                 name += "_1";
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
               // not a number, so cannot be the same as one of our generated names
             }
           }
-        }
-        else
+        } else
           name = localName + "_" + ++i;
         localNamePatternCount.put(localName, i);
-      }
-      else
+      } else
         name = "_" + ++otherPatternCount;
       patternList.add(p);
       patternNameMap.put(p, name);
@@ -139,53 +132,52 @@ public class PatternDumper {
     for (int i = 0; i < len; i++) {
       char c = str.charAt(i);
       switch (c) {
-      case '&':
-	write("&amp;");
-	break;
-      case '<':
-	write("&lt;");
-	break;
-      case '>':
-	write("&gt;");
-	break;
-      case 0xD:
-        write("&#xD;");
-        break;
-      case 0xA:
-        if (isAttribute)
-          write("&#xA;");
-        else
+        case '&':
+          write("&amp;");
+          break;
+        case '<':
+          write("&lt;");
+          break;
+        case '>':
+          write("&gt;");
+          break;
+        case 0xD:
+          write("&#xD;");
+          break;
+        case 0xA:
+          if (isAttribute)
+            write("&#xA;");
+          else
+            write(c);
+          break;
+        case 0x9:
+          if (isAttribute)
+            write("&#x9;");
+          else
+            write(c);
+          break;
+        case '"':
+          if (isAttribute)
+            write("&quot;");
+          else
+            write(c);
+          break;
+        default:
           write(c);
-        break;
-      case 0x9:
-        if (isAttribute)
-          write("&#x9;");
-        else
-          write(c);
-        break;
-      case '"':
-        if (isAttribute)
-          write("&quot;");
-        else
-          write(c);
-        break;
-      default:
-	write(c);
-	break;
+          break;
       }
     }
   }
-      
+
   private void endElement() {
     --level;
     if (startTagOpen) {
       startTagOpen = false;
       write("/>");
       pop();
-    }
-    else {
+    } else {
       if (!suppressIndent)
-	indent(level);
+        indent(level);
       write("</");
       write(pop());
       write(">");
@@ -287,11 +279,10 @@ public class PatternDumper {
 
     protected void outputName(NameClass nc) {
       if (nc instanceof SimpleNameClass) {
-        Name name = ((SimpleNameClass)nc).getName();
+        Name name = ((SimpleNameClass) nc).getName();
         attribute("name", name.getLocalName());
         attribute("ns", name.getNamespaceUri());
-      }
-      else
+      } else
         nc.accept(nameClassDumper);
     }
 
@@ -306,7 +297,7 @@ public class PatternDumper {
       final Name dtName = p.getDatatypeName();
       attribute("type", dtName.getLocalName());
       attribute("datatypeLibrary", dtName.getNamespaceUri());
-      for (Iterator<String> iter = p.getParams().iterator(); iter.hasNext();) {
+      for (Iterator<String> iter = p.getParams().iterator(); iter.hasNext(); ) {
         startElement("param");
         attribute("name", iter.next());
         data(iter.next());
@@ -324,7 +315,7 @@ public class PatternDumper {
     }
 
     public VoidValue caseValue(ValuePattern p) {
-      startElement("value");      
+      startElement("value");
       Name dtName = p.getDatatypeName();
       attribute("type", dtName.getLocalName());
       attribute("datatypeLibrary", dtName.getNamespaceUri());
@@ -333,7 +324,7 @@ public class PatternDumper {
       String ns = "";
       // XXX won't work with a datatypeLibrary that doesn't use Name to implement QName's
       if (value instanceof Name) {
-        ns = ((Name)value).getNamespaceUri();
+        ns = ((Name) value).getNamespaceUri();
         int colonIndex = stringValue.indexOf(':');
         if (colonIndex < 0)
           stringValue = stringValue.substring(colonIndex + 1, stringValue.length());
@@ -421,7 +412,7 @@ public class PatternDumper {
   }
 
   class InterleaveDumper extends Dumper {
-     public VoidValue caseInterleave(InterleavePattern p) {
+    public VoidValue caseInterleave(InterleavePattern p) {
       p.getOperand1().apply(this);
       p.getOperand2().apply(this);
       return VoidValue.VOID;
@@ -475,7 +466,7 @@ public class PatternDumper {
       startElement("error");
       endElement();
     }
-    
+
     public void visitNull() {
       visitAnyName();
     }

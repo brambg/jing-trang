@@ -7,8 +7,8 @@ class OneOrMorePattern extends Pattern {
 
   OneOrMorePattern(Pattern p) {
     super(p.isNullable(),
-	  p.getContentType(),
-	  combineHashCode(ONE_OR_MORE_HASH_CODE, p.hashCode()));
+        p.getContentType(),
+        combineHashCode(ONE_OR_MORE_HASH_CODE, p.hashCode()));
     this.p = p;
   }
 
@@ -25,27 +25,27 @@ class OneOrMorePattern extends Pattern {
   }
 
   void checkRestrictions(int context, DuplicateAttributeDetector dad, Alphabet alpha)
-    throws RestrictionViolationException {
+      throws RestrictionViolationException {
     switch (context) {
-    case START_CONTEXT:
-      throw new RestrictionViolationException("start_contains_one_or_more");
-    case DATA_EXCEPT_CONTEXT:
-      throw new RestrictionViolationException("data_except_contains_one_or_more");
+      case START_CONTEXT:
+        throw new RestrictionViolationException("start_contains_one_or_more");
+      case DATA_EXCEPT_CONTEXT:
+        throw new RestrictionViolationException("data_except_contains_one_or_more");
     }
-    
+
     p.checkRestrictions(context == ELEMENT_CONTEXT
-			? ELEMENT_REPEAT_CONTEXT
-			: context,
-			dad,
-			alpha);
+            ? ELEMENT_REPEAT_CONTEXT
+            : context,
+        dad,
+        alpha);
     if (context != LIST_CONTEXT
-	&& !contentTypeGroupable(p.getContentType(), p.getContentType()))
+        && !contentTypeGroupable(p.getContentType(), p.getContentType()))
       throw new RestrictionViolationException("one_or_more_string");
   }
 
   boolean samePattern(Pattern other) {
     return (other instanceof OneOrMorePattern
-	    && p == ((OneOrMorePattern)other).p);
+        && p == ((OneOrMorePattern) other).p);
   }
 
   <T> T apply(PatternFunction<T> f) {

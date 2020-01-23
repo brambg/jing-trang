@@ -2,20 +2,16 @@ package com.thaiopensource.relaxng.pattern;
 
 import com.thaiopensource.xml.util.Name;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
- *  Base class for normalizing name classes.
+ * Base class for normalizing name classes.
  */
 public abstract class AbstractNameClassNormalizer {
   private static final String IMPOSSIBLE = "\u0000";
 
   protected abstract boolean contains(Name name);
+
   protected abstract void accept(NameClassVisitor visitor);
 
   public NormalizedNameClass normalize() {
@@ -66,8 +62,7 @@ public abstract class AbstractNameClassNormalizer {
         if (excludedNamespaces.contains(name.getNamespaceUri())) {
           if (in)
             includedNames.add(name);
-        }
-        else if (!in)
+        } else if (!in)
           excludedNames.add(name);
       }
       return new NormalizedAnyNameClass(includedNames, excludedNamespaces, excludedNames);
@@ -84,8 +79,7 @@ public abstract class AbstractNameClassNormalizer {
       if (excluded == null) {
         if (in)
           includedNames.add(name);
-      }
-      else if (!in)
+      } else if (!in)
         excluded.add(name.getLocalName());
     }
     return new NormalizedNsNameClass(includedNames, nsMap);

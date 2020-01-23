@@ -13,10 +13,10 @@ class ElementPattern extends Pattern {
 
   ElementPattern(NameClass nameClass, Pattern p, Locator loc) {
     super(false,
-	  ELEMENT_CONTENT_TYPE,
-	  combineHashCode(ELEMENT_HASH_CODE,
-			  nameClass.hashCode(),
-			  p.hashCode()));
+        ELEMENT_CONTENT_TYPE,
+        combineHashCode(ELEMENT_HASH_CODE,
+            nameClass.hashCode(),
+            p.hashCode()));
     this.nameClass = nameClass;
     this.origNameClass = nameClass;
     this.p = p;
@@ -24,24 +24,23 @@ class ElementPattern extends Pattern {
   }
 
   void checkRestrictions(int context, DuplicateAttributeDetector dad, Alphabet alpha)
-    throws RestrictionViolationException {
+      throws RestrictionViolationException {
     if (alpha != null)
       alpha.addElement(origNameClass);
     if (checkedRestrictions)
       return;
     switch (context) {
-    case DATA_EXCEPT_CONTEXT:
-      throw new RestrictionViolationException("data_except_contains_element");
-    case LIST_CONTEXT:
-      throw new RestrictionViolationException("list_contains_element");
-    case ATTRIBUTE_CONTEXT:
-      throw new RestrictionViolationException("attribute_contains_element");
+      case DATA_EXCEPT_CONTEXT:
+        throw new RestrictionViolationException("data_except_contains_element");
+      case LIST_CONTEXT:
+        throw new RestrictionViolationException("list_contains_element");
+      case ATTRIBUTE_CONTEXT:
+        throw new RestrictionViolationException("attribute_contains_element");
     }
     checkedRestrictions = true;
     try {
       p.checkRestrictions(ELEMENT_CONTEXT, new DuplicateAttributeDetector(), null);
-    }
-    catch (RestrictionViolationException e) {
+    } catch (RestrictionViolationException e) {
       checkedRestrictions = false;
       e.maybeSetLocator(loc);
       throw e;
@@ -53,7 +52,7 @@ class ElementPattern extends Pattern {
       expanded = true;
       p = p.expand(b);
       if (p.isNotAllowed())
-	nameClass = new NullNameClass();
+        nameClass = new NullNameClass();
     }
     return this;
   }
@@ -61,7 +60,7 @@ class ElementPattern extends Pattern {
   boolean samePattern(Pattern other) {
     if (!(other instanceof ElementPattern))
       return false;
-    ElementPattern ep = (ElementPattern)other;
+    ElementPattern ep = (ElementPattern) other;
     return nameClass.equals(ep.nameClass) && p == ep.p;
   }
 

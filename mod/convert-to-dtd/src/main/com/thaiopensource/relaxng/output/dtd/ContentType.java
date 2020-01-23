@@ -28,9 +28,7 @@ class ContentType {
   }
 
   boolean isA(ContentType t) {
-    if (this == t)
-      return true;
-    return parent != null && parent.isA(t);
+    return this == t || parent != null && parent.isA(t);
   }
 
   static ContentType zeroOrMore(ContentType t) {

@@ -13,6 +13,7 @@ public abstract class NormalizedNameClass implements com.thaiopensource.relaxng.
 
   /**
    * Create a NormalizedNameClass representing a name class without any wildcards.
+   *
    * @param includedNames an immutable set of names
    */
   public NormalizedNameClass(Set<Name> includedNames) {

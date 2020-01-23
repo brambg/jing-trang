@@ -1,7 +1,7 @@
 package com.thaiopensource.relaxng.pattern;
 
-import org.xml.sax.SAXException;
 import com.thaiopensource.relaxng.parse.IllegalSchemaException;
+import org.xml.sax.SAXException;
 
 import java.io.IOException;
 

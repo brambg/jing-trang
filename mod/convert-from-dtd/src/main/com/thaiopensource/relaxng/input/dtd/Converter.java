@@ -413,7 +413,7 @@ public class Converter {
 	  return;
       }
       catch (Exception e) {
-	throw (RuntimeException)e;
+	throw e;
       }
       if (sc.getSchemaDocumentMap().get(uri) != null) {
         // I don't think this can happen because the second and subsequent inclusions
@@ -965,11 +965,10 @@ public class Converter {
     int i = pattern.indexOf(ch);
     if (i < 0)
       return pattern;
-    StringBuilder buf = new StringBuilder();
-    buf.append(pattern.substring(0, i));
-    buf.append(value);
-    buf.append(pattern.substring(i + 1));
-    return buf.toString();
+    String buf = pattern.substring(0, i) +
+        value +
+        pattern.substring(i + 1);
+    return buf;
   }
 
   private void outputStart(List<Component> components) {

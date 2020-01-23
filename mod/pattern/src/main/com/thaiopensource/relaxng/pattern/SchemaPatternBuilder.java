@@ -12,7 +12,8 @@ public class SchemaPatternBuilder extends PatternBuilder {
   private final TextPattern text = new TextPattern();
   private final PatternInterner schemaInterner = new PatternInterner();
 
-  public SchemaPatternBuilder() { }
+  public SchemaPatternBuilder() {
+  }
 
   public boolean hasIdTypes() {
     return idTypes;

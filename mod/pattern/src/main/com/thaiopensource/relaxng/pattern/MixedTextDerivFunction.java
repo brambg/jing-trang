@@ -32,7 +32,7 @@ class MixedTextDerivFunction extends EndAttributesFunction {
 
   public Pattern caseOneOrMore(OneOrMorePattern p) {
     return getPatternBuilder().makeGroup(memoApply(p.getOperand()),
-					 getPatternBuilder().makeOptional(p));
+        getPatternBuilder().makeOptional(p));
   }
 
   public Pattern caseOther(Pattern p) {

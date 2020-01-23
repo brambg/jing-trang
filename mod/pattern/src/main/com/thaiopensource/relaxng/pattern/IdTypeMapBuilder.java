@@ -8,13 +8,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 public class IdTypeMapBuilder {
   private boolean hadError;
@@ -31,6 +25,7 @@ public class IdTypeMapBuilder {
 
   private static class WrappedSAXException extends RuntimeException {
     private final SAXException cause;
+
     WrappedSAXException(SAXException cause) {
       this.cause = cause;
     }
@@ -64,19 +59,21 @@ public class IdTypeMapBuilder {
     public boolean equals(Object obj) {
       if (!(obj instanceof ScopedName))
         return false;
-      ScopedName other = (ScopedName)obj;
+      ScopedName other = (ScopedName) obj;
       return elementName.equals(other.elementName) && attributeName.equals(other.attributeName);
     }
   }
 
   private static class IdTypeMapImpl implements IdTypeMap {
     private final Map<ScopedName, Integer> table = new HashMap<>();
+
     public int getIdType(Name elementName, Name attributeName) {
       Integer n = table.get(new ScopedName(elementName, attributeName));
       if (n == null)
         return Datatype.ID_TYPE_NULL;
       return n;
     }
+
     private void add(Name elementName, Name attributeName, int idType) {
       table.put(new ScopedName(elementName, attributeName), idType);
     }
@@ -111,7 +108,7 @@ public class IdTypeMapBuilder {
       this.attributeIsParent = false;
     }
 
-   BuildFunction(NameClass elementNameClass, Locator locator, boolean attributeIsParent) {
+    BuildFunction(NameClass elementNameClass, Locator locator, boolean attributeIsParent) {
       this.elementNameClass = elementNameClass;
       this.locator = locator;
       this.attributeIsParent = attributeIsParent;
@@ -165,11 +162,10 @@ public class IdTypeMapBuilder {
           error("id_attribute_name_class", p.getLocator());
           return VoidValue.VOID;
         }
-        elementNameClass.accept(new ElementNameClassVisitor(((SimpleNameClass)attributeNameClass).getName(),
-                                                            locator,
-                                                            idType));
-      }
-      else
+        elementNameClass.accept(new ElementNameClassVisitor(((SimpleNameClass) attributeNameClass).getName(),
+            locator,
+            idType));
+      } else
         notePossibleConflict(elementNameClass, p.getNameClass(), locator);
       p.getContent().apply(new BuildFunction(null, p.getLocator(), true));
       return VoidValue.VOID;
@@ -224,7 +220,7 @@ public class IdTypeMapBuilder {
 
     public void visitName(Name elementName) {
       int tem = idTypeMap.getIdType(elementName, attributeName);
-      if (tem !=  Datatype.ID_TYPE_NULL && tem != idType)
+      if (tem != Datatype.ID_TYPE_NULL && tem != idType)
         error("id_type_conflict", elementName, attributeName, locator);
       idTypeMap.add(elementName, attributeName, idType);
     }
@@ -261,22 +257,20 @@ public class IdTypeMapBuilder {
     if (eh != null)
       try {
         eh.error(new SAXParseException(SchemaBuilderImpl.localizer.message(key), locator));
-      }
-      catch (SAXException e) {
+      } catch (SAXException e) {
         throw new WrappedSAXException(e);
       }
   }
 
   private void error(String key, Name arg1, Name arg2, Locator locator) {
-   hadError = true;
-   if (eh != null)
-     try {
-       eh.error(new SAXParseException(SchemaBuilderImpl.localizer.message(key, NameFormatter.format(arg1), NameFormatter.format(arg2)),
-                                      locator));
-     }
-     catch (SAXException e) {
-       throw new WrappedSAXException(e);
-     }
+    hadError = true;
+    if (eh != null)
+      try {
+        eh.error(new SAXParseException(SchemaBuilderImpl.localizer.message(key, NameFormatter.format(arg1), NameFormatter.format(arg2)),
+            locator));
+      } catch (SAXException e) {
+        throw new WrappedSAXException(e);
+      }
   }
 
   public IdTypeMapBuilder(ErrorHandler eh, Pattern pattern) throws SAXException {
@@ -290,14 +284,13 @@ public class IdTypeMapBuilder {
       for (PossibleConflict pc : possibleConflicts) {
         if (pc.elementNameClass instanceof SimpleNameClass
             && pc.attributeNameClass instanceof SimpleNameClass) {
-          Name elementName = ((SimpleNameClass)pc.elementNameClass).getName();
-          Name attributeName = ((SimpleNameClass)pc.attributeNameClass).getName();
+          Name elementName = ((SimpleNameClass) pc.elementNameClass).getName();
+          Name attributeName = ((SimpleNameClass) pc.attributeNameClass).getName();
           int idType = idTypeMap.getIdType(elementName,
-                                           attributeName);
+              attributeName);
           if (idType != Datatype.ID_TYPE_NULL)
             error("id_type_conflict", elementName, attributeName, pc.locator);
-        }
-        else {
+        } else {
           for (ScopedName sn : idTypeMap.table.keySet()) {
             if (pc.elementNameClass.contains(sn.elementName)
                 && pc.attributeNameClass.contains(sn.attributeName)) {
@@ -307,8 +300,7 @@ public class IdTypeMapBuilder {
           }
         }
       }
-    }
-    catch (WrappedSAXException e) {
+    } catch (WrappedSAXException e) {
       throw e.cause;
     }
   }

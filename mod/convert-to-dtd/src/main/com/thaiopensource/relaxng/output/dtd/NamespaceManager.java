@@ -4,10 +4,7 @@ import com.thaiopensource.relaxng.edit.NameClass;
 import com.thaiopensource.relaxng.edit.NameNameClass;
 import com.thaiopensource.xml.util.WellKnownNamespaces;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 class NamespaceManager {
   // map namespace URIs to non-empty prefix
@@ -47,7 +44,7 @@ class NamespaceManager {
 
   void noteName(NameNameClass nc, boolean defaultable) {
     String ns = nc.getNamespaceUri();
-    if (ns.equals("") || ns == NameClass.INHERIT_NS) {
+    if (ns.equals("") || Objects.equals(ns, NameClass.INHERIT_NS)) {
       if (defaultable)
         defaultNamespaceUri = "";
       return;

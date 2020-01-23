@@ -40,7 +40,7 @@ class FindElementFunction extends AbstractPatternFunction<VoidValue> {
     }
     return VoidValue.VOID;
 
- }
+  }
 
   public VoidValue caseGroup(GroupPattern p) {
     return caseBinary(p);
@@ -66,8 +66,7 @@ class FindElementFunction extends AbstractPatternFunction<VoidValue> {
       if (s > specificity) {
         specificity = s;
         pattern = p.getContent();
-      }
-      else if (s == specificity && s != NameClass.SPECIFICITY_NONE)
+      } else if (s == specificity && s != NameClass.SPECIFICITY_NONE)
         pattern = builder.makeChoice(pattern, p.getContent());
       p.getContent().apply(this);
     }

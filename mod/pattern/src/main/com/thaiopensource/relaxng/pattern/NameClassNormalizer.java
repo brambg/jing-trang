@@ -3,7 +3,7 @@ package com.thaiopensource.relaxng.pattern;
 import com.thaiopensource.xml.util.Name;
 
 /**
- *  Normalizes a name classes.
+ * Normalizes a name classes.
  */
 public class NameClassNormalizer extends AbstractNameClassNormalizer {
   private NameClass nameClass;

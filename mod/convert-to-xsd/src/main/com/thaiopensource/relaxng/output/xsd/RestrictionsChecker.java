@@ -29,6 +29,7 @@ import com.thaiopensource.relaxng.edit.ZeroOrMorePattern;
 import com.thaiopensource.relaxng.output.common.ErrorReporter;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class RestrictionsChecker {
@@ -274,7 +275,7 @@ public class RestrictionsChecker {
     }
 
     public VoidValue visitDefine(DefineComponent c) {
-      if (c.getName() != DefineComponent.START)
+      if (!Objects.equals(c.getName(), DefineComponent.START))
         c.getBody().accept(topLevelVisitor);
       return VoidValue.VOID;
     }

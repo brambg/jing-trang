@@ -40,14 +40,14 @@ class DataPattern extends StringPattern {
   }
 
   boolean allowsAnyString() {
-    return dt instanceof Datatype2 && ((Datatype2)dt).alwaysValid();
+    return dt instanceof Datatype2 && ((Datatype2) dt).alwaysValid();
   }
 
   void checkRestrictions(int context, DuplicateAttributeDetector dad, Alphabet alpha)
-    throws RestrictionViolationException {
+      throws RestrictionViolationException {
     switch (context) {
-    case START_CONTEXT:
-      throw new RestrictionViolationException("start_contains_data");
+      case START_CONTEXT:
+        throw new RestrictionViolationException("start_contains_data");
     }
   }
 }

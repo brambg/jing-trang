@@ -58,7 +58,7 @@ final class PatternMemo {
   PatternMemo ignoreMissingAttributes() {
     if (memoIgnoreMissingAttributes == null)
       memoIgnoreMissingAttributes
-	= applyForPatternMemo(builder.getIgnoreMissingAttributesFunction());
+          = applyForPatternMemo(builder.getIgnoreMissingAttributesFunction());
     return memoIgnoreMissingAttributes;
   }
 
@@ -120,7 +120,7 @@ final class PatternMemo {
     else {
       tem = startTagOpenDerivMap.get(name);
       if (tem != null)
-	return tem;
+        return tem;
     }
     if (f == null)
       f = new StartTagOpenDerivFunction(name, builder);
@@ -144,7 +144,7 @@ final class PatternMemo {
     else {
       tem = startTagOpenRecoverDerivMap.get(name);
       if (tem != null)
-	return tem;
+        return tem;
     }
     if (f == null)
       f = new StartTagOpenRecoverDerivFunction(name, builder);
@@ -168,7 +168,7 @@ final class PatternMemo {
     else {
       tem = startAttributeDerivMap.get(name);
       if (tem != null)
-	return tem;
+        return tem;
     }
     if (f == null)
       f = new StartAttributeDerivFunction(name, builder);

@@ -10,7 +10,8 @@ import java.util.List;
 class SingleDataDerivType extends DataDerivType {
   private PatternMemo memo;
 
-  SingleDataDerivType() { }
+  SingleDataDerivType() {
+  }
 
   PatternMemo dataDeriv(ValidatorPatternBuilder builder, Pattern p, String str, ValidationContext vc,
                         List<DataDerivFailure> fail) {

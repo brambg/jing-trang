@@ -91,8 +91,7 @@ class ValidatorImpl extends Validator2 {
 //    throw new IllegalArgumentException();
 //  }
 
-  private void doValidate(DOMSource source, DOMResult result)
-          throws SAXException, IOException, TransformerException {
+  private void doValidate(DOMSource source, DOMResult result) {
     // XXX transform source and result
     throw new IllegalArgumentException();
   }

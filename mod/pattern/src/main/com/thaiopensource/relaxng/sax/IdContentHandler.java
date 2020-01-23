@@ -3,11 +3,7 @@ package com.thaiopensource.relaxng.sax;
 import com.thaiopensource.relaxng.pattern.IdSoundnessChecker;
 import com.thaiopensource.relaxng.pattern.IdTypeMap;
 import com.thaiopensource.xml.util.Name;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
+import org.xml.sax.*;
 
 public class IdContentHandler implements ContentHandler {
   private final IdSoundnessChecker checker;
@@ -45,7 +41,7 @@ public class IdContentHandler implements ContentHandler {
   }
 
   public void startElement(String namespaceUri, String localName, String qName, Attributes attributes)
-          throws SAXException {
+      throws SAXException {
     Name elementName = new Name(namespaceUri, localName);
     int len = attributes.getLength();
     for (int i = 0; i < len; i++) {
@@ -73,13 +69,13 @@ public class IdContentHandler implements ContentHandler {
   public void notationDecl(String name,
                            String publicId,
                            String systemId)
-          throws SAXException {
+      throws SAXException {
   }
 
   public void unparsedEntityDecl(String name,
                                  String publicId,
                                  String systemId,
                                  String notationName)
-          throws SAXException {
+      throws SAXException {
   }
 }

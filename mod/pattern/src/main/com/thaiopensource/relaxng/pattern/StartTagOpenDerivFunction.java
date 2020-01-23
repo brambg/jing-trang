@@ -13,7 +13,7 @@ class StartTagOpenDerivFunction extends AbstractPatternFunction<Pattern> {
 
   public Pattern caseChoice(ChoicePattern p) {
     return builder.makeChoice(memoApply(p.getOperand1()),
-			      memoApply(p.getOperand2()));
+        memoApply(p.getOperand2()));
   }
 
   public Pattern caseGroup(GroupPattern p) {
@@ -31,36 +31,36 @@ class StartTagOpenDerivFunction extends AbstractPatternFunction<Pattern> {
     final Pattern p1 = p.getOperand1();
     final Pattern p2 = p.getOperand2();
     return builder.makeChoice(
-            memoApply(p1).apply(new ApplyAfterFunction(builder) {
-              Pattern apply(Pattern x) {
-                return builder.makeInterleave(x, p2);
-              }
-            }),
-            memoApply(p2).apply(new ApplyAfterFunction(builder) {
-              Pattern apply(Pattern x) {
-                return builder.makeInterleave(p1, x);
-              }
-            }));
+        memoApply(p1).apply(new ApplyAfterFunction(builder) {
+          Pattern apply(Pattern x) {
+            return builder.makeInterleave(x, p2);
+          }
+        }),
+        memoApply(p2).apply(new ApplyAfterFunction(builder) {
+          Pattern apply(Pattern x) {
+            return builder.makeInterleave(p1, x);
+          }
+        }));
   }
 
   public Pattern caseAfter(AfterPattern p) {
     final Pattern p1 = p.getOperand1();
     final Pattern p2 = p.getOperand2();
     return memoApply(p1).apply(new ApplyAfterFunction(builder) {
-				   Pattern apply(Pattern x) {
-				     return builder.makeAfter(x, p2);
-				   }
-				 });
+      Pattern apply(Pattern x) {
+        return builder.makeAfter(x, p2);
+      }
+    });
   }
 
   public Pattern caseOneOrMore(final OneOrMorePattern p) {
     final Pattern p1 = p.getOperand();
     return memoApply(p1).apply(new ApplyAfterFunction(builder) {
-				   Pattern apply(Pattern x) {
-				     return builder.makeGroup(x,
-							      builder.makeOptional(p));
-				   }
-				 });
+      Pattern apply(Pattern x) {
+        return builder.makeGroup(x,
+            builder.makeOptional(p));
+      }
+    });
   }
 
 

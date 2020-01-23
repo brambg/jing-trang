@@ -27,31 +27,30 @@ final class PatternInterner {
 
     if (table == null) {
       table = new Pattern[INIT_SIZE];
-      usedLimit = (int)(INIT_SIZE * LOAD_FACTOR);
+      usedLimit = (int) (INIT_SIZE * LOAD_FACTOR);
       h = firstIndex(p);
-    }
-    else {
+    } else {
       for (h = firstIndex(p); table[h] != null; h = nextIndex(h)) {
-	if (p.samePattern(table[h]))
-	  return table[h];
+        if (p.samePattern(table[h]))
+          return table[h];
       }
     }
     if (used >= usedLimit) {
       // rehash
       Pattern[] oldTable = table;
       table = new Pattern[table.length << 1];
-      for (int i = oldTable.length; i > 0;) {
-	--i;
-	if (oldTable[i] != null) {
-	  int j;
-	  for (j = firstIndex(oldTable[i]); table[j] != null; j = nextIndex(j))
-	    ;
-	  table[j] = oldTable[i];
-	}
+      for (int i = oldTable.length; i > 0; ) {
+        --i;
+        if (oldTable[i] != null) {
+          int j;
+          for (j = firstIndex(oldTable[i]); table[j] != null; j = nextIndex(j))
+            ;
+          table[j] = oldTable[i];
+        }
       }
       for (h = firstIndex(p); table[h] != null; h = nextIndex(h))
-	;
-      usedLimit = (int)(table.length * LOAD_FACTOR);
+        ;
+      usedLimit = (int) (table.length * LOAD_FACTOR);
     }
     used++;
     table[h] = p;

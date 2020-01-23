@@ -8,6 +8,7 @@ package com.thaiopensource.relaxng.match;
 public interface MatchablePattern {
   /**
    * Create a Matcher for matching against this pattern.
+   *
    * @return a Matcher, never null
    */
   Matcher createMatcher();

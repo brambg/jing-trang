@@ -16,10 +16,7 @@ import com.thaiopensource.util.VoidValue;
 import com.thaiopensource.xml.util.Naming;
 import com.thaiopensource.xml.util.WellKnownNamespaces;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PrefixManager implements SourceUriGenerator {
 
@@ -89,7 +86,7 @@ public class PrefixManager implements SourceUriGenerator {
     }
 
     private String resolveNamespace(String ns) {
-      return ns == NameNameClass.INHERIT_NS ? inheritedNamespace : ns;
+      return Objects.equals(ns, NameNameClass.INHERIT_NS) ? inheritedNamespace : ns;
     }
 
     private void notePrefix(String prefix, String ns) {

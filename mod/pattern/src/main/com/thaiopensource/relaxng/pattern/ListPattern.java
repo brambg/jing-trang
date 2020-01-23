@@ -9,8 +9,8 @@ class ListPattern extends Pattern {
 
   ListPattern(Pattern p, Locator locator) {
     super(false,
-	  DATA_CONTENT_TYPE,
-	  combineHashCode(LIST_HASH_CODE, p.hashCode()));
+        DATA_CONTENT_TYPE,
+        combineHashCode(LIST_HASH_CODE, p.hashCode()));
     this.p = p;
     this.locator = locator;
   }
@@ -29,7 +29,7 @@ class ListPattern extends Pattern {
 
   boolean samePattern(Pattern other) {
     return (other instanceof ListPattern
-	    && p == ((ListPattern)other).p);
+        && p == ((ListPattern) other).p);
   }
 
   <T> T apply(PatternFunction<T> f) {
@@ -37,24 +37,23 @@ class ListPattern extends Pattern {
   }
 
   void checkRestrictions(int context, DuplicateAttributeDetector dad, Alphabet alpha)
-    throws RestrictionViolationException {
+      throws RestrictionViolationException {
     switch (context) {
-    case DATA_EXCEPT_CONTEXT:
-      throw new RestrictionViolationException("data_except_contains_list");
-    case START_CONTEXT:
-      throw new RestrictionViolationException("start_contains_list");
-    case LIST_CONTEXT:
-      throw new RestrictionViolationException("list_contains_list");
+      case DATA_EXCEPT_CONTEXT:
+        throw new RestrictionViolationException("data_except_contains_list");
+      case START_CONTEXT:
+        throw new RestrictionViolationException("start_contains_list");
+      case LIST_CONTEXT:
+        throw new RestrictionViolationException("list_contains_list");
     }
     try {
       p.checkRestrictions(LIST_CONTEXT, dad, null);
-    }
-    catch (RestrictionViolationException e) {
+    } catch (RestrictionViolationException e) {
       e.maybeSetLocator(locator);
       throw e;
     }
   }
-  
+
   Pattern getOperand() {
     return p;
   }

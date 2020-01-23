@@ -26,7 +26,7 @@ class SimpleNameClass implements NameClass {
   public boolean equals(Object obj) {
     if (obj == null || !(obj instanceof SimpleNameClass))
       return false;
-    SimpleNameClass other = (SimpleNameClass)obj;
+    SimpleNameClass other = (SimpleNameClass) obj;
     return name.equals(other.name);
   }
 

@@ -23,7 +23,7 @@ public class Driver {
     String[] files = new File(dir).list();
     Hashtable fileTable = new Hashtable();
     for (String file1 : files) fileTable.put(file1, file1);
-    String failures = null;
+    StringBuilder failures = null;
     for (String file : files)
       if (file.endsWith(".dtd")) {
         String inFile = file;
@@ -35,15 +35,15 @@ public class Driver {
           } catch (CompareFailException e) {
             System.err.println(inFile + " failed at byte " + e.getByteIndex());
             if (failures == null)
-              failures = inFile;
+              failures = new StringBuilder(inFile);
             else
-              failures += " " + inFile;
+              failures.append(" ").append(inFile);
             runOutputTest(new File(dir, inFile), new File(failDir, outFile));
           }
         }
       }
     if (failures != null)
-      throw new TestFailException(failures);
+      throw new TestFailException(failures.toString());
   }
 
   public static void runCompareTest(File inFile, File outFile) throws IOException {

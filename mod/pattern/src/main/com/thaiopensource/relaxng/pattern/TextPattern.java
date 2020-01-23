@@ -14,14 +14,14 @@ class TextPattern extends Pattern {
   }
 
   void checkRestrictions(int context, DuplicateAttributeDetector dad, Alphabet alpha)
-    throws RestrictionViolationException {
+      throws RestrictionViolationException {
     switch (context) {
-    case DATA_EXCEPT_CONTEXT:
-      throw new RestrictionViolationException("data_except_contains_text");
-    case START_CONTEXT:
-      throw new RestrictionViolationException("start_contains_text");
-    case LIST_CONTEXT:
-      throw new RestrictionViolationException("list_contains_text");
+      case DATA_EXCEPT_CONTEXT:
+        throw new RestrictionViolationException("data_except_contains_text");
+      case START_CONTEXT:
+        throw new RestrictionViolationException("start_contains_text");
+      case LIST_CONTEXT:
+        throw new RestrictionViolationException("list_contains_text");
     }
   }
 

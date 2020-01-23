@@ -28,10 +28,10 @@ class ValuePattern extends StringPattern {
   }
 
   void checkRestrictions(int context, DuplicateAttributeDetector dad, Alphabet alpha)
-    throws RestrictionViolationException {
+      throws RestrictionViolationException {
     switch (context) {
-    case START_CONTEXT:
-      throw new RestrictionViolationException("start_contains_value");
+      case START_CONTEXT:
+        throw new RestrictionViolationException("start_contains_value");
     }
   }
 
